@@ -170,30 +170,37 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _buildIDInput(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        // inputField('User Name', 'Enter your user name',
-        //             TextInputType.text, Icons.person),
         Text(
-          "Enter your ID (12)",
+          "Enter your CID (12)",
           style: TextStyle(
               color: Colors.white70,
               fontWeight: FontWeight.normal,
               fontSize: 24.0),
         ),
         Padding(
-            padding: EdgeInsets.only(top: 24.0, left: 30, right: 30),
+            padding: EdgeInsets.only(top: 24.0, left: 50, right: 50),
             child: new TextField(
                 maxLength: 12,
-                style: TextStyle(color: Colors.white, fontSize: 24),
-                keyboardType: TextInputType.text,
-                onChanged: (s) {},
+                style: TextStyle(
+                    color: Colors.white, fontSize: 24, letterSpacing: 5.0),
+                keyboardType: TextInputType.number,
+                onChanged: (s) {
+                  if (s.length == 12) {
+                    setState(() {
+                      isLoaded = SplashType.logedIn;
+                    });
+                  }
+                },
                 onSubmitted: (s) {},
                 obscureText: false,
                 decoration: new InputDecoration(
                     counterText: "",
                     fillColor: Colors.white54,
                     filled: true,
-                    contentPadding: const EdgeInsets.all(20.0),
+                    contentPadding: const EdgeInsets.only(
+                        left: 30.0, right: 30.0, top: 15, bottom: 15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40),
                       borderSide: BorderSide(width: 0, color: Colors.white54),
@@ -208,6 +215,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _buildPinVerifier(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
           "Enter your pin",
