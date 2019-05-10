@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Vote App',
         theme: ThemeData(
             primaryColor: Colors.blueGrey[700],
-            accentColor: Colors.purple[700]),
+            accentColor: Colors.purple[700],
+            scaffoldBackgroundColor: Colors.blueGrey[700]),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
         routes: routes);

@@ -30,11 +30,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void loadData() {
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       SharedPrefs.getPin().then((pin) {
         setState(() {
           if (pin != "") {
-            isLoaded = SplashType.registered;
+            SharedPrefs.getLogedIn().then((logedin) {
+              setState(() {
+                if (logedin) {
+                  isLoaded = SplashType.logedIn;
+                } else {
+                  isLoaded = SplashType.registered;
+                }
+              });
+            });
           } else {
             isLoaded = SplashType.notRegistered;
           }
@@ -63,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       isLoaded = SplashType.loading;
     });
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       SharedPrefs.getPin().then((pin) {
         if (pin == _pin) {
           Navigator.pushReplacementNamed(context, HomeScreen.routeName);
@@ -83,9 +91,6 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -180,7 +185,7 @@ class _SplashScreenState extends State<SplashScreen> {
               fontSize: 24.0),
         ),
         Padding(
-            padding: EdgeInsets.only(top: 24.0, left: 50, right: 50),
+            padding: EdgeInsets.only(top: 24.0, left: 45, right: 45),
             child: new TextField(
                 maxLength: 12,
                 style: TextStyle(
@@ -189,6 +194,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 onChanged: (s) {
                   if (s.length == 12) {
                     setState(() {
+                      SharedPrefs.setLogedIn(true);
                       isLoaded = SplashType.logedIn;
                     });
                   }

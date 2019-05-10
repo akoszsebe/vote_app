@@ -10,9 +10,6 @@ class ConfirmationScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
