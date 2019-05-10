@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:code_input/code_input.dart';
+import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/register_screen.dart';
 import 'package:vote_app/pages/confirmation_screen.dart';
@@ -16,7 +16,8 @@ enum SplashType {
   notSameDevice,
   registered,
   notconfirmed,
-  loading
+  loading,
+  logedIn
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -49,6 +50,8 @@ class _SplashScreenState extends State<SplashScreen> {
             case SplashType.notSameDevice:
               break;
             case SplashType.registered:
+              break;
+            case SplashType.logedIn:
               break;
           }
         });
@@ -132,7 +135,9 @@ class _SplashScreenState extends State<SplashScreen> {
         return _buildNotRegistered(context);
       case SplashType.notSameDevice:
       case SplashType.registered:
-        return _buildLogin(context);
+        return _buildIDInput(context);
+      case SplashType.logedIn:
+        return _buildPinVerifier(context);
     }
   }
 
@@ -154,15 +159,6 @@ class _SplashScreenState extends State<SplashScreen> {
               "Register",
             ),
           ),
-          RaisedButton(
-            onPressed: () => {print("nagy fasz")},
-            textColor: Theme.of(context).primaryColor,
-            color: Colors.white,
-            padding: const EdgeInsets.all(8.0),
-            child: new Text(
-              "Change Device",
-            ),
-          ),
         ]);
   }
 
@@ -172,7 +168,45 @@ class _SplashScreenState extends State<SplashScreen> {
             valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)));
   }
 
-  Widget _buildLogin(BuildContext context) {
+  Widget _buildIDInput(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        // inputField('User Name', 'Enter your user name',
+        //             TextInputType.text, Icons.person),
+        Text(
+          "Enter your ID (12)",
+          style: TextStyle(
+              color: Colors.white70,
+              fontWeight: FontWeight.normal,
+              fontSize: 24.0),
+        ),
+        Padding(
+            padding: EdgeInsets.only(top: 24.0, left: 30, right: 30),
+            child: new TextField(
+                maxLength: 12,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+                keyboardType: TextInputType.text,
+                onChanged: (s) {},
+                onSubmitted: (s) {},
+                obscureText: false,
+                decoration: new InputDecoration(
+                    counterText: "",
+                    fillColor: Colors.white54,
+                    filled: true,
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                      borderSide: BorderSide(width: 0, color: Colors.white54),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                      borderSide: BorderSide(width: 0, color: Colors.white54),
+                    ))))
+      ],
+    );
+  }
+
+  Widget _buildPinVerifier(BuildContext context) {
     return Column(
       children: <Widget>[
         Text(

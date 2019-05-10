@@ -22,9 +22,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return new Scaffold(
       body: new Container(
           decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-          padding: new EdgeInsets.all(20.0),
           child: new Form(
             child: new ListView(
+              padding: new EdgeInsets.all(20.0),
               children: <Widget>[
                 new Container(
                     padding: new EdgeInsets.all(20.0),
@@ -97,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           )),
     );
   }
-
+}
   Widget inputField(
       String hint, String label, TextInputType type, IconData icon,
       {bool obscureText: false,
@@ -125,4 +125,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 enabledBorder: new UnderlineInputBorder(
                     borderSide: new BorderSide(color: Colors.white)))));
   }
-}
