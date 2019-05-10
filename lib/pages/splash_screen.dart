@@ -230,7 +230,7 @@ class _SplashScreenState extends State<SplashScreen> {
         CodeInput(
           length: 4,
           keyboardType: TextInputType.number,
-          builder: CodeInputBuilders.lightCircle(),
+          builder: CodeInputBuilders.lightCircle(obscureText: true),
           onFilled: (value) {
             login(value);
           },
