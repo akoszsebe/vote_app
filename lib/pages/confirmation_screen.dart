@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 class ConfirmationScreen extends StatelessWidget {
@@ -16,11 +17,12 @@ class ConfirmationScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                flex: 1,
+                flex: 3,
                 child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: 130),),
                       CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 70.0,
@@ -41,6 +43,26 @@ class ConfirmationScreen extends StatelessWidget {
                               fontSize: 34.0),
                         ),
                       ),
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                RaisedButton(
+                                  onPressed: () => {
+                                        {
+                                          exit(0)
+                                          //Navigator.pop(context)
+                                        },
+                                      },
+                                  textColor: Theme.of(context).accentColor,
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: new Text(
+                                    "Exit",
+                                  ),
+                                ),
+                              ]))
                     ],
                   ),
                 ),
