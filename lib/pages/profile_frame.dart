@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/splash_screen.dart';
+import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
 class ProfileFrame extends StatefulWidget {
@@ -12,6 +13,16 @@ class ProfileFrame extends StatefulWidget {
 class _ProfileFrameState extends State<ProfileFrame> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
+  String userName = "";
+
+  @override
+  void initState() {
+    SharedPrefs.getAuthToken().then((token) {
+      setState(() {
+        userName = parseJwt(token)["name"];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +38,12 @@ class _ProfileFrameState extends State<ProfileFrame> {
               Padding(
                 padding: EdgeInsets.all(16),
               ),
+              Text(userName),
               RaisedButton(
                   onPressed: () {
                     SharedPrefs.setLogedIn(false);
-                    Navigator.pushReplacementNamed(context, SplashScreen.routeName);
+                    Navigator.pushReplacementNamed(
+                        context, SplashScreen.routeName);
                   },
                   textColor: Theme.of(context).accentColor,
                   color: Colors.white,

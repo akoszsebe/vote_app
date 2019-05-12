@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void loadData() {
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         SharedPrefs.getLogedIn().then((logedin) {
           _logedIn = logedin;
@@ -63,13 +63,15 @@ class _SplashScreenState extends State<SplashScreen> {
             print(decodedToken.toString());
             SharedPrefs.setAuthToken(response.authToken);
             SharedPrefs.setRefreshToken(response.refreshToken);
-            if (decodedToken["active"] == true) {
-              SharedPrefs.setLogedIn(true);
+            //if (decodedToken["active"] == true) {
+            //  SharedPrefs.setLogedIn(true);
               Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-            } else {
-              Navigator.pushReplacementNamed(
-                  context, ConfirmationScreen.routeName);
-            }
+            //} else {
+            //   setState(() {
+            //     isLoaded = SplashType.showLoginRegister;
+            //   });
+            //   Navigator.pushNamed(context, ConfirmationScreen.routeName);
+            // }
           } else {
             SharedPrefs.setAuthToken("");
             SharedPrefs.setRefreshToken("");
@@ -100,9 +102,6 @@ class _SplashScreenState extends State<SplashScreen> {
       // if (response.authToken != "") {
       //SharedPrefs.setLogedIn(true);
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-      // } else {}
-      // Navigator.pushReplacementNamed(
-      //           context, ConfirmationScreen.routeName);
       // });
     } else {
       setState(() {
@@ -121,8 +120,39 @@ class _SplashScreenState extends State<SplashScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              Container(
+                alignment: Alignment.bottomLeft,
+                padding: EdgeInsets.only(top: 32, left: 8),
+                child: ButtonTheme(
+                  minWidth: 24.0,
+                  height: 48.0,
+                  child: RaisedButton(
+                    child: Visibility(
+                      visible: isLoaded != SplashType.showLoginRegister,
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                    ),
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(50.0)),
+                    color: Colors.transparent,
+                    disabledColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    highlightElevation: 0,
+                    elevation: 0,
+                    onPressed: isLoaded != SplashType.showLoginRegister
+                        ? () {
+                            setState(() {
+                              isLoaded = SplashType.showLoginRegister;
+                            });
+                          }
+                        : null,
+                  ),
+                ),
+              ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +180,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
               ),
-              Expanded(flex: 1, child: _buildLoaderOrButtons())
+              Expanded(flex: 2, child: _buildLoaderOrButtons())
             ],
           )
         ],
@@ -220,7 +250,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: new TextField(
                 maxLength: 30,
                 style: TextStyle(
-                    color: Colors.white, fontSize: 24, letterSpacing: 2.0),
+                    color: Colors.white, fontSize: 20, letterSpacing: 1.0),
                 keyboardType: TextInputType.text,
                 onSubmitted: (s) {
                   _email = s;

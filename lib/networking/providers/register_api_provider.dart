@@ -23,7 +23,7 @@ class RegisterApiProvider extends ApiProvider{
   
   Future<bool> confirm(VerificationRequest verificationRequest,String authToken) async {
     try {
-      Response response = await dio.post(baseUrl+"/auth/verification", data: verificationRequest.toJson(), options: Options(headers: {"Authentication" : "Bearer $authToken"}, contentType : ContentType.parse("application/json")));
+      Response response = await dio.post(baseUrl+"/auth/verification", data: verificationRequest.toJson(), options: Options(headers: {"Authorization" : "Bearer $authToken"}, contentType : ContentType.parse("application/json")));
       if (response.statusCode == 200){
         return true;
       } else{
