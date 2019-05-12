@@ -5,16 +5,38 @@ class SharedPrefs {
   /// Instantiation of the SharedPreferences library
   ///
   static final String _registered = "registered";
+  static final String _authToken = "authtoken";
+  static final String _refreshToken = "refreshtoken";
     static final String _logedin = "logedin";
 
-  static Future<String> getPin() async {
+  static Future<String> getEmail() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_registered) ?? "";
   }
 
-   static Future<bool> setPin(String value) async {
+   static Future<bool> setEmail(String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_registered, value);
+  }
+
+  static Future<String> getAuthToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_authToken) ?? "";
+  }
+
+   static Future<bool> setAuthToken(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(_authToken, value);
+  }
+
+  static Future<String> getRefreshToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_refreshToken) ?? "";
+  }
+
+   static Future<bool> setRefreshToken(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(_refreshToken, value);
   }
 
   static Future<bool> getLogedIn() async {

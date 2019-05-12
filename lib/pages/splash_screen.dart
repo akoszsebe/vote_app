@@ -1,27 +1,29 @@
 import 'dart:async';
+import 'package:vote_app/networking/providers/login_api_provider.dart';
+import 'package:vote_app/networking/request/login_request.dart';
+import 'package:vote_app/pages/confirmation_screen.dart';
 import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/register_screen.dart';
-import 'package:vote_app/pages/confirmation_screen.dart';
 import 'package:vote_app/pages/home_screen.dart';
+import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
+import 'package:vote_app/utils/widgets.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const routeName = '/splash';
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-enum SplashType {
-  notRegistered,
-  notSameDevice,
-  registered,
-  notconfirmed,
-  loading,
-  logedIn
-}
+enum SplashType { showLoginRegister, showEmail, showLoader, showPin }
 
 class _SplashScreenState extends State<SplashScreen> {
-  SplashType isLoaded = SplashType.loading;
+  SplashType isLoaded = SplashType.showLoader;
+  LoginApiProvider _loginApiProvider = LoginApiProvider();
+
+  String _email = "";
+  bool _logedIn = false;
 
   @override
   void initState() {
@@ -31,58 +33,83 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void loadData() {
     Future.delayed(const Duration(milliseconds: 1000), () {
-      SharedPrefs.getPin().then((pin) {
-        setState(() {
-          if (pin != "") {
-            SharedPrefs.getLogedIn().then((logedin) {
-              setState(() {
-                if (logedin) {
-                  isLoaded = SplashType.logedIn;
-                } else {
-                  isLoaded = SplashType.registered;
-                }
-              });
-            });
-          } else {
-            isLoaded = SplashType.notRegistered;
-          }
-          switch (isLoaded) {
-            case SplashType.loading:
-              break;
-            case SplashType.notconfirmed:
-              Navigator.pushReplacementNamed(
-                  context, ConfirmationScreen.routeName);
-              break;
-            case SplashType.notRegistered:
-              break;
-            case SplashType.notSameDevice:
-              break;
-            case SplashType.registered:
-              break;
-            case SplashType.logedIn:
-              break;
-          }
+      setState(() {
+        SharedPrefs.getLogedIn().then((logedin) {
+          _logedIn = logedin;
+          setState(() {
+            if (logedin) {
+              isLoaded = SplashType.showPin;
+            } else {
+              isLoaded = SplashType.showLoginRegister;
+            }
+          });
         });
       });
     });
   }
 
-  void login(String _pin) {
+  void loginEmailPin(String _pin) {
     setState(() {
-      isLoaded = SplashType.loading;
+      isLoaded = SplashType.showLoader;
     });
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      SharedPrefs.getPin().then((pin) {
-        if (pin == _pin) {
-          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-        } else {
-          setState(() {
-            isLoaded = SplashType.registered;
-          });
-          _showDialog();
-        }
+    if (!_logedIn && _email.length != 0) {
+      if (_pin.length == 6) {
+        _loginApiProvider
+            .login(new LoginRequest(email: _email, pin: _pin))
+            .then((response) {
+          print(response.toString());
+          if (response.error == null) {
+            var decodedToken = parseJwt(response.authToken);
+            print(decodedToken.toString());
+            SharedPrefs.setAuthToken(response.authToken);
+            SharedPrefs.setRefreshToken(response.refreshToken);
+            if (decodedToken["active"] == true) {
+              SharedPrefs.setLogedIn(true);
+              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            } else {
+              Navigator.pushReplacementNamed(
+                  context, ConfirmationScreen.routeName);
+            }
+          } else {
+            SharedPrefs.setAuthToken("");
+            SharedPrefs.setRefreshToken("");
+            showAlertDialog(context, "Error", response.error);
+            setState(() {
+              isLoaded = SplashType.showEmail;
+            });
+          }
+        });
+      } else {
+        setState(() {
+          isLoaded = SplashType.showEmail;
+        });
+        showAlertDialog(context, "Wrong Pin", "Please try again");
+      }
+    } else {
+      loginPin(_pin);
+    }
+  }
+
+  void loginPin(String _pin) {
+    setState(() {
+      isLoaded = SplashType.showLoader;
+    });
+    if (_pin.length == 6) {
+      LoginApiProvider a = new LoginApiProvider();
+      // a.login(new LoginRequest(email: "1234", pin: 1234)).then((response) {
+      // if (response.authToken != "") {
+      //SharedPrefs.setLogedIn(true);
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      // } else {}
+      // Navigator.pushReplacementNamed(
+      //           context, ConfirmationScreen.routeName);
+      // });
+    } else {
+      setState(() {
+        isLoaded = SplashType.showPin;
       });
-    });
+      showAlertDialog(context, "Wrong Pin", "Please try again");
+    }
   }
 
   @override
@@ -133,16 +160,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _buildLoaderOrButtons() {
     switch (isLoaded) {
-      case SplashType.notconfirmed:
-      case SplashType.loading:
-        return _buildLoader();
-      case SplashType.notRegistered:
+      case SplashType.showLoader:
+        return buildLoader();
+      case SplashType.showLoginRegister:
         return _buildNotRegistered(context);
-      case SplashType.notSameDevice:
-      case SplashType.registered:
+      case SplashType.showEmail:
         return _buildIDInput(context);
-      case SplashType.logedIn:
-        return _buildPinVerifier(context);
+      case SplashType.showPin:
+        return _buildPinInput(context);
     }
   }
 
@@ -153,9 +178,21 @@ class _SplashScreenState extends State<SplashScreen> {
           RaisedButton(
             onPressed: () => {
                   {
-                    Navigator.pushReplacementNamed(
-                        context, RegisterScreen.routeName)
+                    setState(() {
+                      isLoaded = SplashType.showEmail;
+                    })
                   },
+                },
+            textColor: Theme.of(context).accentColor,
+            color: Colors.white,
+            padding: const EdgeInsets.all(8.0),
+            child: new Text(
+              "Login",
+            ),
+          ),
+          RaisedButton(
+            onPressed: () => {
+                  {Navigator.pushNamed(context, RegisterScreen.routeName)},
                 },
             textColor: Theme.of(context).accentColor,
             color: Colors.white,
@@ -167,39 +204,30 @@ class _SplashScreenState extends State<SplashScreen> {
         ]);
   }
 
-  Widget _buildLoader() {
-    return Center(
-        child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)));
-  }
-
   Widget _buildIDInput(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          "Enter your CID (12)",
+          "Enter email",
           style: TextStyle(
               color: Colors.white70,
               fontWeight: FontWeight.normal,
-              fontSize: 24.0),
+              fontSize: 20.0),
         ),
         Padding(
             padding: EdgeInsets.only(top: 24.0, left: 45, right: 45),
             child: new TextField(
-                maxLength: 12,
+                maxLength: 30,
                 style: TextStyle(
-                    color: Colors.white, fontSize: 24, letterSpacing: 5.0),
-                keyboardType: TextInputType.number,
-                onChanged: (s) {
-                  if (s.length == 12) {
-                    setState(() {
-                      SharedPrefs.setLogedIn(true);
-                      isLoaded = SplashType.logedIn;
-                    });
-                  }
+                    color: Colors.white, fontSize: 24, letterSpacing: 2.0),
+                keyboardType: TextInputType.text,
+                onSubmitted: (s) {
+                  _email = s;
+                  setState(() {
+                    isLoaded = SplashType.showPin;
+                  });
                 },
-                onSubmitted: (s) {},
                 obscureText: false,
                 decoration: new InputDecoration(
                     counterText: "",
@@ -219,7 +247,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Widget _buildPinVerifier(BuildContext context) {
+  Widget _buildPinInput(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -234,37 +262,14 @@ class _SplashScreenState extends State<SplashScreen> {
           padding: EdgeInsets.only(top: 24.0),
         ),
         CodeInput(
-          length: 4,
+          length: 6,
           keyboardType: TextInputType.number,
           builder: CodeInputBuilders.lightCircle(obscureText: true),
           onFilled: (value) {
-            login(value);
+            loginEmailPin(value);
           },
         )
       ],
-    );
-  }
-
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Wrong Pin"),
-          content: new Text("Please try again"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

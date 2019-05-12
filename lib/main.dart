@@ -10,6 +10,7 @@ var routes = <String, WidgetBuilder>{
   RegisterScreen.routeName: (BuildContext context) => RegisterScreen(),
   ConfirmationScreen.routeName: (BuildContext context) => ConfirmationScreen(),
   HomeScreen.routeName: (BuildContext context) => HomeScreen(),
+  SplashScreen.routeName: (BuildContext context) => SplashScreen(),
 };
 
 class MyApp extends StatelessWidget {
