@@ -246,7 +246,7 @@ class _SplashScreenState extends State<SplashScreen> {
               fontSize: 20.0),
         ),
         Padding(
-            padding: EdgeInsets.only(top: 24.0, left: 45, right: 45),
+            padding: EdgeInsets.only(top: 20.0, left: 45, right: 45),
             child: new TextField(
                 maxLength: 30,
                 style: TextStyle(

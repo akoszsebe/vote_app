@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/pages/confirmation_screen.dart';
 import 'package:vote_app/pages/finished_frame.dart';
 import 'package:vote_app/pages/profile_frame.dart';
-import 'package:vote_app/pages/uppcoming_frame.dart';
+import 'package:vote_app/pages/upcoming_frame.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -14,12 +13,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    UppcomingFrame(),
+    UpcomingFrame(),
     FinishedFrame(),
     ProfileFrame()
   ];
   final List<String> _childrenNames = [
-    "Uppcoming Votes",
+    "Upcoming Votes",
     "Finished Votes",
     "Profile"
   ];
@@ -42,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             BottomNavigationBarItem(
               icon: new Icon(Icons.home),
-              title: new Text('Uppcoming'),
+              title: new Text('Upcoming'),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.done_all),
