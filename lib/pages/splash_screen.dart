@@ -65,7 +65,8 @@ class _SplashScreenState extends State<SplashScreen> {
             SharedPrefs.setRefreshToken(response.refreshToken);
             //if (decodedToken["active"] == true) {
             //  SharedPrefs.setLogedIn(true);
-              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            SharedPrefs.setEmail(_email);
+            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
             //} else {
             //   setState(() {
             //     isLoaded = SplashType.showLoginRegister;
@@ -128,7 +129,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 48.0,
                   child: RaisedButton(
                     child: Visibility(
-                      visible: isLoaded != SplashType.showLoginRegister,
+                      visible: checkBackArrowVisibility(),
                       child: Icon(
                         Icons.arrow_back,
                         color: Colors.white,
@@ -141,7 +142,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     highlightColor: Colors.transparent,
                     highlightElevation: 0,
                     elevation: 0,
-                    onPressed: isLoaded != SplashType.showLoginRegister
+                    onPressed: checkBackArrowVisibility()
                         ? () {
                             setState(() {
                               isLoaded = SplashType.showLoginRegister;
@@ -159,11 +160,11 @@ class _SplashScreenState extends State<SplashScreen> {
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: Colors.white,
-                        radius: 70.0,
+                        radius: 60.0,
                         child: Icon(
                           Icons.content_paste,
                           color: Theme.of(context).accentColor,
-                          size: 70.0,
+                          size: 60.0,
                         ),
                       ),
                       Padding(
@@ -186,6 +187,12 @@ class _SplashScreenState extends State<SplashScreen> {
         ],
       ),
     );
+  }
+
+  bool checkBackArrowVisibility() {
+    if (isLoaded == SplashType.showLoginRegister ||
+        isLoaded == SplashType.showLoader) return false;
+    return true;
   }
 
   Widget _buildLoaderOrButtons() {
