@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:vote_app/networking/providers/login_api_provider.dart';
 import 'package:vote_app/networking/request/login_request.dart';
-import 'package:vote_app/pages/confirmation_screen.dart';
 import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/register_screen.dart';
@@ -64,10 +63,10 @@ class _SplashScreenState extends State<SplashScreen> {
             SharedPrefs.setAuthToken(response.authToken);
             SharedPrefs.setRefreshToken(response.refreshToken);
             //if (decodedToken["active"] == true) {
-            //  SharedPrefs.setLogedIn(true);
+            SharedPrefs.setLogedIn(true);
             SharedPrefs.setEmail(_email);
             Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-            //} else {
+            // } else {
             //   setState(() {
             //     isLoaded = SplashType.showLoginRegister;
             //   });
@@ -93,17 +92,28 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void loginPin(String _pin) {
+  Future loginPin(String _pin) async {
     setState(() {
       isLoaded = SplashType.showLoader;
     });
     if (_pin.length == 6) {
-      LoginApiProvider a = new LoginApiProvider();
-      // a.login(new LoginRequest(email: "1234", pin: 1234)).then((response) {
-      // if (response.authToken != "") {
-      //SharedPrefs.setLogedIn(true);
-      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-      // });
+      String authToken = await SharedPrefs.getAuthToken();
+      _loginApiProvider
+          .loginPin(LoginPinRequest(pin: _pin), authToken)
+          .then((response) {
+        if (response) {
+          SharedPrefs.setLogedIn(true);
+          setState(() {
+            isLoaded = SplashType.showLoginRegister;
+          });
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        } else {
+          setState(() {
+            isLoaded = SplashType.showLoginRegister;
+            showAlertDialog(context, "Error", "login again");
+          });
+        }
+      });
     } else {
       setState(() {
         isLoaded = SplashType.showPin;
@@ -302,7 +312,8 @@ class _SplashScreenState extends State<SplashScreen> {
           length: 6,
           keyboardType: TextInputType.number,
           builder: CodeInputBuilders.lightCircle(obscureText: true),
-          onFilled: (value) {
+          onFilled: (value) async {
+            await  Future.delayed(const Duration(milliseconds: 200));
             loginEmailPin(value);
           },
         )

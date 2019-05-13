@@ -16,3 +16,19 @@ class LoginRequest {
         "pin": pin,
     };
 }
+
+class LoginPinRequest {
+  String pin;
+
+  LoginPinRequest({
+    this.pin,
+  });
+
+  factory LoginPinRequest.fromJson(Map<String, dynamic> json) =>
+      new LoginPinRequest(
+           pin: json["pin"]);
+
+  Map<String, dynamic> toJson() => {
+        "pin": pin,
+    };
+}

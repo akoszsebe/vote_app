@@ -167,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (picked != null) {
       setState(() {
         txt.text = DateFormat("dd-MM-yyyy").format(picked);
-        _birthDate = picked.microsecondsSinceEpoch.toString();
+        _birthDate = picked.millisecondsSinceEpoch.toString();
       });
     }
   }

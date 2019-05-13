@@ -108,7 +108,7 @@ class _ProfileFrameState extends State<ProfileFrame> {
         Container(
             alignment: Alignment.centerLeft,
             margin: new EdgeInsets.all(16.0),
-            padding: new EdgeInsets.all(16.0),
+            padding: new EdgeInsets.all(8.0),
             decoration: new BoxDecoration(
                 color: Colors.blueGrey,
                 borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
@@ -122,7 +122,7 @@ class _ProfileFrameState extends State<ProfileFrame> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Padding(
-                  padding: new EdgeInsets.only(left: 16.0, top: 8.0),
+                  padding: new EdgeInsets.only(top: 8.0),
                   child: new Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,7 +164,7 @@ class _ProfileFrameState extends State<ProfileFrame> {
                             padding: EdgeInsets.only(left: 16),
                           ),
                           _createPersonInfo(
-                              "Zsebe Akos", "Mobile Dev.", "assets/akos.jpg")
+                              "Zsebe Akos", "Mobile", "assets/akos.jpg")
                         ],
                       )
                     ],
