@@ -18,6 +18,8 @@ class _UpcomingFrameState extends State<UpcomingFrame> {
     VoteModel('Food for friday morning', "2019-05-16", "Created by: Hoseph",
         Icon(Icons.local_pizza, color: Colors.red), "joined"),
     VoteModel('Boss', "2019-05-18", "Created by: Romanian government",
+        Icon(Icons.person, color: Colors.blue), "join"),
+         VoteModel('Boss', "2019-05-18", "Created by: Romanian government",
         Icon(Icons.person, color: Colors.blue), "join")
   ];
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =

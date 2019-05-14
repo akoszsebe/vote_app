@@ -31,30 +31,50 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Center(child:Text(_childrenNames[_currentIndex],)),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: onTabTapped, // new
-          currentIndex:
-              _currentIndex, // this will be set when a new tab is tapped
-          items: [
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
-              title: new Text('Upcoming'),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.done_all),
-              title: new Text('Finished'),
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('Profile'))
-          ],
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          backgroundColor: Theme.of(context).primaryColor,
-        ),
-        body: _children[_currentIndex]);
+      // appBar: AppBar(
+      //   title: Center(child:Text(_childrenNames[_currentIndex],)),
+      //   elevation: 0.1,
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped, // new
+        currentIndex:
+            _currentIndex, // this will be set when a new tab is tapped
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.home),
+            title: new Text('Upcoming'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.done_all),
+            title: new Text('Finished'),
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person), title: Text('Profile'))
+        ],
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 100.0,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Text(_childrenNames[_currentIndex],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                        )),
+                    background: Container(color: Theme.of(context).primaryColor)),
+              ),
+            ];
+          },
+          body: _children[_currentIndex]),
+    );
   }
 
   void onTabTapped(int index) {

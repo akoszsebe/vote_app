@@ -31,18 +31,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void loadData() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        SharedPrefs.getLogedIn().then((logedin) {
-          _logedIn = logedin;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() async {
+        _logedIn = await SharedPrefs.getLogedIn();
+        if (_logedIn) {
           setState(() {
-            if (logedin) {
-              isLoaded = SplashType.showPin;
-            } else {
-              isLoaded = SplashType.showLoginRegister;
-            }
+            isLoaded = SplashType.showPin;
           });
-        });
+        } else {
+          setState(() {
+            isLoaded = SplashType.showLoginRegister;
+          });
+        }
       });
     });
   }
@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       isLoaded = SplashType.showLoader;
     });
-    if (!_logedIn && _email.length != 0) {
+    if (_email.length != 0) {
       if (_pin.length == 6) {
         _loginApiProvider
             .login(new LoginRequest(email: _email, pin: _pin))
@@ -103,10 +103,10 @@ class _SplashScreenState extends State<SplashScreen> {
           .then((response) {
         if (response) {
           SharedPrefs.setLogedIn(true);
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
           setState(() {
             isLoaded = SplashType.showLoginRegister;
           });
-          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
         } else {
           setState(() {
             isLoaded = SplashType.showLoginRegister;
@@ -313,7 +313,7 @@ class _SplashScreenState extends State<SplashScreen> {
           keyboardType: TextInputType.number,
           builder: CodeInputBuilders.lightCircle(obscureText: true),
           onFilled: (value) async {
-            await  Future.delayed(const Duration(milliseconds: 200));
+            await Future.delayed(const Duration(milliseconds: 200));
             loginEmailPin(value);
           },
         )
