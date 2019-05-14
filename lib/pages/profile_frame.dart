@@ -16,6 +16,7 @@ class _ProfileFrameState extends State<ProfileFrame> {
 
   @override
   void initState() {
+    super.initState();
     SharedPrefs.getAuthToken().then((token) {
       setState(() {
         userName = parseJwt(token)["name"];

@@ -44,7 +44,7 @@ class _UpcomingFrameState extends State<UpcomingFrame> {
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
       child: ListView.builder(
-        itemBuilder:  (context,index) => buildListItem(context, index, data),
+        itemBuilder:  (context,index) => buildListItem(context, index, data,false),
         itemCount: data.length,
       ),
     );
@@ -53,7 +53,8 @@ class _UpcomingFrameState extends State<UpcomingFrame> {
   Future<dynamic> _refresh() async {
     EthereumAddress _address =
         EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");
-    return ethClient.getBalance(_address).then((balance) {
+    return null; 
+    ethClient.getBalance(_address).then((balance) {
       print("---------");
       print(balance.getValueInUnit(EtherUnit.ether));
       print("---------");

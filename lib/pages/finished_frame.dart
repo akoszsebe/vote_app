@@ -30,7 +30,7 @@ final List<VoteModel> data = [
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
       child: ListView.builder(
-        itemBuilder: (context,index) => buildListItem(context, index, data),
+        itemBuilder: (context,index) => buildListItem(context, index, data, true),
         itemCount: data.length,
       ),
     );

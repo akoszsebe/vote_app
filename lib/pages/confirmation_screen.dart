@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/verification_request.dart';
 import 'package:vote_app/pages/home_screen.dart';

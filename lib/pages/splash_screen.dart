@@ -216,6 +216,7 @@ class _SplashScreenState extends State<SplashScreen> {
       case SplashType.showPin:
         return _buildPinInput(context);
     }
+    return _buildNotRegistered(context);
   }
 
   Widget _buildNotRegistered(BuildContext context) {
