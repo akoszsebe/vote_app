@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/register_request.dart';
 import 'package:vote_app/pages/splash_screen.dart';
+import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -106,13 +107,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 if (response) {
                   Navigator.pushReplacementNamed(
                       context, SplashScreen.routeName);
-                } else {
-                  showAlertDialog(
+                } 
+              }).catchError((error){
+                showAlertDialog(
                       context, "Warning", "registration was failed ");
                   setState(() {
                     loading = false;
                   });
-                }
               });
             } else {
               setState(() {

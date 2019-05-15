@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:vote_app/networking/api_provider.dart';
 import 'package:vote_app/networking/request/register_request.dart';
 import 'package:vote_app/networking/request/verification_request.dart';
+import 'package:vote_app/utils/api_exeption.dart';
 
 class RegisterApiProvider extends ApiProvider {
   Future<bool> register(RegisterRequest registerRequest) async {
@@ -13,12 +14,11 @@ class RegisterApiProvider extends ApiProvider {
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200) {
         return true;
-      } else {
-        return false;
-      }
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return false;
+      } 
+      throw Exception("StatusCode note 200");
+    } on DioError catch (e) {
+      print("Exception occured: $e");
+       throw ApiExeption.fromDioError(e);
     }
   }
 
@@ -32,12 +32,11 @@ class RegisterApiProvider extends ApiProvider {
               contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200) {
         return true;
-      } else {
-        return false;
-      }
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return false;
+      } 
+      throw ApiExeption("StatusCode note 200");
+    } on DioError catch (e) {
+      print("Exception occured: $e");
+      throw ApiExeption.fromDioError(e);
     }
   }
 }

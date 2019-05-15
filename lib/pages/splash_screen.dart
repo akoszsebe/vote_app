@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:vote_app/networking/providers/login_api_provider.dart';
 import 'package:vote_app/networking/request/login_request.dart';
+import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/register_screen.dart';
@@ -57,29 +58,27 @@ class _SplashScreenState extends State<SplashScreen> {
             .login(new LoginRequest(email: _email, pin: _pin))
             .then((response) {
           print(response.toString());
-          if (response.error == null) {
-            var decodedToken = parseJwt(response.authToken);
-            print(decodedToken.toString());
-            SharedPrefs.setAuthToken(response.authToken);
-            SharedPrefs.setRefreshToken(response.refreshToken);
-            //if (decodedToken["active"] == true) {
-            SharedPrefs.setLogedIn(true);
-            SharedPrefs.setEmail(_email);
-            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-            // } else {
-            //   setState(() {
-            //     isLoaded = SplashType.showLoginRegister;
-            //   });
-            //   Navigator.pushNamed(context, ConfirmationScreen.routeName);
-            // }
-          } else {
-            SharedPrefs.setAuthToken("");
-            SharedPrefs.setRefreshToken("");
-            showAlertDialog(context, "Error", response.error);
-            setState(() {
-              isLoaded = SplashType.showEmail;
-            });
-          }
+          var decodedToken = parseJwt(response.authToken);
+          print(decodedToken.toString());
+          SharedPrefs.setAuthToken(response.authToken);
+          SharedPrefs.setRefreshToken(response.refreshToken);
+          //if (decodedToken["active"] == true) {
+          SharedPrefs.setLogedIn(true);
+          SharedPrefs.setEmail(_email);
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          // } else {
+          //   setState(() {
+          //     isLoaded = SplashType.showLoginRegister;
+          //   });
+          //   Navigator.pushNamed(context, ConfirmationScreen.routeName);
+          // }
+        }).catchError((error) {
+          SharedPrefs.setAuthToken("");
+          SharedPrefs.setRefreshToken("");
+          showAlertDialog(context, "Error", error.message);
+          setState(() {
+            isLoaded = SplashType.showEmail;
+          });
         });
       } else {
         setState(() {
@@ -107,12 +106,13 @@ class _SplashScreenState extends State<SplashScreen> {
           setState(() {
             isLoaded = SplashType.showLoginRegister;
           });
-        } else {
-          setState(() {
-            isLoaded = SplashType.showLoginRegister;
-            showAlertDialog(context, "Error", "login again");
-          });
         }
+      }).catchError((error) {
+        setState(() {
+          SharedPrefs.setLogedIn(false);
+          isLoaded = SplashType.showLoginRegister;
+          showAlertDialog(context, "Error", "login again");
+        });
       });
     } else {
       setState(() {
