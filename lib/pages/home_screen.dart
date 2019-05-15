@@ -59,6 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                actions: <Widget>[
+                  FlatButton(
+                    textColor: Colors.white,
+                    onPressed: () {},
+                    child: Icon(Icons.notifications_active),
+                    shape: CircleBorder(
+                        side: BorderSide(color: Colors.transparent)),
+                  ),
+                ],
                 expandedHeight: 100.0,
                 floating: false,
                 pinned: true,
@@ -69,7 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                           fontSize: 18.0,
                         )),
-                    background: Container(color: Theme.of(context).primaryColor)),
+                    background:
+                        Container(color: Theme.of(context).primaryColor)),
               ),
             ];
           },
