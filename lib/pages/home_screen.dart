@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/finished_frame.dart';
+import 'package:vote_app/pages/notification_screen.dart';
 import 'package:vote_app/pages/profile_frame.dart';
 import 'package:vote_app/pages/upcoming_frame.dart';
 
@@ -31,14 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Center(child:Text(_childrenNames[_currentIndex],)),
-      //   elevation: 0.1,
-      // ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped, // new
-        currentIndex:
-            _currentIndex, // this will be set when a new tab is tapped
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
@@ -62,8 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 actions: <Widget>[
                   FlatButton(
                     textColor: Colors.white,
-                    onPressed: () {},
-                    child: Icon(Icons.notifications_active),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, NotificationScreen.routeName);
+                    },
+                    child: notificationIcon(),
                     shape: CircleBorder(
                         side: BorderSide(color: Colors.transparent)),
                   ),
@@ -91,5 +90,43 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  Widget notificationIcon() {
+    return Container(
+      width: 24,
+      height: 24,
+      child: Stack(
+        children: [
+          Icon(
+            Icons.notifications,
+            size: 24,
+          ),
+          if (_currentIndex != 0)
+            Container(
+              width: 24,
+              height: 24,
+              alignment: Alignment.bottomRight,
+              child: Container(
+                width: 16,
+                height: 16,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red[700],
+                    border: Border.all(color: Colors.white, width: 1)),
+                child: Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Center(
+                    child: Text(
+                      _currentIndex.toString(),
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
