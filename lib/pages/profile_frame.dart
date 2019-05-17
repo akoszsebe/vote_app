@@ -84,7 +84,7 @@ class _ProfileFrameState extends State<ProfileFrame> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.only(left: 5,right: 5, top: 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[

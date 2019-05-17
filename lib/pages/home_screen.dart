@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  int _notificationCount = 0;
   final List<Widget> _children = [
     UpcomingFrame(),
     FinishedFrame(),
@@ -89,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _notificationCount = _currentIndex * 5;
     });
   }
 
@@ -102,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Icons.notifications,
             size: 24,
           ),
-          if (_currentIndex != 0)
+          if (_notificationCount != 0)
             Container(
               width: 24,
               height: 24,
@@ -112,13 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 16,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.red[700],
-                    border: Border.all(color: Colors.white, width: 1)),
+                    color: Theme.of(context).accentColor,
+                    border: Border.all(color: Theme.of(context).primaryColor, width: 1)),
                 child: Padding(
                   padding: const EdgeInsets.all(0.0),
                   child: Center(
                     child: Text(
-                      _currentIndex.toString(),
+                      _notificationCount > 9 ? "+9" : _notificationCount.toString(),
                       style: TextStyle(fontSize: 10),
                     ),
                   ),
