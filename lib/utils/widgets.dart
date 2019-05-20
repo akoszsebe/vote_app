@@ -115,3 +115,49 @@ Widget buildListItem(
         ),
       ));
 }
+
+
+Widget buildVoteDetails(VoteModel vote) {
+    return Container(
+        alignment: Alignment.centerLeft,
+        margin: new EdgeInsets.all(16.0),
+        padding: new EdgeInsets.all(16.0),
+        decoration: new BoxDecoration(
+            color: Colors.blueGrey,
+            borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  offset: new Offset(1.0, 1.0),
+                  blurRadius: 5.0)
+            ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Expanded(
+              child: new Padding(
+                padding: new EdgeInsets.only(top: 8.0),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 6),
+                    ),
+                    new Text(
+                      vote.content,
+                      style: new TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white70),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
+  }

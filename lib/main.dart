@@ -15,7 +15,8 @@ var routes = <String, WidgetBuilder>{
   HomeScreen.routeName: (BuildContext context) => HomeScreen(),
   SplashScreen.routeName: (BuildContext context) => SplashScreen(),
   VoteScreen.routeName: (BuildContext context) => VoteScreen(),
-  VoteStatisticsScreen.routeName: (BuildContext context) => VoteStatisticsScreen(),
+  VoteStatisticsScreen.routeName: (BuildContext context) =>
+      VoteStatisticsScreen(),
   NotificationScreen.routeName: (BuildContext context) => NotificationScreen(),
 };
 
@@ -23,11 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Vote App',
+        title: 'Vote App',
         theme: ThemeData(
             primaryColor: Colors.blueGrey[700],
             accentColor: Colors.purple[700],
-            scaffoldBackgroundColor: Colors.blueGrey[700]),
+            scaffoldBackgroundColor: Colors.blueGrey[700],
+            unselectedWidgetColor: Colors.white),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
         routes: routes);

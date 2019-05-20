@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/utils/widgets.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const routeName = '/notifications';
@@ -21,13 +22,63 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         body: ListView(
           children: <Widget>[
-            _buildNotificationItem(false),
-            _buildNotificationItem(true)
+            NotificationListItem(action: NotificationState.actionNeeded),
+            NotificationListItem(action: NotificationState.actionDone)
           ],
         ));
   }
 
-  Widget _buildNotificationItem(bool action) {
+  Widget _buildNoNotifications() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 70.0,
+          child: Icon(
+            Icons.notifications_none,
+            color: Theme.of(context).accentColor,
+            size: 70.0,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 48),
+        ),
+        Text(
+          "No notification",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        )
+      ],
+    ));
+  }
+}
+
+class NotificationListItem extends StatefulWidget {
+  final NotificationState action;
+  NotificationListItem({this.action});
+
+  @override
+  State<StatefulWidget> createState() =>
+      _NotificationListItemState(action: action);
+}
+
+enum NotificationState {
+  loading,
+  actionNeeded,
+  actionDone,
+}
+
+class _NotificationListItemState extends State<NotificationListItem> {
+  NotificationState action;
+  _NotificationListItemState({this.action});
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       margin: new EdgeInsets.all(16.0),
@@ -70,50 +121,45 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ],
             ),
           )),
-          if (action)
-            RaisedButton(
-                onPressed: () => {},
-                textColor: Theme.of(context).accentColor,
-                color: Colors.white,
-                padding: const EdgeInsets.all(8.0),
-                child: new Text(
-                  "Join",
-                ))
-          else
-            Text(
-              "Joined",
-              style: new TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white54),
-            ),
+          _buildAction()
         ],
       ),
     );
   }
 
-  Widget _buildNoNotifications() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 70.0,
-          child: Icon(
-            Icons.notifications_none,
-            color: Theme.of(context).accentColor,
-            size: 70.0,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 48),
-        ),
-        Text(
-          "No notification",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        )
-      ],
-    ));
+  Widget _buildAction() {
+    switch (action) {
+      case NotificationState.loading:
+        return Padding(
+          padding: EdgeInsets.only(right: 16),
+          child: buildLoader(),
+        );
+      case NotificationState.actionNeeded:
+        return RaisedButton(
+            onPressed: () {
+              setState(() {
+                action = NotificationState.loading;
+              });
+            },
+            textColor: Theme.of(context).accentColor,
+            color: Colors.white,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Join",
+            ));
+      case NotificationState.actionDone:
+        return Text(
+          "Joined",
+          style: new TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white54),
+        );
+    }
+    return Text(
+      "Error",
+      style: new TextStyle(
+          fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white54),
+    );
   }
 }

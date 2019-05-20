@@ -30,61 +30,75 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  Future<bool> _onWillPop() async {
+    if (_currentIndex == 0)
+      return true;
+    else {
+      setState(() {
+        _currentIndex = 0;
+      });
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('Upcoming'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.done_all),
-            title: new Text('Finished'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text('Profile'))
-        ],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                actions: <Widget>[
-                  FlatButton(
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, NotificationScreen.routeName);
-                    },
-                    child: notificationIcon(),
-                    shape: CircleBorder(
-                        side: BorderSide(color: Colors.transparent)),
-                  ),
-                ],
-                expandedHeight: 100.0,
-                floating: false,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Text(_childrenNames[_currentIndex],
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        )),
-                    background:
-                        Container(color: Theme.of(context).primaryColor)),
+    return new WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: onTabTapped,
+            currentIndex: _currentIndex,
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.home),
+                title: new Text('Upcoming'),
               ),
-            ];
-          },
-          body: _children[_currentIndex]),
-    );
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.done_all),
+                title: new Text('Finished'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), title: Text('Profile'))
+            ],
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          body: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    actions: <Widget>[
+                      FlatButton(
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, NotificationScreen.routeName);
+                        },
+                        child: notificationIcon(),
+                        shape: CircleBorder(
+                            side: BorderSide(color: Colors.transparent)),
+                      ),
+                    ],
+                    expandedHeight: 100.0,
+                    floating: false,
+                    pinned: true,
+                    flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: true,
+                        title: Text(_childrenNames[_currentIndex],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                            )),
+                        background:
+                            Container(color: Theme.of(context).primaryColor)),
+                  ),
+                ];
+              },
+              body: _children[_currentIndex]),
+        ));
   }
 
   void onTabTapped(int index) {
@@ -115,12 +129,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Theme.of(context).accentColor,
-                    border: Border.all(color: Theme.of(context).primaryColor, width: 1)),
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 1)),
                 child: Padding(
                   padding: const EdgeInsets.all(0.0),
                   child: Center(
                     child: Text(
-                      _notificationCount > 9 ? "+9" : _notificationCount.toString(),
+                      _notificationCount > 9
+                          ? "+9"
+                          : _notificationCount.toString(),
                       style: TextStyle(fontSize: 10),
                     ),
                   ),
