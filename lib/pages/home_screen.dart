@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_app/networking/providers/notification_api_provider.dart';
+import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/pages/finished_frame.dart';
 import 'package:vote_app/pages/notification_screen.dart';
 import 'package:vote_app/pages/profile_frame.dart';
@@ -15,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   int _notificationCount = 0;
+
+  List<NotificationResponse> notifications = List<NotificationResponse>();
   NotificationApiProvider _notificationApiProvider = NotificationApiProvider();
 
   final List<Widget> _children = [
@@ -38,10 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _notificationApiProvider.getAll().then((response) {
       setState(() {
         _notificationCount = response.length;
+        notifications = response;
       });
     }).catchError((error) {
       setState(() {
         _notificationCount = 0;
+        notifications = List<NotificationResponse>();
       });
     });
   }
@@ -91,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         textColor: Colors.white,
                         onPressed: () {
                           Navigator.pushNamed(
-                              context, NotificationScreen.routeName);
+                              context, NotificationScreen.routeName,
+                              arguments: notifications);
                         },
                         child: notificationIcon(),
                         shape: CircleBorder(

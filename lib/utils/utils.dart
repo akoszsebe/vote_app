@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class EnumValues<T> {
     Map<String, T> map;
     Map<T, String> reverseMap;
@@ -10,4 +12,13 @@ class EnumValues<T> {
         }
         return reverseMap;
     }
+}
+
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/networking/response/notification_response.dart';
+import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -9,58 +11,97 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+  List<NotificationResponse> notifications;
+
+  bool shouldUpdate = true;
   @override
   void initState() {
     super.initState();
   }
 
+  Future<dynamic> _refresh() async {
+    //notifications = List<NotificationResponse>();
+    setState(() {
+      notifications.add(NotificationResponse(
+          id: 1, message: "mak", notType: "", actions: ["join"]));
+    });
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (shouldUpdate) {
+      notifications = ModalRoute.of(context).settings.arguments;
+      shouldUpdate = false;
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text("Notifications"),
         ),
-        body: ListView(
-          children: <Widget>[
-            NotificationListItem(action: NotificationState.actionNeeded),
-            NotificationListItem(action: NotificationState.actionDone)
-          ],
-        ));
+        body: RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: _refresh,
+            child: _buildBody(notifications)));
   }
 
+  Widget _buildBody(List<NotificationResponse> notifications) {
+    if (notifications.isEmpty) {
+      return _buildNoNotifications();
+    } else {
+      return _buildNotifications();
+    }
+  }
+
+  Widget _buildNotifications() {
+    return ListView.builder(
+      itemBuilder: (context, index){ return NotificationListItem(action: NotificationState.actionNeeded,title: notifications[index].message,);},
+      itemCount: notifications.length,
+    );
+  }
+
+
+
   Widget _buildNoNotifications() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 70.0,
-          child: Icon(
-            Icons.notifications_none,
-            color: Theme.of(context).accentColor,
-            size: 70.0,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 48),
-        ),
-        Text(
-          "No notification",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        )
-      ],
-    ));
+    return ScrollConfiguration(
+        behavior: NoGlowScrollBehavior(),
+        child: ListView(padding: EdgeInsets.only(top: 140), children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 70.0,
+                child: Icon(
+                  Icons.notifications_none,
+                  color: Theme.of(context).accentColor,
+                  size: 70.0,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 48),
+              ),
+              Text(
+                "No notification",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              )
+            ],
+          )
+        ]));
   }
 }
 
 class NotificationListItem extends StatefulWidget {
   final NotificationState action;
-  NotificationListItem({this.action});
+  final String title;
+
+  NotificationListItem({this.action,this.title});
 
   @override
   State<StatefulWidget> createState() =>
-      _NotificationListItemState(action: action);
+      _NotificationListItemState(action: action,title: title);
 }
 
 enum NotificationState {
@@ -71,7 +112,8 @@ enum NotificationState {
 
 class _NotificationListItemState extends State<NotificationListItem> {
   NotificationState action;
-  _NotificationListItemState({this.action});
+  String title;
+  _NotificationListItemState({this.action,this.title});
   @override
   void initState() {
     super.initState();
@@ -102,7 +144,7 @@ class _NotificationListItemState extends State<NotificationListItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Text(
-                  "Title",
+                  title,
                   style: new TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,

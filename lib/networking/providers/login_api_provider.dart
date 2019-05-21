@@ -30,7 +30,7 @@ class LoginApiProvider extends ApiProvider {
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")));
       return response.statusCode == 200;
-    } on DioError catch (e) {
+    } on DioError catch (e) {   
       throw ApiExeption.fromDioError(e);
     }
   }
