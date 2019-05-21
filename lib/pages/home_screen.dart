@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/networking/providers/notification_api_provider.dart';
 import 'package:vote_app/pages/finished_frame.dart';
 import 'package:vote_app/pages/notification_screen.dart';
 import 'package:vote_app/pages/profile_frame.dart';
@@ -14,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   int _notificationCount = 0;
+  NotificationApiProvider _notificationApiProvider = NotificationApiProvider();
+
   final List<Widget> _children = [
     UpcomingFrame(),
     FinishedFrame(),
@@ -28,6 +31,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    //fillNotifications();
+  }
+
+  void fillNotifications() {
+    _notificationApiProvider.getAll().then((response) {
+      setState(() {
+        _notificationCount = response.length;
+      });
+    }).catchError((error) {
+      setState(() {
+        _notificationCount = 0;
+      });
+    });
   }
 
   Future<bool> _onWillPop() async {

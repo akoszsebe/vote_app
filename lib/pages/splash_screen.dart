@@ -96,9 +96,8 @@ class _SplashScreenState extends State<SplashScreen> {
       isLoaded = SplashType.showLoader;
     });
     if (_pin.length == 6) {
-      String authToken = await SharedPrefs.getAuthToken();
       _loginApiProvider
-          .loginPin(LoginPinRequest(pin: _pin), authToken)
+          .loginPin(LoginPinRequest(pin: _pin))
           .then((response) {
         if (response) {
           SharedPrefs.setLogedIn(true);

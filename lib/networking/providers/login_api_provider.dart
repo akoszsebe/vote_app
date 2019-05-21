@@ -5,6 +5,7 @@ import 'package:vote_app/networking/api_provider.dart';
 import 'package:vote_app/networking/request/login_request.dart';
 import 'package:vote_app/networking/response/login_response.dart';
 import 'package:vote_app/utils/api_exeption.dart';
+import 'package:vote_app/utils/shared_prefs.dart';
 
 class LoginApiProvider extends ApiProvider {
 
@@ -20,8 +21,9 @@ class LoginApiProvider extends ApiProvider {
     }
   }
 
-  Future<bool> loginPin(LoginPinRequest loginpinRequest, String authToken) async {
+  Future<bool> loginPin(LoginPinRequest loginpinRequest) async {
     try {
+      String authToken = await SharedPrefs.getAuthToken();
       Response response = await dio.put(baseUrl + "/auth",
           data: loginpinRequest.toJson(),
           options: Options(
