@@ -28,7 +28,7 @@ class DarkRefreshIndicator extends RefreshIndicator {
     @required Widget child,
     double displacement = 40.0,
     @required RefreshCallback onRefresh,
-    Color color,
+    Color color = Colors.white,
     Color backgroundColor = Colors.blueGrey,
     ScrollNotificationPredicate notificationPredicate =
         defaultScrollNotificationPredicate,
