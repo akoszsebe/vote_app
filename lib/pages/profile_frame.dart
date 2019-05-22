@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/networking/providers/group_api_provider.dart';
+import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/pages/splash_screen.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
+import 'package:vote_app/utils/widgets.dart';
 
 class ProfileFrame extends StatefulWidget {
   static const routeName = '/uppcoming';
@@ -14,6 +17,8 @@ class _ProfileFrameState extends State<ProfileFrame> {
   String userName = "";
   String email = "";
 
+  List<GroupResponse> groups;
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +30,20 @@ class _ProfileFrameState extends State<ProfileFrame> {
     SharedPrefs.getEmail().then((_email) {
       setState(() {
         email = _email;
+      });
+    });
+    GroupApiProvider groupApiProvider = GroupApiProvider();
+    groupApiProvider.getAll().then((response) {
+      setState(() {
+        groups = response;
+        groups.add(GroupResponse(id: 1, name: "Accenture", type: ""));
+        groups.add(GroupResponse(id: 2, name: "UBB", type: ""));
+        groups.add(GroupResponse(id: 3, name: "Friends", type: ""));
+        groups.add(GroupResponse(id: 4, name: "Romania", type: ""));
+      });
+    }).catchError((error) {
+      setState(() {
+        groups = List<GroupResponse>();
       });
     });
   }
@@ -54,58 +73,46 @@ class _ProfileFrameState extends State<ProfileFrame> {
                   offset: new Offset(1.0, 1.0),
                   blurRadius: 5.0)
             ]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
           children: <Widget>[
-            new Padding(
-              padding: new EdgeInsets.only(top: 8.0),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    "Joined Groups",
-                    style: new TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5),
-                  ),
-                  SizedBox(
-                    height: 5,
-                    width: 50,
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: new BorderRadius.circular(5.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Padding(
+                  padding: new EdgeInsets.only(top: 8.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new Text(
+                        "Joined Groups",
+                        style: new TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5,right: 5, top: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                            width: 300,
-                            child: Text(
-                                "No Joined groups to join one needs invitation",
-                                textAlign: TextAlign.center,
-                                style: new TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.white70))),
-                        Padding(
-                          padding: EdgeInsets.only(top: 16),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      SizedBox(
+                        height: 5,
+                        width: 50,
+                        child: Container(
+                          decoration: new BoxDecoration(
+                            color: Theme.of(context).accentColor,
+                            borderRadius: new BorderRadius.circular(5.0),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            _buildGroup(groups),
           ],
         ));
   }
@@ -282,6 +289,52 @@ class _ProfileFrameState extends State<ProfileFrame> {
               color: Colors.white70),
         ),
       ],
+    );
+  }
+
+  Widget _buildGroup(List<GroupResponse> groups) {
+    if (groups == null) {
+      return buildLoader();
+    }
+    if (groups.isEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+              width: 300,
+              child: Text("No Joined groups to join one needs invitation",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white70))),
+          Padding(
+            padding: EdgeInsets.only(top: 16),
+          ),
+        ],
+      );
+    } else {
+      return Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 8.0, // gap between adjacent chips
+        runSpacing: 4.0, // gap between lines
+        children: <Widget>[
+          for (var element in groups)
+             _buildChip(element.name),
+        ],
+      );
+    }
+  }
+
+  Widget _buildChip(String title) {
+    return new Chip(
+      label: new Text(title),
+      deleteIcon: Icon(Icons.close),
+      deleteIconColor: Theme.of(context).accentColor,
+      onDeleted: () {
+        showAlertDialog(
+            context, "Alert", "Are you sure you want to delete this group ?");
+      },
     );
   }
 }

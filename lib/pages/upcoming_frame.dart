@@ -51,18 +51,18 @@ class _UpcomingFrameState extends State<UpcomingFrame> {
   }
   
   Future<dynamic> _refresh() async {
-    EthereumAddress _address =
-        EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");
+    // EthereumAddress _address =
+    //     EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");
     return null; 
-    ethClient.getBalance(_address).then((balance) {
-      print("---------");
-      print(balance.getValueInUnit(EtherUnit.ether));
-      print("---------");
-      setState(() {
-        //account = _address.toString();
-        //eth = balance.getValueInUnit(EtherUnit.ether).toString();
-      });
-    });
+    // ethClient.getBalance(_address).then((balance) {
+    //   print("---------");
+    //   print(balance.getValueInUnit(EtherUnit.ether));
+    //   print("---------");
+    //   setState(() {
+    //     //account = _address.toString();
+    //     //eth = balance.getValueInUnit(EtherUnit.ether).toString();
+    //   });
+    // });
     // final EthereumServerClient client =
     //     EthereumServerClient.withConnectionParameters("192.168.0.178");
     // client.printError = true;

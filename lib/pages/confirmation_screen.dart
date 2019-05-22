@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/verification_request.dart';
 import 'package:vote_app/pages/home_screen.dart';
-import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/widgets.dart';
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:vote_app/networking/providers/login_api_provider.dart';
 import 'package:vote_app/networking/request/login_request.dart';
-import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/register_screen.dart';
