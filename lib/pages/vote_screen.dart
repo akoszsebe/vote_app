@@ -33,9 +33,9 @@ class _VoteScreenState extends State<VoteScreen> {
               backgroundColor: Colors.white,
               radius: 20.0,
               child: Icon(
-                vote.icon.icon,
+                vote.voteIcon.icon.icon,
                 size: 18.0,
-                color: vote.icon.color,
+                color: vote.voteIcon.color,
               )),
           Padding(
             padding: EdgeInsets.only(left: 8),
@@ -89,7 +89,7 @@ class _VoteScreenState extends State<VoteScreen> {
                     width: 25,
                     child: Container(
                       decoration: new BoxDecoration(
-                        color: vote.icon.color,
+                        color: vote.voteIcon.color,
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
                     ),
@@ -100,15 +100,15 @@ class _VoteScreenState extends State<VoteScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         radioElement("Kebab", 0, _handleRadioValueChange,
-                            vote.icon.color),
+                            vote.voteIcon.color),
                         radioElement("Csirkehus majonezes pityokaval", 1,
-                            _handleRadioValueChange, vote.icon.color),
+                            _handleRadioValueChange, vote.voteIcon.color),
                         Padding(
                           padding: EdgeInsets.only(top: 16),
                         ),
                         RaisedButton(
                             onPressed: () {},
-                            textColor: vote.icon.color,
+                            textColor: vote.voteIcon.color,
                             color: Colors.white,
                             padding: const EdgeInsets.all(8.0),
                             child: new Text(

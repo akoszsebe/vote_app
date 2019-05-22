@@ -54,7 +54,63 @@ class VoteModel {
   final String date;
   final String content;
   final String joined;
-  final Icon icon;
+  VoteIcon voteIcon;
 
-  VoteModel(this.title, this.date, this.content, this.icon, this.joined);
+  VoteModel(this.title, this.date, this.content, IconType iconType, this.joined){
+    this.voteIcon = VoteIcon(iconType);
+  }
+}
+
+enum IconType {
+  food,
+  election,
+  party,
+  life,
+  sport,
+}
+
+class VoteIcon {
+  Icon icon;
+  Color color;
+
+  VoteIcon(IconType iconType) {
+    switch (iconType) {
+      case IconType.food:
+        this.color = Colors.green;
+        this.icon = Icon(
+          Icons.fastfood,
+          color: this.color,
+        );
+        break;
+      case IconType.election:
+        this.color = Colors.lime;
+        this.icon = Icon(
+          Icons.group,
+          color: this.color,
+        );
+        break;
+      case IconType.party:
+        this.color = Colors.orange;
+        this.icon = Icon(
+          Icons.party_mode,
+          color: this.color,
+        );
+        break;
+      case IconType.life:
+        this.color = Colors.purple;
+        this.icon = Icon(
+          Icons.location_city,
+          color: this.color,
+        );
+
+        break;
+      case IconType.sport:
+        this.color = Colors.pink;
+        this.icon = Icon(
+          Icons.directions_run,
+          color: this.color,
+        );
+        break;
+    }
+  }
 }

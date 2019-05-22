@@ -5,6 +5,7 @@ import 'package:vote_app/pages/finished_frame.dart';
 import 'package:vote_app/pages/notification_screen.dart';
 import 'package:vote_app/pages/profile_frame.dart';
 import 'package:vote_app/pages/upcoming_frame.dart';
+import 'package:vote_app/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -16,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   int _notificationCount = 0;
+  bool isFilterVisible = true;
 
   List<NotificationResponse> notifications = List<NotificationResponse>();
   NotificationApiProvider _notificationApiProvider = NotificationApiProvider();
@@ -92,7 +94,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 return <Widget>[
                   SliverAppBar(
                     actions: <Widget>[
-                      FlatButton(
+                      Visibility(
+                        visible: isFilterVisible,
+                        child: MaterialButton(
+                          minWidth: 0,
+                          padding: EdgeInsets.only(right: 16),
+                          textColor: Colors.white,
+                          splashColor: Colors.grey,
+                          onPressed: () {
+                            showAlertDialog(context, "Alert", "todo filter");
+                          },
+                          child: Icon(
+                            Icons.sort,
+                            size: 24,
+                          ),
+                          shape: CircleBorder(
+                              side: BorderSide(color: Colors.transparent)),
+                        ),
+                      ),
+                      MaterialButton(
+                        minWidth: 0,
+                        padding: EdgeInsets.only(right: 16),
                         textColor: Colors.white,
                         onPressed: () {
                           Navigator.pushNamed(
@@ -127,6 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentIndex = index;
       _notificationCount = _currentIndex * 5;
+      if (_currentIndex == 2){
+        isFilterVisible = false;
+      } else if (!isFilterVisible){
+        isFilterVisible = true;
+      }
     });
   }
 

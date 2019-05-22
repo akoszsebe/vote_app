@@ -17,9 +17,9 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   List<CircularStackEntry> data = <CircularStackEntry>[
     new CircularStackEntry(
       <CircularSegmentEntry>[
-        new CircularSegmentEntry(500.0, Colors.red[400], rankKey: 'Q1'),
-        new CircularSegmentEntry(1000.0, Colors.green[400], rankKey: 'Q2'),
-        new CircularSegmentEntry(2000.0, Colors.blue[400], rankKey: 'Q3'),
+        new CircularSegmentEntry(500.0, Colors.red[200], rankKey: 'Q1'),
+        new CircularSegmentEntry(1000.0, Colors.green[200], rankKey: 'Q2'),
+        new CircularSegmentEntry(2000.0, Colors.orange[200], rankKey: 'Q3'),
       ],
       rankKey: 'Quarterly Profits',
     ),
@@ -40,9 +40,9 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
               backgroundColor: Colors.white,
               radius: 20.0,
               child: Icon(
-                vote.icon.icon,
+                vote.voteIcon.icon.icon,
                 size: 18.0,
-                color: vote.icon.color,
+                color: vote.voteIcon.color,
               )),
           Padding(
             padding: EdgeInsets.only(left: 8),
@@ -94,7 +94,7 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                     width: 25,
                     child: Container(
                       decoration: new BoxDecoration(
-                        color: vote.icon.color,
+                        color: vote.voteIcon.color,
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
                     ),

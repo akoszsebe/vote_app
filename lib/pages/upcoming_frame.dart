@@ -14,14 +14,14 @@ class UpcomingFrame extends StatefulWidget {
 
 class _UpcomingFrameState extends State<UpcomingFrame> {
   final List<VoteModel> data = [
-    VoteModel('Food for friday lunch', "2019-05-15", "Created by: Sam",
-        Icon(Icons.fastfood, color: Colors.green), "vote"),
-    VoteModel('Food for friday morning', "2019-05-16", "Created by: Hoseph",
-        Icon(Icons.local_pizza, color: Colors.red), "vote in\n 1 day"),
-    VoteModel('Boss', "2019-05-18", "Created by: Romanian government",
-        Icon(Icons.person, color: Colors.blue), "vote in\n 1 day"),
-         VoteModel('Boss', "2019-05-18", "Created by: Romanian government",
-        Icon(Icons.person, color: Colors.blue), "vote in\n 2 days")
+    VoteModel('Food for friday lunch', "2019-05-15", "Accenture",
+        IconType.food, "vote"),
+    VoteModel('Food for friday morning', "2019-05-16", "Accenture",
+        IconType.food, "vote in\n 1 day"),
+    VoteModel('Boss', "2019-05-18", "Romania",
+        IconType.election, "vote in\n 1 day"),
+    VoteModel('What to sport together', "2019-05-18", "Friends",
+        IconType.sport, "vote in\n 2 days")
   ];
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
@@ -45,16 +45,17 @@ class _UpcomingFrameState extends State<UpcomingFrame> {
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
       child: ListView.builder(
-        itemBuilder:  (context,index) => buildListItem(context, index, data,false),
+        itemBuilder: (context, index) =>
+            buildListItem(context, index, data, false),
         itemCount: data.length,
       ),
     );
   }
-  
+
   Future<dynamic> _refresh() async {
     // EthereumAddress _address =
     //     EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");
-    return null; 
+    return null;
     // ethClient.getBalance(_address).then((balance) {
     //   print("---------");
     //   print(balance.getValueInUnit(EtherUnit.ether));

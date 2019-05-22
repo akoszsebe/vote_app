@@ -61,7 +61,7 @@ Widget buildListItem(
           children: <Widget>[
             new CircleAvatar(
               backgroundColor: Colors.white70,
-              child: data[index].icon,
+              child: data[index].voteIcon.icon,
               radius: 20.0,
             ),
             new Expanded(

@@ -14,8 +14,8 @@ class _FinishedFrameFrameState extends State<FinishedFrame> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 final List<VoteModel> data = [
-    VoteModel("Party", "2019-05-12", "Created by: Feco \nWinner: Flying Circus",
-        Icon(Icons.party_mode, color: Colors.deepOrange), "finished"),
+    VoteModel("Party", "2019-05-12", "Friends \nWinner: Flying Circus",
+        IconType.party, "finished"),
   ];
 
 
