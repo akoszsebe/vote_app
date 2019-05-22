@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
+import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -40,7 +41,7 @@ class _UpcomingFrameState extends State<UpcomingFrame> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return DarkRefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
       child: ListView.builder(

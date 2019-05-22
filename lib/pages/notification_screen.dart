@@ -40,7 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         appBar: AppBar(
           title: Text("Notifications"),
         ),
-        body: RefreshIndicator(
+        body: DarkRefreshIndicator(
             key: _refreshIndicatorKey,
             onRefresh: _refresh,
             child: _buildBody(notifications)));

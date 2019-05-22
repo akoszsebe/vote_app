@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
+import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class FinishedFrame extends StatefulWidget {
@@ -26,7 +27,7 @@ final List<VoteModel> data = [
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return DarkRefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _refresh,
       child: ListView.builder(
