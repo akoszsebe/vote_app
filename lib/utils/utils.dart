@@ -29,7 +29,6 @@ class DarkRefreshIndicator extends RefreshIndicator {
     double displacement = 40.0,
     @required RefreshCallback onRefresh,
     Color color = Colors.white,
-    Color backgroundColor = Colors.blueGrey,
     ScrollNotificationPredicate notificationPredicate =
         defaultScrollNotificationPredicate,
     String semanticsLabel,
@@ -40,7 +39,7 @@ class DarkRefreshIndicator extends RefreshIndicator {
             displacement: displacement,
             onRefresh: onRefresh,
             color: color,
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.blueGrey[600],
             notificationPredicate: notificationPredicate,
             semanticsLabel: semanticsLabel,
             semanticsValue: semanticsValue);

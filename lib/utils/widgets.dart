@@ -49,7 +49,7 @@ Widget buildListItem(
         margin: new EdgeInsets.all(16.0),
         padding: new EdgeInsets.all(16.0),
         decoration: new BoxDecoration(
-            color: Colors.blueGrey,
+            color: Theme.of(context).primaryColorLight,
             borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
             boxShadow: [
               new BoxShadow(
@@ -60,7 +60,7 @@ Widget buildListItem(
         child: new Row(
           children: <Widget>[
             new CircleAvatar(
-              backgroundColor: Colors.white70,
+              backgroundColor: Colors.white,
               child: data[index].voteIcon.icon,
               radius: 20.0,
             ),
@@ -117,13 +117,13 @@ Widget buildListItem(
 }
 
 
-Widget buildVoteDetails(VoteModel vote) {
+Widget buildVoteDetails(BuildContext context,VoteModel vote) {
     return Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.all(16.0),
         padding: new EdgeInsets.all(16.0),
         decoration: new BoxDecoration(
-            color: Colors.blueGrey,
+            color: Theme.of(context).primaryColorLight,
             borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
             boxShadow: [
               new BoxShadow(

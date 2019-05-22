@@ -126,7 +126,7 @@ class _NotificationListItemState extends State<NotificationListItem> {
       margin: new EdgeInsets.all(16.0),
       padding: new EdgeInsets.all(16.0),
       decoration: new BoxDecoration(
-          color: Colors.blueGrey,
+          color: Theme.of(context).primaryColorLight,
           borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
           boxShadow: [
             new BoxShadow(

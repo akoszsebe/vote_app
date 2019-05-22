@@ -51,7 +51,7 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
         ]),
       ),
       body: ListView(
-        children: <Widget>[buildVoteDetails(vote), _buildVoteResult(vote)],
+        children: <Widget>[buildVoteDetails(context,vote), _buildVoteResult(vote)],
       ),
     );
   }
@@ -62,7 +62,7 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
         margin: new EdgeInsets.all(16.0),
         padding: new EdgeInsets.all(8.0),
         decoration: new BoxDecoration(
-            color: Colors.blueGrey,
+            color: Theme.of(context).primaryColorLight,
             borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
             boxShadow: [
               new BoxShadow(
