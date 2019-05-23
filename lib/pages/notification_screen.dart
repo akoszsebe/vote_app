@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/utils/utils.dart';
@@ -21,11 +24,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
   }
 
+  Random random = new Random();
+
   Future<dynamic> _refresh() async {
     //notifications = List<NotificationResponse>();
     setState(() {
       notifications.add(NotificationResponse(
-          id: 1, message: "mak", notType: "", actions: ["join"]));
+          id: random.nextInt(1000),
+          message: random.nextInt(1000).toString(),
+          notType: "",
+          actions: ["join"]));
     });
     return null;
   }
@@ -55,13 +63,44 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget _buildNotifications() {
-    return ListView.builder(
-      itemBuilder: (context, index){ return NotificationListItem(action: NotificationState.actionNeeded,title: notifications[index].message,);},
-      itemCount: notifications.length,
-    );
+    return Container(
+        alignment: Alignment.centerLeft,
+        color: Theme.of(context).primaryColorLight,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+                color: Theme.of(context).primaryColor,
+              ),
+          itemBuilder: (context, index) {
+            return Dismissible(
+              direction: DismissDirection.endToStart,
+              key: Key(notifications[index].id.toString()),
+              onDismissed: (direction) {
+                print("direction "+direction.toString());
+              },
+              confirmDismiss: (DismissDirection direction) {
+                showConfirmDialog(
+                    context, "Alert", "Are you sure to not join this group ?",
+                    () {
+                  setState(() {
+                    notifications.removeAt(index);
+                  });
+                });
+              },
+              child: NotificationListItem(
+                action: NotificationState.actionNeeded,
+                title: notifications[index].message,
+              ),
+              background: Container(
+                color: Colors.red,
+                child: Center(
+                  child: Text("Delete"),
+                ),
+              ),
+            );
+          },
+          itemCount: notifications.length,
+        ));
   }
-
-
 
   Widget _buildNoNotifications() {
     return ScrollConfiguration(
@@ -97,11 +136,11 @@ class NotificationListItem extends StatefulWidget {
   final NotificationState action;
   final String title;
 
-  NotificationListItem({this.action,this.title});
+  NotificationListItem({this.action, this.title});
 
   @override
   State<StatefulWidget> createState() =>
-      _NotificationListItemState(action: action,title: title);
+      _NotificationListItemState(action: action, title: title);
 }
 
 enum NotificationState {
@@ -113,7 +152,7 @@ enum NotificationState {
 class _NotificationListItemState extends State<NotificationListItem> {
   NotificationState action;
   String title;
-  _NotificationListItemState({this.action,this.title});
+  _NotificationListItemState({this.action, this.title});
   @override
   void initState() {
     super.initState();
@@ -121,52 +160,40 @@ class _NotificationListItemState extends State<NotificationListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.all(16.0),
-      padding: new EdgeInsets.all(16.0),
-      decoration: new BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
-          borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
-          boxShadow: [
-            new BoxShadow(
-                color: Colors.black38,
-                offset: new Offset(1.0, 1.0),
-                blurRadius: 5.0)
-          ]),
-      child: new Row(
-        children: <Widget>[
-          new Expanded(
-              child: new Padding(
-            padding: new EdgeInsets.only(left: 16.0, top: 8.0),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text(
-                  title,
-                  style: new TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 8),
-                ),
-                new Text(
-                  "Content",
-                  style: new TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white54),
-                ),
-              ],
-            ),
-          )),
-          _buildAction()
-        ],
-      ),
-    );
+    return new Padding(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+        child: Row(
+          children: <Widget>[
+            new Expanded(
+                child: new Padding(
+              padding: new EdgeInsets.only(left: 16.0, top: 8.0),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(
+                    title,
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                  ),
+                  new Text(
+                    "Content",
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white54),
+                  ),
+                ],
+              ),
+            )),
+            _buildAction()
+          ],
+        ));
   }
 
   Widget _buildAction() {

@@ -15,7 +15,7 @@ class GroupApiProvider extends ApiProvider {
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")));
-      return response.data.toString() == '{}' ? List<GroupResponse>() :List<GroupResponse>.from(response.data);
+      return List<GroupResponse>.from(response.data.map((x) => GroupResponse.fromJson(x))); 
     } on DioError catch (e) {
       print("Exception occured: $e");
       throw ApiExeption.fromDioError(e);

@@ -36,10 +36,6 @@ class _ProfileFrameState extends State<ProfileFrame> {
     groupApiProvider.getAll().then((response) {
       setState(() {
         groups = response;
-        groups.add(GroupResponse(id: 1, name: "Accenture", type: ""));
-        groups.add(GroupResponse(id: 2, name: "UBB", type: ""));
-        groups.add(GroupResponse(id: 3, name: "Friends", type: ""));
-        groups.add(GroupResponse(id: 4, name: "Romania", type: ""));
       });
     }).catchError((error) {
       setState(() {
