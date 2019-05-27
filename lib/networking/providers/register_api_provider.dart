@@ -11,7 +11,7 @@ class RegisterApiProvider extends ApiProvider {
     try {
       Response response = await dio.post(baseUrl + "/auth/registration",
           data: registerRequest.toJson(),
-          options: Options(contentType: ContentType.parse("application/json")));
+          options: Options(contentType: ContentType.parse("application/json")),cancelToken: token);
       if (response.statusCode == 200) {
         return true;
       } 
@@ -29,7 +29,7 @@ class RegisterApiProvider extends ApiProvider {
           data: verificationRequest.toJson(),
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
-              contentType: ContentType.parse("application/json")));
+              contentType: ContentType.parse("application/json")),cancelToken: token);
       if (response.statusCode == 200) {
         return true;
       } 

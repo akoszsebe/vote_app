@@ -5,9 +5,10 @@ import 'package:vote_app/networking/request/refreshToken_request.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
-class ApiProvider {
+abstract class ApiProvider {
   final String baseUrl = "https://voting-chain.herokuapp.com/api";
   final Dio dio = Dio();
+  final CancelToken token = new CancelToken();
 
   ApiProvider() {
     Dio tokenDio = new Dio(); //Create a new instance to request the token.
@@ -52,5 +53,10 @@ class ApiProvider {
     }));
     tokenDio.interceptors.add(LogInterceptor(responseBody: true));
     dio.interceptors.add(LogInterceptor(responseBody: true));
+  }
+
+
+  void cancelRequest(){
+    token.cancel("cancelled");
   }
 }

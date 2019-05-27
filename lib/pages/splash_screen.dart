@@ -154,6 +154,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         ? () {
                             setState(() {
                               isLoaded = SplashType.showLoginRegister;
+                              _loginApiProvider.cancelRequest();
                             });
                           }
                         : null,

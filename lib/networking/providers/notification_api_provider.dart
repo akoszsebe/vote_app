@@ -14,7 +14,7 @@ class NotificationApiProvider extends ApiProvider {
       Response response = await dio.get(baseUrl + "/notification",
           options: Options(
             headers: {"Authorization": "Bearer $authToken"},
-            contentType: ContentType.parse("application/json")));
+            contentType: ContentType.parse("application/json")),cancelToken: token);
       return List<NotificationResponse>.from(response.data.map((x) => NotificationResponse.fromJson(x))); 
     } on DioError catch (e) {
       print("Exception occured: $e");

@@ -14,7 +14,7 @@ class GroupApiProvider extends ApiProvider {
       Response response = await dio.get(baseUrl + "/group",
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
-              contentType: ContentType.parse("application/json")));
+              contentType: ContentType.parse("application/json")),cancelToken: token);
       return List<GroupResponse>.from(response.data.map((x) => GroupResponse.fromJson(x))); 
     } on DioError catch (e) {
       print("Exception occured: $e");
@@ -30,7 +30,7 @@ class GroupApiProvider extends ApiProvider {
           data: body.toJson(),
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
-              contentType: ContentType.parse("application/json")));
+              contentType: ContentType.parse("application/json")),cancelToken: token);
       return response.statusCode == 200;
     } on DioError catch (e) {
       print("Exception occured: $e");
@@ -46,7 +46,7 @@ class GroupApiProvider extends ApiProvider {
           data: body.toJson(),
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
-              contentType: ContentType.parse("application/json")));
+              contentType: ContentType.parse("application/json")),cancelToken: token);
       return response.statusCode == 200;
     } on DioError catch (e) {
       print("Exception occured: $e");
