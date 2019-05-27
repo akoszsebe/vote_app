@@ -11,10 +11,17 @@ class VoteScreen extends StatefulWidget {
 
 class _VoteScreenState extends State<VoteScreen> {
   int _radioValue = 0;
+  VoteModel vote;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   void _handleRadioValueChange(int value) {
@@ -25,7 +32,7 @@ class _VoteScreenState extends State<VoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final VoteModel vote = ModalRoute.of(context).settings.arguments;
+    vote = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Row(children: <Widget>[
@@ -43,13 +50,20 @@ class _VoteScreenState extends State<VoteScreen> {
           Text(vote.title)
         ]),
       ),
-      body: ListView(
-        children: <Widget>[buildVoteDetails(context,vote), _buildVoteOptions(vote)],
-      ),
+      body: _buildBody(),
     );
   }
 
-  
+  Widget _buildBody() {
+    if (isLoading) {
+      return buildLoader();
+    } else {
+      return ListView(children: <Widget>[
+        buildVoteDetails(context, vote),
+        _buildVoteOptions(vote)
+      ]);
+    }
+  }
 
   Widget _buildVoteOptions(VoteModel vote) {
     return Container(

@@ -324,7 +324,8 @@ class _ProfileFrameState extends State<ProfileFrame> {
 
   Widget _buildChip(String title) {
     return new Chip(
-      label: new Text(title),
+      backgroundColor: Colors.white,
+      label: new Text(title, style: TextStyle(color: Colors.blueGrey[700], fontWeight: FontWeight.bold),),
       deleteIcon: Icon(Icons.close),
       deleteIconColor: Theme.of(context).accentColor,
       onDeleted: () {

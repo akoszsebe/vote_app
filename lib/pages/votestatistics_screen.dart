@@ -25,14 +25,22 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     ),
   ];
 
+  VoteModel vote;
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final VoteModel vote = ModalRoute.of(context).settings.arguments;
+    vote = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Row(children: <Widget>[
@@ -50,10 +58,19 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
           Text(vote.title)
         ]),
       ),
-      body: ListView(
-        children: <Widget>[buildVoteDetails(context,vote), _buildVoteResult(vote)],
-      ),
+      body: _buildBody(),
     );
+  }
+
+  Widget _buildBody() {
+    if (isLoading) {
+      return buildLoader();
+    } else {
+      return ListView(children: <Widget>[
+        buildVoteDetails(context, vote),
+        _buildVoteResult(vote)
+      ]);
+    }
   }
 
   Widget _buildVoteResult(VoteModel vote) {

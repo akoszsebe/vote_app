@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/utils/utils.dart';
@@ -65,10 +64,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget _buildNotifications() {
     return Container(
         alignment: Alignment.centerLeft,
-        color: Theme.of(context).primaryColorLight,
         child: ListView.separated(
           separatorBuilder: (context, index) => Divider(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColorLight,
               ),
           itemBuilder: (context, index) {
             return Dismissible(
