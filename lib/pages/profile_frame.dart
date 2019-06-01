@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/networking/providers/group_api_provider.dart';
+import 'package:vote_app/controller/profilescreen_controller.dart';
 import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/pages/splash_screen.dart';
-import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/widgets.dart';
 
@@ -10,37 +9,39 @@ class ProfileFrame extends StatefulWidget {
   static const routeName = '/uppcoming';
 
   @override
-  State<StatefulWidget> createState() => _ProfileFrameState();
+  State<StatefulWidget> createState() => ProfileFrameState();
 }
 
-class _ProfileFrameState extends State<ProfileFrame> {
+class ProfileFrameState extends State<ProfileFrame> {
   String userName = "";
   String email = "";
 
   List<GroupResponse> groups;
 
+  ProfileScreenController _profileScreenController;
+
   @override
   void initState() {
     super.initState();
-    SharedPrefs.getAuthToken().then((token) {
-      setState(() {
-        userName = parseJwt(token)["name"];
-      });
+    _profileScreenController = ProfileScreenController(profileFrameState: this);
+    _profileScreenController.init();
+  }
+
+  void setName(String userName) {
+    setState(() {
+      this.userName = userName;
     });
-    SharedPrefs.getEmail().then((_email) {
-      setState(() {
-        email = _email;
-      });
+  }
+
+  void setGroups(List<GroupResponse> groups) {
+    setState(() {
+      this.groups = groups;
     });
-    GroupApiProvider groupApiProvider = GroupApiProvider();
-    groupApiProvider.getAll().then((response) {
-      setState(() {
-        groups = response;
-      });
-    }).catchError((error) {
-      setState(() {
-        groups = List<GroupResponse>();
-      });
+  }
+
+  void setEmail(String email) {
+    setState(() {
+      this.email = email;
     });
   }
 
@@ -315,8 +316,7 @@ class _ProfileFrameState extends State<ProfileFrame> {
         spacing: 8.0, // gap between adjacent chips
         runSpacing: 4.0, // gap between lines
         children: <Widget>[
-          for (var element in groups)
-             _buildChip(element.name),
+          for (var element in groups) _buildChip(element.name),
         ],
       );
     }
@@ -325,7 +325,11 @@ class _ProfileFrameState extends State<ProfileFrame> {
   Widget _buildChip(String title) {
     return new Chip(
       backgroundColor: Colors.white,
-      label: new Text(title, style: TextStyle(color: Colors.blueGrey[700], fontWeight: FontWeight.bold),),
+      label: new Text(
+        title,
+        style:
+            TextStyle(color: Colors.blueGrey[700], fontWeight: FontWeight.bold),
+      ),
       deleteIcon: Icon(Icons.close),
       deleteIconColor: Theme.of(context).accentColor,
       onDeleted: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/controller/finishedscreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
@@ -7,37 +8,36 @@ class FinishedFrame extends StatefulWidget {
   static const routeName = '/finished';
 
   @override
-  State<StatefulWidget> createState() => _FinishedFrameFrameState();
+  State<StatefulWidget> createState() => FinishedFrameState();
 }
 
-class _FinishedFrameFrameState extends State<FinishedFrame> {
+class FinishedFrameState extends State<FinishedFrame> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-final List<VoteModel> data = [
+  final List<VoteModel> data = [
     VoteModel("Party", "2019-05-12", "Friends \nWinner: Flying Circus",
         IconType.party, "finished"),
   ];
-
+  FinishedFrameCrontroller _finishedFrameCrontroller;
 
   @override
   void initState() {
     super.initState();
-    _refresh();
+    _finishedFrameCrontroller =
+        FinishedFrameCrontroller(finishedFrameState: this);
+    _finishedFrameCrontroller.refresh();
   }
 
   @override
   Widget build(BuildContext context) {
     return DarkRefreshIndicator(
       key: _refreshIndicatorKey,
-      onRefresh: _refresh,
+      onRefresh: _finishedFrameCrontroller.refresh,
       child: ListView.builder(
-        itemBuilder: (context,index) => buildListItem(context, index, data, true),
+        itemBuilder: (context, index) =>
+            buildListItem(context, index, data, true),
         itemCount: data.length,
       ),
     );
-  }
-
-  Future<dynamic> _refresh() async {
-    return null;
   }
 }

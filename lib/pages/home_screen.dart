@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/networking/providers/notification_api_provider.dart';
+import 'package:vote_app/controller/homescreen_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/pages/finished_frame.dart';
 import 'package:vote_app/pages/notification_screen.dart';
@@ -11,16 +11,17 @@ class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
 
   @override
-  State<StatefulWidget> createState() => _HomeScreenState();
+  State<StatefulWidget> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   int _notificationCount = 0;
   bool isFilterVisible = true;
 
   List<NotificationResponse> notifications = List<NotificationResponse>();
-  NotificationApiProvider _notificationApiProvider = NotificationApiProvider();
+
+  HomeSreenController _homeSreenController;
 
   final List<Widget> _children = [
     UpcomingFrame(),
@@ -36,41 +37,46 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fillNotifications();
+    _homeSreenController = HomeSreenController(homeScreenState: this);
+    _homeSreenController.init();
   }
 
-  void fillNotifications() {
-    _notificationApiProvider.getAll().then((response) {
-      setState(() {
-        _notificationCount = response.length;
-        notifications = response;
-      });
-    }).catchError((error) {
-      setState(() {
-        _notificationCount = 0;
-        notifications = List<NotificationResponse>();
-      });
+  void setNotifications(List<NotificationResponse> notifications) {
+    setState(() {
+      this._notificationCount = notifications.length;
+      this.notifications = notifications;
     });
   }
 
-  Future<bool> _onWillPop() async {
-    if (_currentIndex == 0)
-      return true;
-    else {
-      setState(() {
-        _currentIndex = 0;
-      });
-      return false;
-    }
+  void resetCurentIndex() {
+    setState(() {
+      _currentIndex = 0;
+    });
+  }
+
+  int getCurrentIndex() {
+    return _currentIndex;
+  }
+
+  void setCurrentIndex(int index) {
+    setState(() {
+      _currentIndex = index;
+      _notificationCount = _currentIndex * 5;
+      if (_currentIndex == 2) {
+        isFilterVisible = false;
+      } else if (!isFilterVisible) {
+        isFilterVisible = true;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
-        onWillPop: _onWillPop,
+        onWillPop: _homeSreenController.onWillPop,
         child: Scaffold(
           bottomNavigationBar: BottomNavigationBar(
-            onTap: onTabTapped,
+            onTap: _homeSreenController.onTabTapped,
             currentIndex: _currentIndex,
             items: [
               BottomNavigationBarItem(
@@ -143,18 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               body: _children[_currentIndex]),
         ));
-  }
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-      _notificationCount = _currentIndex * 5;
-      if (_currentIndex == 2){
-        isFilterVisible = false;
-      } else if (!isFilterVisible){
-        isFilterVisible = true;
-      }
-    });
   }
 
   Widget notificationIcon() {

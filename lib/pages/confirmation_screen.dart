@@ -1,21 +1,27 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:vote_app/networking/providers/register_api_provider.dart';
-import 'package:vote_app/networking/request/verification_request.dart';
+import 'package:vote_app/controller/confirmation_controller.dart';
 import 'package:vote_app/pages/home_screen.dart';
-import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   static const routeName = '/confirmation';
 
   @override
-  _ConfirmationScreenState createState() => _ConfirmationScreenState();
+  ConfirmationScreenState createState() => ConfirmationScreenState();
 }
 
-class _ConfirmationScreenState extends State<ConfirmationScreen> {
-  RegisterApiProvider _registerApiProvider = RegisterApiProvider();
+class ConfirmationScreenState extends State<ConfirmationScreen> {
   var loading = false;
+  ConfirmationScreenController _confirmationScreenController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confirmationScreenController = ConfirmationScreenController(confirmationScreenState: this);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,35 +112,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 style: TextStyle(
                     color: Colors.white, fontSize: 24, letterSpacing: 2.0),
                 keyboardType: TextInputType.text,
-                onSubmitted: (s) {
-                  setState(() {
-                    loading = true;
-                  });
-                  SharedPrefs.getAuthToken().then((authToken) {
-                    if (authToken.isNotEmpty) {
-                      _registerApiProvider
-                          .confirm(VerificationRequest(token: s), authToken)
-                          .then((onValue) {
-                        if (onValue) {
-                          SharedPrefs.setLogedIn(true);
-                          Navigator.pushReplacementNamed(
-                              context, HomeScreen.routeName);
-                        }
-                      }).catchError((error) {
-                        setState(() {
-                          loading = false;
-                        });
-                        showAlertDialog(
-                            context, "Error", "please try again leater");
-                      });
-                    } else {
-                      setState(() {
-                        loading = true;
-                      });
-                      showAlertDialog(context, "Error", "Please login again");
-                    }
-                  });
-                },
+                onSubmitted: _confirmationScreenController.onSubmit,
                 obscureText: false,
                 decoration: new InputDecoration(
                     counterText: "",
@@ -152,5 +130,25 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     ))))
       ],
     );
+  }
+
+  void showLoading() {
+    setState(() {
+      loading = true;
+    });
+  }
+
+  void hideLoading() {
+    setState(() {
+      loading = true;
+    });
+  }
+
+  void navigateHome() {
+     Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+  }
+
+  void showError(String s) {
+     showAlertDialog(context, "Error", s);
   }
 }

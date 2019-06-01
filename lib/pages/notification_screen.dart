@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:vote_app/controller/notificationscreen_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
@@ -9,32 +8,27 @@ class NotificationScreen extends StatefulWidget {
   static const routeName = '/notifications';
 
   @override
-  State<StatefulWidget> createState() => _NotificationScreenState();
+  State<StatefulWidget> createState() => NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class NotificationScreenState extends State<NotificationScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   List<NotificationResponse> notifications;
+  NotificationScreenController _notificationScreenController;
 
   bool shouldUpdate = true;
   @override
   void initState() {
     super.initState();
+    _notificationScreenController =
+        NotificationScreenController(notificationScreenState: this);
   }
 
-  Random random = new Random();
-
-  Future<dynamic> _refresh() async {
-    //notifications = List<NotificationResponse>();
+  void addNotificationItem(NotificationResponse notifcation){
     setState(() {
-      notifications.add(NotificationResponse(
-          id: random.nextInt(1000),
-          message: random.nextInt(1000).toString(),
-          notType: "",
-          actions: ["join"]));
+      notifications.add(notifcation);
     });
-    return null;
   }
 
   @override
@@ -49,7 +43,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         body: DarkRefreshIndicator(
             key: _refreshIndicatorKey,
-            onRefresh: _refresh,
+            onRefresh: _notificationScreenController.refresh,
             child: _buildBody(notifications)));
   }
 
@@ -73,7 +67,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               direction: DismissDirection.endToStart,
               key: Key(notifications[index].id.toString()),
               onDismissed: (direction) {
-                print("direction "+direction.toString());
+                print("direction " + direction.toString());
               },
               confirmDismiss: (DismissDirection direction) {
                 showConfirmDialog(

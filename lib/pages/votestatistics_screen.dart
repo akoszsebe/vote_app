@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/controller/votestatisticsscreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:vote_app/utils/widgets.dart';
@@ -7,10 +8,10 @@ class VoteStatisticsScreen extends StatefulWidget {
   static const routeName = '/votestatistics';
 
   @override
-  State<StatefulWidget> createState() => _VoteStatisticsScreenState();
+  State<StatefulWidget> createState() => VoteStatisticsScreenState();
 }
 
-class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
+class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   final GlobalKey<AnimatedCircularChartState> _chartKey =
       new GlobalKey<AnimatedCircularChartState>();
 
@@ -27,14 +28,18 @@ class _VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
 
   VoteModel vote;
   bool isLoading = true;
+  VoteStatisticsScreenController _voteStatisticsScreenController;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        isLoading = false;
-      });
+    _voteStatisticsScreenController = VoteStatisticsScreenController(voteStatisticsScreenState: this);
+    _voteStatisticsScreenController.init();
+  }
+
+ void setLoading() {
+    setState(() {
+      isLoading = false;
     });
   }
 

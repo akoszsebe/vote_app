@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/controller/votescreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/widgets.dart';
 
@@ -6,25 +7,29 @@ class VoteScreen extends StatefulWidget {
   static const routeName = '/vote';
 
   @override
-  State<StatefulWidget> createState() => _VoteScreenState();
+  State<StatefulWidget> createState() => VoteScreenState();
 }
 
-class _VoteScreenState extends State<VoteScreen> {
+class VoteScreenState extends State<VoteScreen> {
   int _radioValue = 0;
   VoteModel vote;
   bool isLoading = true;
+  VoteSreenController _voteSreenController;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        isLoading = false;
-      });
+    _voteSreenController = VoteSreenController(voteScreenState: this);
+    _voteSreenController.init();
+  }
+
+  void setLoading() {
+    setState(() {
+      isLoading = false;
     });
   }
 
-  void _handleRadioValueChange(int value) {
+  void setRadioValue(int value) {
     setState(() {
       _radioValue = value;
     });
@@ -113,10 +118,10 @@ class _VoteScreenState extends State<VoteScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        radioElement("Kebab", 0, _handleRadioValueChange,
+                        radioElement("Kebab", 0, _voteSreenController.handleRadioValueChange,
                             vote.voteIcon.color),
                         radioElement("Csirkehus majonezes pityokaval", 1,
-                            _handleRadioValueChange, vote.voteIcon.color),
+                            _voteSreenController.handleRadioValueChange, vote.voteIcon.color),
                         Padding(
                           padding: EdgeInsets.only(top: 16),
                         ),
