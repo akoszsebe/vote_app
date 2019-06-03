@@ -1,9 +1,11 @@
 import 'package:http/http.dart';
 import 'package:vote_app/controller/base_controller.dart';
+import 'package:vote_app/networking/providers/vote_api_provider.dart';
 import 'package:vote_app/pages/upcoming_frame.dart';
 
 class UpComingFrameCrontroller  extends BaseController{
   final UpcomingFrameState upcomingFrameState;
+  VoteApiProvider _voteApiProvider;
 
   UpComingFrameCrontroller({this.upcomingFrameState});
 
@@ -15,9 +17,15 @@ class UpComingFrameCrontroller  extends BaseController{
 
   @override
   void init(){
+    _voteApiProvider = VoteApiProvider();
   }
 
   Future<dynamic> refresh() async {
+    _voteApiProvider.getUpcoming().then((response){
+      upcomingFrameState.setData(response);
+    }).catchError((error){
+
+    });
         // ethClient = new Web3Client(apiUrl, httpClient);
     // EthereumAddress _address =
     //     EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");

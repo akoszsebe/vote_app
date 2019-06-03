@@ -23,7 +23,7 @@ class ConfirmationScreenController extends BaseController{
           }
         }).catchError((error) {
           confirmationScreenState.hideLoading();
-          confirmationScreenState.showError("please try again leater");
+          confirmationScreenState.showError(error.message);
         });
       } else {
         confirmationScreenState.hideLoading();

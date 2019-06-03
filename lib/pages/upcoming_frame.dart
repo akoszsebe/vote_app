@@ -12,7 +12,7 @@ class UpcomingFrame extends StatefulWidget {
 }
 
 class UpcomingFrameState extends State<UpcomingFrame> {
-  final List<VoteModel> data = [
+  List<VoteModel> data = [
     VoteModel('Food for friday lunch', "2019-05-15", "Accenture", IconType.food,
         "vote"),
     VoteModel('Food for friday morning', "2019-05-16", "Accenture",
@@ -31,6 +31,7 @@ class UpcomingFrameState extends State<UpcomingFrame> {
     super.initState();
     _upcomingFrameCrontroller =
         UpComingFrameCrontroller(upcomingFrameState: this);
+    _upcomingFrameCrontroller.init();
 
     _upcomingFrameCrontroller.refresh();
   }
@@ -46,5 +47,11 @@ class UpcomingFrameState extends State<UpcomingFrame> {
         itemCount: data.length,
       ),
     );
+  }
+
+  void setData(List<VoteResponse> response) {
+    setState(() {
+     //data = response; 
+    });
   }
 }

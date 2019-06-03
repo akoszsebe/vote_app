@@ -7,14 +7,19 @@ import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
 class VoteApiProvider extends ApiProvider {
-
-   Future<List<VoteResponse>> getUpcoming() async {
+  Future<List<VoteResponse>> getUpcoming() async {
     try {
+      var queryParameters = {
+        'page': 0,
+        'size': 100,
+      };
       String authToken = await SharedPrefs.getAuthToken();
-      Response response = await dio.get(baseUrl + "/vote/upcomming",
+      Response response = await dio.get(baseUrl + "/vote/upcoming",
+          queryParameters: queryParameters,
           options: Options(
-            headers: {"Authorization": "Bearer $authToken"},
-            contentType: ContentType.parse("application/json")),cancelToken: token);
+              headers: {"Authorization": "Bearer $authToken"},
+              contentType: ContentType.parse("application/json")),
+          cancelToken: token);
       return List<VoteResponse>.from(response.data);
     } on DioError catch (e) {
       print("Exception occured: $e");
@@ -22,13 +27,19 @@ class VoteApiProvider extends ApiProvider {
     }
   }
 
-   Future<List<VoteResponse>> getFinished() async {
+  Future<List<VoteResponse>> getFinished() async {
     try {
+      var queryParameters = {
+        'page': 0,
+        'size': 100,
+      };
       String authToken = await SharedPrefs.getAuthToken();
       Response response = await dio.get(baseUrl + "/vote/past",
+          queryParameters: queryParameters,
           options: Options(
-            headers: {"Authorization": "Bearer $authToken"},
-            contentType: ContentType.parse("application/json")),cancelToken: token);
+              headers: {"Authorization": "Bearer $authToken"},
+              contentType: ContentType.parse("application/json")),
+          cancelToken: token);
       return List<VoteResponse>.from(response.data);
     } on DioError catch (e) {
       print("Exception occured: $e");
@@ -36,13 +47,14 @@ class VoteApiProvider extends ApiProvider {
     }
   }
 
-   Future<VoteDetailResponse> getDetails(int id) async {
+  Future<VoteDetailResponse> getDetails(int id) async {
     try {
       String authToken = await SharedPrefs.getAuthToken();
-      Response response = await dio.get(baseUrl + "/vote/"+id.toString(),
+      Response response = await dio.get(baseUrl + "/vote/" + id.toString(),
           options: Options(
-            headers: {"Authorization": "Bearer $authToken"},
-            contentType: ContentType.parse("application/json")),cancelToken: token);
+              headers: {"Authorization": "Bearer $authToken"},
+              contentType: ContentType.parse("application/json")),
+          cancelToken: token);
       return VoteDetailResponse.fromJson(response.data);
     } on DioError catch (e) {
       print("Exception occured: $e");
