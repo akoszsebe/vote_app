@@ -19,8 +19,6 @@ class HomeScreenState extends State<HomeScreen> {
   int _notificationCount = 0;
   bool isFilterVisible = true;
 
-  List<NotificationResponse> notifications = List<NotificationResponse>();
-
   HomeSreenController _homeSreenController;
 
   final List<Widget> _children = [
@@ -44,7 +42,6 @@ class HomeScreenState extends State<HomeScreen> {
   void setNotifications(List<NotificationResponse> notifications) {
     setState(() {
       this._notificationCount = notifications.length;
-      this.notifications = notifications;
     });
   }
 
@@ -124,8 +121,7 @@ class HomeScreenState extends State<HomeScreen> {
                         textColor: Colors.white,
                         onPressed: () {
                           Navigator.pushNamed(
-                              context, NotificationScreen.routeName,
-                              arguments: notifications);
+                              context, NotificationScreen.routeName);
                         },
                         child: notificationIcon(),
                         shape: CircleBorder(

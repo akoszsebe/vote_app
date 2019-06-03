@@ -1,0 +1,675 @@
+@startuml
+set namespaceSeparator ::
+
+class "vote_app::controller::base_controller.dart::BaseController" {
+  +void init()
+}
+
+class "vote_app::controller::confirmation_controller.dart::ConfirmationScreenController" {
+  +ConfirmationScreenState confirmationScreenState
+  -RegisterApiProvider _registerApiProvider
+  +void onSubmit()
+  +void init()
+}
+
+"vote_app::controller::confirmation_controller.dart::ConfirmationScreenController" o-- "vote_app::pages::confirmation_screen.dart::ConfirmationScreenState"
+"vote_app::controller::confirmation_controller.dart::ConfirmationScreenController" o-- "vote_app::networking::providers::register_api_provider.dart::RegisterApiProvider"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::confirmation_controller.dart::ConfirmationScreenController"
+
+class "vote_app::controller::finishedscreen_controller.dart::FinishedFrameCrontroller" {
+  +FinishedFrameState finishedFrameState
+  +Future refresh()
+  +void init()
+}
+
+"vote_app::controller::finishedscreen_controller.dart::FinishedFrameCrontroller" o-- "vote_app::pages::finished_frame.dart::FinishedFrameState"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::finishedscreen_controller.dart::FinishedFrameCrontroller"
+
+class "vote_app::controller::homescreen_controller.dart::HomeSreenController" {
+  +HomeScreenState homeScreenState
+  -NotificationApiProvider _notificationApiProvider
+  +void init()
+  +void fillNotifications()
+  +void onTabTapped()
+  +Future onWillPop()
+}
+
+"vote_app::controller::homescreen_controller.dart::HomeSreenController" o-- "vote_app::pages::home_screen.dart::HomeScreenState"
+"vote_app::controller::homescreen_controller.dart::HomeSreenController" o-- "vote_app::networking::providers::notification_api_provider.dart::NotificationApiProvider"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::homescreen_controller.dart::HomeSreenController"
+
+class "vote_app::controller::notificationscreen_controller.dart::NotificationScreenController" {
+  +NotificationScreenState notificationScreenState
+  -NotificationApiProvider _notificationApiProvider
+  +Random random
+  +void init()
+  +Future refresh()
+}
+
+"vote_app::controller::notificationscreen_controller.dart::NotificationScreenController" o-- "vote_app::pages::notification_screen.dart::NotificationScreenState"
+"vote_app::controller::notificationscreen_controller.dart::NotificationScreenController" o-- "vote_app::networking::providers::notification_api_provider.dart::NotificationApiProvider"
+"vote_app::controller::notificationscreen_controller.dart::NotificationScreenController" o-- "dart::math::Random"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::notificationscreen_controller.dart::NotificationScreenController"
+
+class "vote_app::controller::profilescreen_controller.dart::ProfileScreenController" {
+  +ProfileFrameState profileFrameState
+  +void init()
+}
+
+"vote_app::controller::profilescreen_controller.dart::ProfileScreenController" o-- "vote_app::pages::profile_frame.dart::ProfileFrameState"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::profilescreen_controller.dart::ProfileScreenController"
+
+class "vote_app::controller::registerscreen_controller.dart::RegisterScreenController" {
+  +RegisterScreenState registerScreenState
+  +String pin
+  +String email
+  +String birthDate
+  +Sex sex
+  +String name
+  -RegisterApiProvider _registerApiProvider
+  +void init()
+  +void register()
+  +bool validateForm()
+}
+
+"vote_app::controller::registerscreen_controller.dart::RegisterScreenController" o-- "vote_app::pages::register_screen.dart::RegisterScreenState"
+"vote_app::controller::registerscreen_controller.dart::RegisterScreenController" o-- "vote_app::networking::request::register_request.dart::Sex"
+"vote_app::controller::registerscreen_controller.dart::RegisterScreenController" o-- "vote_app::networking::providers::register_api_provider.dart::RegisterApiProvider"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::registerscreen_controller.dart::RegisterScreenController"
+
+class "vote_app::controller::splashscreen_controller.dart::SplashScreenController" {
+  +SplashScreenState splashScreenState
+  -LoginApiProvider _loginApiProvider
+  -bool _logedIn
+  +void init()
+  +void loadData()
+  +Future loginEmailPin()
+  +Future loginPin()
+}
+
+"vote_app::controller::splashscreen_controller.dart::SplashScreenController" o-- "vote_app::pages::splash_screen.dart::SplashScreenState"
+"vote_app::controller::splashscreen_controller.dart::SplashScreenController" o-- "vote_app::networking::providers::login_api_provider.dart::LoginApiProvider"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::splashscreen_controller.dart::SplashScreenController"
+
+class "vote_app::controller::upcomingscreen_controller.dart::UpComingFrameCrontroller" {
+  +UpcomingFrameState upcomingFrameState
+  -VoteApiProvider _voteApiProvider
+  +String apiUrl
+  +Client httpClient
+  +dynamic ethClient
+  +void init()
+  +Future refresh()
+}
+
+"vote_app::controller::upcomingscreen_controller.dart::UpComingFrameCrontroller" o-- "vote_app::pages::upcoming_frame.dart::UpcomingFrameState"
+"vote_app::controller::upcomingscreen_controller.dart::UpComingFrameCrontroller" o-- "vote_app::networking::providers::vote_api_provider.dart::VoteApiProvider"
+"vote_app::controller::upcomingscreen_controller.dart::UpComingFrameCrontroller" o-- "http::src::client.dart::Client"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::upcomingscreen_controller.dart::UpComingFrameCrontroller"
+
+class "vote_app::controller::votescreen_controller.dart::VoteSreenController" {
+  +VoteScreenState voteScreenState
+  +void init()
+  +void handleRadioValueChange()
+}
+
+"vote_app::controller::votescreen_controller.dart::VoteSreenController" o-- "vote_app::pages::vote_screen.dart::VoteScreenState"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::votescreen_controller.dart::VoteSreenController"
+
+class "vote_app::controller::votestatisticsscreen_controller.dart::VoteStatisticsScreenController" {
+  +VoteStatisticsScreenState voteStatisticsScreenState
+  +void init()
+}
+
+"vote_app::controller::votestatisticsscreen_controller.dart::VoteStatisticsScreenController" o-- "vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreenState"
+"vote_app::controller::base_controller.dart::BaseController" <|-- "vote_app::controller::votestatisticsscreen_controller.dart::VoteStatisticsScreenController"
+
+class "vote_app::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "vote_app::main.dart::MyApp"
+
+abstract class "vote_app::networking::api_provider.dart::ApiProvider" {
+  +String baseUrl
+  +Dio dio
+  +CancelToken token
+  +void cancelRequest()
+}
+
+"vote_app::networking::api_provider.dart::ApiProvider" o-- "dio::src::dio.dart::Dio"
+"vote_app::networking::api_provider.dart::ApiProvider" o-- "dio::src::cancel_token.dart::CancelToken"
+
+class "vote_app::networking::providers::group_api_provider.dart::GroupApiProvider" {
+  +Future getAll()
+  +Future accept()
+  +Future reject()
+}
+
+"vote_app::networking::api_provider.dart::ApiProvider" <|-- "vote_app::networking::providers::group_api_provider.dart::GroupApiProvider"
+
+class "vote_app::networking::providers::login_api_provider.dart::LoginApiProvider" {
+  +Future login()
+  +Future loginPin()
+}
+
+"vote_app::networking::api_provider.dart::ApiProvider" <|-- "vote_app::networking::providers::login_api_provider.dart::LoginApiProvider"
+
+class "vote_app::networking::providers::notification_api_provider.dart::NotificationApiProvider" {
+  +Future getAll()
+  +Future getNew()
+}
+
+"vote_app::networking::api_provider.dart::ApiProvider" <|-- "vote_app::networking::providers::notification_api_provider.dart::NotificationApiProvider"
+
+class "vote_app::networking::providers::register_api_provider.dart::RegisterApiProvider" {
+  +Future register()
+  +Future confirm()
+}
+
+"vote_app::networking::api_provider.dart::ApiProvider" <|-- "vote_app::networking::providers::register_api_provider.dart::RegisterApiProvider"
+
+class "vote_app::networking::providers::vote_api_provider.dart::VoteApiProvider" {
+  +Future getUpcoming()
+  +Future getFinished()
+  +Future getDetails()
+}
+
+"vote_app::networking::api_provider.dart::ApiProvider" <|-- "vote_app::networking::providers::vote_api_provider.dart::VoteApiProvider"
+
+class "vote_app::networking::request::gorupaccenpt_request.dart::GroupAcceptRequest" {
+  +int id
+  +bool accepted
+  +Map toJson()
+}
+
+class "vote_app::networking::request::login_request.dart::LoginRequest" {
+  +String email
+  +String pin
+  +String deviceId
+  +Map toJson()
+}
+
+class "vote_app::networking::request::login_request.dart::LoginPinRequest" {
+  +String pin
+  +String deviceId
+  +Map toJson()
+}
+
+class "vote_app::networking::request::refreshToken_request.dart::RefreshTokenRequest" {
+  +String refreshToken
+  +Map toJson()
+}
+
+class "vote_app::networking::request::register_request.dart::Sex" {
+  +int index
+  {static} +List<Sex> values
+  {static} +Sex male
+  {static} +Sex female
+}
+
+"vote_app::networking::request::register_request.dart::Sex" o-- "vote_app::networking::request::register_request.dart::Sex"
+
+class "vote_app::networking::request::register_request.dart::RegisterRequest" {
+  +String email
+  +String pin
+  +String name
+  +String birthDate
+  +Sex sex
+  +Map toJson()
+}
+
+"vote_app::networking::request::register_request.dart::RegisterRequest" o-- "vote_app::networking::request::register_request.dart::Sex"
+
+class "vote_app::networking::request::verification_request.dart::VerificationRequest" {
+  +String token
+  +Map toJson()
+}
+
+class "vote_app::networking::response::group_response.dart::GroupResponse" {
+  +int id
+  +String name
+  +String type
+  +Map toJson()
+}
+
+class "vote_app::networking::response::login_response.dart::LoginResponse" {
+  +String refreshToken
+  +String authToken
+  +String error
+  +Map toJson()
+}
+
+class "vote_app::networking::response::notification_response.dart::NotificationResponse" {
+  +int id
+  +String notType
+  +String message
+  +List<String> actions
+  +Map toJson()
+}
+
+class "vote_app::networking::response::vote_response.dart::IconType" {
+  +int index
+  {static} +List<IconType> values
+  {static} +IconType food
+  {static} +IconType election
+  {static} +IconType party
+  {static} +IconType life
+  {static} +IconType sport
+}
+
+"vote_app::networking::response::vote_response.dart::IconType" o-- "vote_app::networking::response::vote_response.dart::IconType"
+
+class "vote_app::networking::response::vote_response.dart::VoteResponse" {
+  +int id
+  +String title
+  +int begining
+  +int group
+  +String type
+}
+
+class "vote_app::networking::response::vote_response.dart::VoteDetailResponse" {
+  +int id
+  +String title
+  +String description
+  +int begining
+  +int end
+  +int group
+  +String type
+  +List<String> response
+}
+
+class "vote_app::networking::response::vote_response.dart::VoteModel" {
+  +String title
+  +String date
+  +String content
+  +String joined
+  +VoteIcon voteIcon
+}
+
+"vote_app::networking::response::vote_response.dart::VoteModel" o-- "vote_app::networking::response::vote_response.dart::VoteIcon"
+
+class "vote_app::networking::response::vote_response.dart::VoteIcon" {
+  +Icon icon
+  +Color color
+}
+
+"vote_app::networking::response::vote_response.dart::VoteIcon" o-- "flutter::src::widgets::icon.dart::Icon"
+"vote_app::networking::response::vote_response.dart::VoteIcon" o-- "dart::ui::Color"
+
+class "vote_app::pages::confirmation_screen.dart::ConfirmationScreen" {
+  {static} +String routeName
+  +ConfirmationScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::confirmation_screen.dart::ConfirmationScreen"
+
+class "vote_app::pages::confirmation_screen.dart::ConfirmationScreenState" {
+  +bool loading
+  -ConfirmationScreenController _confirmationScreenController
+  +void initState()
+  +Widget build()
+  -Widget _buildInputOrLoader()
+  -Widget _buildIDInput()
+  +void showLoading()
+  +void hideLoading()
+  +void navigateHome()
+  +void showError()
+}
+
+"vote_app::pages::confirmation_screen.dart::ConfirmationScreenState" o-- "vote_app::controller::confirmation_controller.dart::ConfirmationScreenController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::confirmation_screen.dart::ConfirmationScreenState"
+
+class "vote_app::pages::finished_frame.dart::FinishedFrame" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::finished_frame.dart::FinishedFrame"
+
+class "vote_app::pages::finished_frame.dart::FinishedFrameState" {
+  -GlobalKey<RefreshIndicatorState> _refreshIndicatorKey
+  +List<VoteModel> data
+  -FinishedFrameCrontroller _finishedFrameCrontroller
+  +void initState()
+  +Widget build()
+}
+
+"vote_app::pages::finished_frame.dart::FinishedFrameState" o-- "flutter::src::widgets::framework.dart::GlobalKey<RefreshIndicatorState>"
+"vote_app::pages::finished_frame.dart::FinishedFrameState" o-- "vote_app::controller::finishedscreen_controller.dart::FinishedFrameCrontroller"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::finished_frame.dart::FinishedFrameState"
+
+class "vote_app::pages::home_screen.dart::HomeScreen" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::home_screen.dart::HomeScreen"
+
+class "vote_app::pages::home_screen.dart::HomeScreenState" {
+  -int _currentIndex
+  -int _notificationCount
+  +bool isFilterVisible
+  -HomeSreenController _homeSreenController
+  -List<Widget> _children
+  -List<String> _childrenNames
+  +void initState()
+  +void setNotifications()
+  +void resetCurentIndex()
+  +int getCurrentIndex()
+  +void setCurrentIndex()
+  +Widget build()
+  +Widget notificationIcon()
+}
+
+"vote_app::pages::home_screen.dart::HomeScreenState" o-- "vote_app::controller::homescreen_controller.dart::HomeSreenController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::home_screen.dart::HomeScreenState"
+
+class "vote_app::pages::notification_screen.dart::NotificationState" {
+  +int index
+  {static} +List<NotificationState> values
+  {static} +NotificationState loading
+  {static} +NotificationState actionNeeded
+  {static} +NotificationState actionDone
+}
+
+"vote_app::pages::notification_screen.dart::NotificationState" o-- "vote_app::pages::notification_screen.dart::NotificationState"
+
+class "vote_app::pages::notification_screen.dart::NotificationScreen" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::notification_screen.dart::NotificationScreen"
+
+class "vote_app::pages::notification_screen.dart::NotificationScreenState" {
+  -GlobalKey<RefreshIndicatorState> _refreshIndicatorKey
+  +List<NotificationResponse> notifications
+  -NotificationScreenController _notificationScreenController
+  +void initState()
+  +void addNotificationItem()
+  +void setNotifications()
+  +Widget build()
+  -Widget _buildBody()
+  -Widget _buildNotifications()
+  -Widget _buildNoNotifications()
+}
+
+"vote_app::pages::notification_screen.dart::NotificationScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<RefreshIndicatorState>"
+"vote_app::pages::notification_screen.dart::NotificationScreenState" o-- "vote_app::controller::notificationscreen_controller.dart::NotificationScreenController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::notification_screen.dart::NotificationScreenState"
+
+class "vote_app::pages::notification_screen.dart::NotificationListItem" {
+  +NotificationState action
+  +String title
+  +State createState()
+}
+
+"vote_app::pages::notification_screen.dart::NotificationListItem" o-- "vote_app::pages::notification_screen.dart::NotificationState"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::notification_screen.dart::NotificationListItem"
+
+class "vote_app::pages::notification_screen.dart::_NotificationListItemState" {
+  +NotificationState action
+  +String title
+  +void initState()
+  +Widget build()
+  -Widget _buildAction()
+}
+
+"vote_app::pages::notification_screen.dart::_NotificationListItemState" o-- "vote_app::pages::notification_screen.dart::NotificationState"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::notification_screen.dart::_NotificationListItemState"
+
+class "vote_app::pages::profile_frame.dart::ProfileFrame" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::profile_frame.dart::ProfileFrame"
+
+class "vote_app::pages::profile_frame.dart::ProfileFrameState" {
+  +String userName
+  +String email
+  +List<GroupResponse> groups
+  -ProfileScreenController _profileScreenController
+  +void initState()
+  +void setName()
+  +void setGroups()
+  +void setEmail()
+  +Widget build()
+  -Widget _buildGrupesInfo()
+  -Widget _buildPersonalInfo()
+  -Widget _buildAbout()
+  -Widget _createPersonInfo()
+  -Widget _buildGroup()
+  -Widget _buildChip()
+}
+
+"vote_app::pages::profile_frame.dart::ProfileFrameState" o-- "vote_app::controller::profilescreen_controller.dart::ProfileScreenController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::profile_frame.dart::ProfileFrameState"
+
+class "vote_app::pages::register_screen.dart::RegisterScreen" {
+  {static} +String routeName
+  +RegisterScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::register_screen.dart::RegisterScreen"
+
+class "vote_app::pages::register_screen.dart::RegisterScreenState" {
+  -RegisterScreenController _registerScreenController
+  +bool pinValidate
+  +bool emailValidate
+  +bool birthDateValidate
+  +bool nameValidate
+  +bool loading
+  +TextEditingController txt
+  +void initState()
+  +Widget build()
+  -Widget _buildButtonOrLoader()
+  -Future _showDatePicker()
+  +Widget inputField()
+  +void showLoading()
+  +void hideLoading()
+  +void navigateSplash()
+  +void showError()
+}
+
+"vote_app::pages::register_screen.dart::RegisterScreenState" o-- "vote_app::controller::registerscreen_controller.dart::RegisterScreenController"
+"vote_app::pages::register_screen.dart::RegisterScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::register_screen.dart::RegisterScreenState"
+
+class "vote_app::pages::splash_screen.dart::SplashType" {
+  +int index
+  {static} +List<SplashType> values
+  {static} +SplashType showLoginRegister
+  {static} +SplashType showEmail
+  {static} +SplashType showLoader
+  {static} +SplashType showPin
+}
+
+"vote_app::pages::splash_screen.dart::SplashType" o-- "vote_app::pages::splash_screen.dart::SplashType"
+
+class "vote_app::pages::splash_screen.dart::SplashScreen" {
+  {static} +String routeName
+  +SplashScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::splash_screen.dart::SplashScreen"
+
+class "vote_app::pages::splash_screen.dart::SplashScreenState" {
+  -SplashScreenController _splashScreenController
+  +SplashType isLoaded
+  +String email
+  +void initState()
+  +void showPin()
+  +void showEmail()
+  +void showLoginRegister()
+  +void showLoader()
+  +void navigateHome()
+  +void showError()
+  +Widget build()
+  +bool checkBackArrowVisibility()
+  -Widget _buildLoaderOrButtons()
+  -Widget _buildNotRegistered()
+  -Widget _buildIDInput()
+  -Widget _buildPinInput()
+  +void navigateConfirmation()
+}
+
+"vote_app::pages::splash_screen.dart::SplashScreenState" o-- "vote_app::controller::splashscreen_controller.dart::SplashScreenController"
+"vote_app::pages::splash_screen.dart::SplashScreenState" o-- "vote_app::pages::splash_screen.dart::SplashType"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::splash_screen.dart::SplashScreenState"
+
+class "vote_app::pages::upcoming_frame.dart::UpcomingFrame" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::upcoming_frame.dart::UpcomingFrame"
+
+class "vote_app::pages::upcoming_frame.dart::UpcomingFrameState" {
+  +List<VoteModel> data
+  -GlobalKey<RefreshIndicatorState> _refreshIndicatorKey
+  -UpComingFrameCrontroller _upcomingFrameCrontroller
+  +void initState()
+  +Widget build()
+  +void setData()
+}
+
+"vote_app::pages::upcoming_frame.dart::UpcomingFrameState" o-- "flutter::src::widgets::framework.dart::GlobalKey<RefreshIndicatorState>"
+"vote_app::pages::upcoming_frame.dart::UpcomingFrameState" o-- "vote_app::controller::upcomingscreen_controller.dart::UpComingFrameCrontroller"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::upcoming_frame.dart::UpcomingFrameState"
+
+class "vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreen" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreen"
+
+class "vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreenState" {
+  -GlobalKey<AnimatedCircularChartState> _chartKey
+  +List<CircularStackEntry> data
+  +VoteModel vote
+  +bool isLoading
+  -VoteStatisticsScreenController _voteStatisticsScreenController
+  +void initState()
+  +void setLoading()
+  +Widget build()
+  -Widget _buildBody()
+  -Widget _buildVoteResult()
+}
+
+"vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<AnimatedCircularChartState>"
+"vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreenState" o-- "vote_app::networking::response::vote_response.dart::VoteModel"
+"vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreenState" o-- "vote_app::controller::votestatisticsscreen_controller.dart::VoteStatisticsScreenController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::votestatistics_screen.dart::VoteStatisticsScreenState"
+
+class "vote_app::pages::vote_screen.dart::VoteScreen" {
+  {static} +String routeName
+  +State createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::pages::vote_screen.dart::VoteScreen"
+
+class "vote_app::pages::vote_screen.dart::VoteScreenState" {
+  -int _radioValue
+  +VoteModel vote
+  +bool isLoading
+  -VoteSreenController _voteSreenController
+  +void initState()
+  +void setLoading()
+  +void setRadioValue()
+  +Widget build()
+  -Widget _buildBody()
+  -Widget _buildVoteOptions()
+  +Widget radioElement()
+}
+
+"vote_app::pages::vote_screen.dart::VoteScreenState" o-- "vote_app::networking::response::vote_response.dart::VoteModel"
+"vote_app::pages::vote_screen.dart::VoteScreenState" o-- "vote_app::controller::votescreen_controller.dart::VoteSreenController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::pages::vote_screen.dart::VoteScreenState"
+
+class "vote_app::utils::api_exeption.dart::ApiExeption" {
+  +String message
+  +String toString()
+}
+
+"dart::core::Exception" <|-- "vote_app::utils::api_exeption.dart::ApiExeption"
+
+class "vote_app::utils::code_input.dart::CodeInput" {
+  +int length
+  +TextInputType keyboardType
+  +List<TextInputFormatter> inputFormatters
+  +(bool, String) → Widget builder
+  +(String) → void onChanged
+  +(String) → void onFilled
+  {static} -List _createInputFormatters()
+  +_CodeInputState createState()
+}
+
+"vote_app::utils::code_input.dart::CodeInput" o-- "flutter::src::services::text_input.dart::TextInputType"
+"vote_app::utils::code_input.dart::CodeInput" o-- "vote_app::utils::code_input.dart::(bool, String) → Widget"
+"vote_app::utils::code_input.dart::CodeInput" o-- "vote_app::utils::code_input.dart::(String) → void"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "vote_app::utils::code_input.dart::CodeInput"
+
+class "vote_app::utils::code_input.dart::_CodeInputState" {
+  +FocusNode node
+  +TextEditingController controller
+  +String text
+  +Widget build()
+}
+
+"vote_app::utils::code_input.dart::_CodeInputState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"vote_app::utils::code_input.dart::_CodeInputState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "vote_app::utils::code_input.dart::_CodeInputState"
+
+abstract class "vote_app::utils::code_input.dart::CodeInputBuilders" {
+  {static} +null containerized()
+  {static} -dynamic _buildContent()
+  {static} +null circle()
+  {static} +null lightCircle()
+  {static} +null darkCircle()
+}
+
+class "vote_app::utils::firebasenotifications%20.dart::FirebaseNotifications" {
+  -FirebaseMessaging _firebaseMessaging
+  +void setUpFirebase()
+  +void firebaseCloudMessagingListeners()
+  +void iOSPermission()
+}
+
+"vote_app::utils::firebasenotifications%20.dart::FirebaseNotifications" o-- "firebase_messaging::firebase_messaging.dart::FirebaseMessaging"
+
+class "vote_app::utils::shared_prefs.dart::SharedPrefs" {
+  {static} -String _registered
+  {static} -String _authToken
+  {static} -String _refreshToken
+  {static} -String _logedin
+  {static} +Future getEmail()
+  {static} +Future setEmail()
+  {static} +Future getAuthToken()
+  {static} +Future setAuthToken()
+  {static} +Future getRefreshToken()
+  {static} +Future setRefreshToken()
+  {static} +Future getLogedIn()
+  {static} +Future setLogedIn()
+}
+
+class "vote_app::utils::utils.dart::EnumValues<T>" {
+  +Map<String, T> map
+  +Map<T, String> reverseMap
+  +Map<T, String> reverse
+}
+
+class "vote_app::utils::utils.dart::NoGlowScrollBehavior" {
+  +Widget buildViewportChrome()
+}
+
+"flutter::src::widgets::scroll_configuration.dart::ScrollBehavior" <|-- "vote_app::utils::utils.dart::NoGlowScrollBehavior"
+
+class "vote_app::utils::utils.dart::DarkRefreshIndicator" {
+}
+
+"flutter::src::material::refresh_indicator.dart::RefreshIndicator" <|-- "vote_app::utils::utils.dart::DarkRefreshIndicator"
+
+
+@enduml

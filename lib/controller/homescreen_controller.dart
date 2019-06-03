@@ -15,7 +15,7 @@ class HomeSreenController extends BaseController{
   }
 
   void fillNotifications() {
-    _notificationApiProvider.getAll().then((response) {
+    _notificationApiProvider.getNew().then((response) {
       homeScreenState.setNotifications(response);
     }).catchError((error) {
       homeScreenState.setNotifications(List<NotificationResponse>());

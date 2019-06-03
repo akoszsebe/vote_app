@@ -14,29 +14,31 @@ class NotificationScreen extends StatefulWidget {
 class NotificationScreenState extends State<NotificationScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  List<NotificationResponse> notifications;
+  List<NotificationResponse> notifications = List<NotificationResponse>();
   NotificationScreenController _notificationScreenController;
 
-  bool shouldUpdate = true;
   @override
   void initState() {
     super.initState();
     _notificationScreenController =
         NotificationScreenController(notificationScreenState: this);
+    _notificationScreenController.init();
   }
 
-  void addNotificationItem(NotificationResponse notifcation){
+  void addNotificationItem(NotificationResponse notification) {
     setState(() {
-      notifications.add(notifcation);
+      notifications.add(notification);
+    });
+  }
+
+  void setNotifications(List<NotificationResponse> notifications){
+        setState(() {
+      this.notifications.addAll(notifications);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (shouldUpdate) {
-      notifications = ModalRoute.of(context).settings.arguments;
-      shouldUpdate = false;
-    }
     return Scaffold(
         appBar: AppBar(
           title: Text("Notifications"),
