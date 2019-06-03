@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/pages/vote_screen.dart';
 import 'package:vote_app/pages/votestatistics_screen.dart';
+import 'package:vote_app/utils/utils.dart';
 
 void showAlertDialog(BuildContext context, String title, String content) {
   // flutter defined function

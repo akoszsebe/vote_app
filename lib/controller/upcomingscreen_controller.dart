@@ -1,8 +1,8 @@
 import 'package:http/http.dart';
+import 'package:vote_app/controller/base_controller.dart';
 import 'package:vote_app/pages/upcoming_frame.dart';
-import 'package:web3dart/web3dart.dart';
 
-class UpComingFrameCrontroller {
+class UpComingFrameCrontroller  extends BaseController{
   final UpcomingFrameState upcomingFrameState;
 
   UpComingFrameCrontroller({this.upcomingFrameState});
@@ -13,6 +13,9 @@ class UpComingFrameCrontroller {
   var httpClient = new Client();
   var ethClient;
 
+  @override
+  void init(){
+  }
 
   Future<dynamic> refresh() async {
         // ethClient = new Web3Client(apiUrl, httpClient);

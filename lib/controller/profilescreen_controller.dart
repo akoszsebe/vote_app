@@ -1,14 +1,16 @@
+import 'package:vote_app/controller/base_controller.dart';
 import 'package:vote_app/networking/providers/group_api_provider.dart';
 import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/pages/profile_frame.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
-class ProfileScreenController {
+class ProfileScreenController extends BaseController{
   final ProfileFrameState profileFrameState;
 
   ProfileScreenController({this.profileFrameState});
 
+  @override
   void init() {
     SharedPrefs.getAuthToken().then((token) {
       profileFrameState.setName(parseJwt(token)["name"]);

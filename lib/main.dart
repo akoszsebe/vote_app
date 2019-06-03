@@ -6,6 +6,7 @@ import 'package:vote_app/pages/confirmation_screen.dart';
 import 'package:vote_app/pages/home_screen.dart';
 import 'package:vote_app/pages/vote_screen.dart';
 import 'package:vote_app/pages/votestatistics_screen.dart';
+import 'package:vote_app/utils/firebasenotifications .dart';
 
 void main() => runApp(MyApp());
 

@@ -140,7 +140,7 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
 
   void hideLoading() {
     setState(() {
-      loading = true;
+      loading = false;
     });
   }
 

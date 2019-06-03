@@ -51,8 +51,8 @@ abstract class ApiProvider {
       dio.interceptors.requestLock.unlock();
       return options;
     }));
-    tokenDio.interceptors.add(LogInterceptor(responseBody: true));
-    dio.interceptors.add(LogInterceptor(responseBody: true));
+    tokenDio.interceptors.add(LogInterceptor(responseBody: true,requestBody: true));
+    dio.interceptors.add(LogInterceptor(responseBody: true,requestBody: true));
   }
 
 

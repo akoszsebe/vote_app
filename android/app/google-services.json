@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "583886540812",
+    "firebase_url": "https://voteapp-463de.firebaseio.com",
+    "project_id": "voteapp-463de",
+    "storage_bucket": "voteapp-463de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583886540812:android:a780f64af4937185",
+        "android_client_info": {
+          "package_name": "com.example.vote_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583886540812-tukp197vhtgtejba535bt05dpo95qjkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc7eV5yI-Ikc5CmaDaz31AKVncfMLn_CU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583886540812-tukp197vhtgtejba535bt05dpo95qjkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

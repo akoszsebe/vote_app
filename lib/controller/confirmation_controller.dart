@@ -1,9 +1,10 @@
+import 'package:vote_app/controller/base_controller.dart';
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/verification_request.dart';
 import 'package:vote_app/pages/confirmation_screen.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
-class ConfirmationScreenController {
+class ConfirmationScreenController extends BaseController{
   final ConfirmationScreenState confirmationScreenState;
   RegisterApiProvider _registerApiProvider = RegisterApiProvider();
 
@@ -30,4 +31,9 @@ class ConfirmationScreenController {
       }
     });
   }
+
+  @override
+  void init() {
+  }
+
 }

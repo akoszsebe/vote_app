@@ -1,9 +1,10 @@
 import 'dart:math';
 
+import 'package:vote_app/controller/base_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/pages/notification_screen.dart';
 
-class NotificationScreenController {
+class NotificationScreenController extends BaseController{
   final NotificationScreenState notificationScreenState;
 
   NotificationScreenController({this.notificationScreenState});
@@ -18,5 +19,9 @@ class NotificationScreenController {
           notType: "",
           actions: ["join"]));
     return null;
+  }
+
+  @override
+  void init() {
   }
 }

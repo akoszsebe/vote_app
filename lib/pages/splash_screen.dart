@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:vote_app/controller/splashscreen_controller.dart';
+import 'package:vote_app/pages/confirmation_screen.dart';
+import 'package:vote_app/utils/FirebaseNotifications%20.dart';
 import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/pages/register_screen.dart';
@@ -24,6 +26,8 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    new FirebaseNotifications().setUpFirebase();
+    print("--------------------------------- init ----------------");
     _splashScreenController = SplashScreenController(splashScreenState: this);
     _splashScreenController.init();
   }
@@ -253,10 +257,14 @@ class SplashScreenState extends State<SplashScreen> {
           builder: CodeInputBuilders.lightCircle(obscureText: true),
           onFilled: (value) async {
             await Future.delayed(const Duration(milliseconds: 200));
-             _splashScreenController.loginEmailPin(value);
+            _splashScreenController.loginEmailPin(value);
           },
         )
       ],
     );
+  }
+
+  void navigateConfirmation() {
+    Navigator.pushNamed(context, ConfirmationScreen.routeName);
   }
 }

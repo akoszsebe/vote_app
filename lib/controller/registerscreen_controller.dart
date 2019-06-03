@@ -1,8 +1,9 @@
+import 'package:vote_app/controller/base_controller.dart';
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/register_request.dart';
 import 'package:vote_app/pages/register_screen.dart';
 
-class RegisterScreenController {
+class RegisterScreenController  extends BaseController{
   final RegisterScreenState registerScreenState;
 
   RegisterScreenController({this.registerScreenState});
@@ -13,6 +14,11 @@ class RegisterScreenController {
   Sex sex = Sex.male;
   String name = "";
   RegisterApiProvider _registerApiProvider = RegisterApiProvider();
+
+  @override
+  void init() {
+    super.init();
+  }
 
   void register() {
     registerScreenState.showLoading();
