@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vote_app/controller/notificationscreen_controller.dart';
+import 'package:vote_app/networking/providers/group_api_provider.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
@@ -14,7 +15,7 @@ class NotificationScreen extends StatefulWidget {
 class NotificationScreenState extends State<NotificationScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  List<NotificationResponse> notifications = List<NotificationResponse>();
+  List<NotificationResponse> notifications;
   NotificationScreenController _notificationScreenController;
 
   @override
@@ -25,14 +26,11 @@ class NotificationScreenState extends State<NotificationScreen> {
     _notificationScreenController.init();
   }
 
-  void addNotificationItem(NotificationResponse notification) {
+  void addNotifications(List<NotificationResponse> notifications) {
+    if (this.notifications == null) {
+      this.notifications = List<NotificationResponse>();
+    }
     setState(() {
-      notifications.add(notification);
-    });
-  }
-
-  void setNotifications(List<NotificationResponse> notifications){
-        setState(() {
       this.notifications.addAll(notifications);
     });
   }
@@ -50,11 +48,9 @@ class NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget _buildBody(List<NotificationResponse> notifications) {
-    if (notifications.isEmpty) {
-      return _buildNoNotifications();
-    } else {
-      return _buildNotifications();
-    }
+    if (notifications == null) return buildLoader();
+    if (notifications.isEmpty) return _buildNoNotifications();
+    return _buildNotifications();
   }
 
   Widget _buildNotifications() {
@@ -75,19 +71,26 @@ class NotificationScreenState extends State<NotificationScreen> {
                 showConfirmDialog(
                     context, "Alert", "Are you sure to not join this group ?",
                     () {
-                  setState(() {
-                    notifications.removeAt(index);
-                  });
+                  notJoinGroup(notifications[index].id, index);
                 });
               },
               child: NotificationListItem(
                 action: NotificationState.actionNeeded,
                 title: notifications[index].message,
+                id: notifications[index].id,
               ),
               background: Container(
-                color: Colors.red,
+                decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                      colors: [Colors.red, Colors.blueGrey[800]],
+                      begin: const FractionalOffset(0.0, 0.0),
+                      end: const FractionalOffset(0.8, 0.0),
+                      stops: [0.1, 1.0],
+                      tileMode: TileMode.clamp),
+                ),
                 child: Center(
-                  child: Text("Delete"),
+                  child: Text("Delete",
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
                 ),
               ),
             );
@@ -124,17 +127,29 @@ class NotificationScreenState extends State<NotificationScreen> {
           )
         ]));
   }
+
+  void notJoinGroup(int id, int index) {
+    GroupApiProvider groupApiProvider = GroupApiProvider();
+    groupApiProvider.reject(id).then((response) {
+      setState(() {
+        notifications.removeAt(index);
+      });
+    }).catchError((error) {
+      showAlertDialog(context, "Error", error.message);
+    });
+  }
 }
 
 class NotificationListItem extends StatefulWidget {
   final NotificationState action;
   final String title;
+  final int id;
 
-  NotificationListItem({this.action, this.title});
+  NotificationListItem({this.action, this.title, this.id});
 
   @override
   State<StatefulWidget> createState() =>
-      _NotificationListItemState(action: action, title: title);
+      _NotificationListItemState(action: action, title: title, id: id);
 }
 
 enum NotificationState {
@@ -146,7 +161,8 @@ enum NotificationState {
 class _NotificationListItemState extends State<NotificationListItem> {
   NotificationState action;
   String title;
-  _NotificationListItemState({this.action, this.title});
+  int id;
+  _NotificationListItemState({this.action, this.title, this.id});
   @override
   void initState() {
     super.initState();
@@ -168,20 +184,13 @@ class _NotificationListItemState extends State<NotificationListItem> {
                   new Text(
                     title,
                     style: new TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 8),
-                  ),
-                  new Text(
-                    "Content",
-                    style: new TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white54),
-                  ),
+                  )
                 ],
               ),
             )),
@@ -203,6 +212,7 @@ class _NotificationListItemState extends State<NotificationListItem> {
               setState(() {
                 action = NotificationState.loading;
               });
+              joinGroup(id);
             },
             textColor: Theme.of(context).accentColor,
             color: Colors.white,
@@ -224,5 +234,19 @@ class _NotificationListItemState extends State<NotificationListItem> {
       style: new TextStyle(
           fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white54),
     );
+  }
+
+  void joinGroup(int id) {
+    GroupApiProvider groupApiProvider = GroupApiProvider();
+    groupApiProvider.accept(id).then((response) {
+      setState(() {
+        action = NotificationState.actionDone;
+      });
+    }).catchError((error) {
+      setState(() {
+        action = NotificationState.actionNeeded;
+      });
+      showAlertDialog(context, "Error", error.message);
+    });
   }
 }

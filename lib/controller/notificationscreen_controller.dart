@@ -19,18 +19,22 @@ class NotificationScreenController extends BaseController {
     _notificationApiProvider
         .getAll()
         .then((response) {
-          
+          notificationScreenState.addNotifications(response);
         })
-        .catchError((error) {});
+        .catchError((error) {
+          notificationScreenState.addNotifications(List<NotificationResponse>());
+        });
   }
 
   Future<dynamic> refresh() async {
-    //notifications = List<NotificationResponse>();
-    notificationScreenState.addNotificationItem(NotificationResponse(
-        id: random.nextInt(1000),
-        message: random.nextInt(1000).toString(),
-        notType: "",
-        actions: ["join"]));
+    _notificationApiProvider
+        .getNew()
+        .then((response) {
+          notificationScreenState.addNotifications(response);
+        })
+        .catchError((error) {
+          
+        });
     return null;
   }
 }

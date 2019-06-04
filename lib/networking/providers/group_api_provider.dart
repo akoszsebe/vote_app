@@ -24,9 +24,9 @@ class GroupApiProvider extends ApiProvider {
 
   Future<bool> accept(int id) async {
     try {
-      GroupAcceptRequest body = GroupAcceptRequest(id: id, accepted: true);
+      GroupAcceptRequest body = GroupAcceptRequest(accepted: true);
       String authToken = await SharedPrefs.getAuthToken();
-      Response response = await dio.post(baseUrl + "/group/invite",
+      Response response = await dio.put(baseUrl + "/group/invite/$id",
           data: body.toJson(),
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
@@ -40,9 +40,9 @@ class GroupApiProvider extends ApiProvider {
 
   Future<bool> reject(int id) async {
     try {
-      GroupAcceptRequest body = GroupAcceptRequest(id: id, accepted: false);
+      GroupAcceptRequest body = GroupAcceptRequest(accepted: false);
       String authToken = await SharedPrefs.getAuthToken();
-      Response response = await dio.post(baseUrl + "/group/invite",
+      Response response = await dio.put(baseUrl + "/group/invite/$id",
           data: body.toJson(),
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},

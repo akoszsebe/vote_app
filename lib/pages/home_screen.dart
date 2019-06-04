@@ -58,7 +58,6 @@ class HomeScreenState extends State<HomeScreen> {
   void setCurrentIndex(int index) {
     setState(() {
       _currentIndex = index;
-      _notificationCount = _currentIndex * 5;
       if (_currentIndex == 2) {
         isFilterVisible = false;
       } else if (!isFilterVisible) {
