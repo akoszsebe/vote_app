@@ -61,38 +61,10 @@ class NotificationScreenState extends State<NotificationScreen> {
                 color: Theme.of(context).primaryColorLight,
               ),
           itemBuilder: (context, index) {
-            return Dismissible(
-              direction: DismissDirection.endToStart,
-              key: Key(notifications[index].id.toString()),
-              onDismissed: (direction) {
-                print("direction " + direction.toString());
-              },
-              confirmDismiss: (DismissDirection direction) {
-                showConfirmDialog(
-                    context, "Alert", "Are you sure to not join this group ?",
-                    () {
-                  notJoinGroup(notifications[index].id, index);
-                });
-              },
-              child: NotificationListItem(
-                action: NotificationState.actionNeeded,
-                title: notifications[index].message,
-                id: notifications[index].id,
-              ),
-              background: Container(
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                      colors: [Colors.red, Colors.blueGrey[800]],
-                      begin: const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(0.8, 0.0),
-                      stops: [0.1, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: Center(
-                  child: Text("Delete",
-                      style: TextStyle(color: Colors.white, fontSize: 22)),
-                ),
-              ),
+            return NotificationListItem(
+              actions: notifications[index].actions,
+              title: notifications[index].message,
+              id: notifications[index].id,
             );
           },
           itemCount: notifications.length,
@@ -127,42 +99,28 @@ class NotificationScreenState extends State<NotificationScreen> {
           )
         ]));
   }
-
-  void notJoinGroup(int id, int index) {
-    GroupApiProvider groupApiProvider = GroupApiProvider();
-    groupApiProvider.reject(id).then((response) {
-      setState(() {
-        notifications.removeAt(index);
-      });
-    }).catchError((error) {
-      showAlertDialog(context, "Error", error.message);
-    });
-  }
 }
 
 class NotificationListItem extends StatefulWidget {
-  final NotificationState action;
+  final List<NotAction> actions;
   final String title;
   final int id;
 
-  NotificationListItem({this.action, this.title, this.id});
+  NotificationListItem({this.actions, this.title, this.id});
 
   @override
   State<StatefulWidget> createState() =>
-      _NotificationListItemState(action: action, title: title, id: id);
-}
-
-enum NotificationState {
-  loading,
-  actionNeeded,
-  actionDone,
+      _NotificationListItemState(actions: actions, title: title, id: id);
 }
 
 class _NotificationListItemState extends State<NotificationListItem> {
-  NotificationState action;
+  List<NotAction> actions;
   String title;
   int id;
-  _NotificationListItemState({this.action, this.title, this.id});
+
+  bool isLoading = false;
+
+  _NotificationListItemState({this.actions, this.title, this.id});
   @override
   void initState() {
     super.initState();
@@ -184,7 +142,7 @@ class _NotificationListItemState extends State<NotificationListItem> {
                   new Text(
                     title,
                     style: new TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
@@ -200,39 +158,54 @@ class _NotificationListItemState extends State<NotificationListItem> {
   }
 
   Widget _buildAction() {
-    switch (action) {
-      case NotificationState.loading:
-        return Padding(
-          padding: EdgeInsets.only(right: 16),
-          child: buildLoader(),
-        );
-      case NotificationState.actionNeeded:
-        return RaisedButton(
-            onPressed: () {
-              setState(() {
-                action = NotificationState.loading;
-              });
-              joinGroup(id);
-            },
-            textColor: Theme.of(context).accentColor,
-            color: Colors.white,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Join",
-            ));
-      case NotificationState.actionDone:
-        return Text(
-          "Joined",
-          style: new TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white54),
-        );
+    if (isLoading) {
+      return Padding(
+        padding: EdgeInsets.only(right: 16),
+        child: buildLoader(),
+      );
     }
-    return Text(
-      "Error",
-      style: new TextStyle(
-          fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white54),
+    if (actions == null) {
+      return Container();
+    }
+    return Column(
+      children: <Widget>[
+        if (actions.contains(NotAction.ACTION_ACCEPT))
+          RaisedButton(
+              onPressed: () {
+                setState(() {
+                  isLoading = true;
+                });
+                joinGroup(id);
+              },
+              textColor: Theme.of(context).accentColor,
+              color: Colors.white,
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Join",
+              )),
+        if (actions.contains(NotAction.ACTION_DECLINE))
+          RaisedButton(
+              onPressed: () {
+                setState(() {
+                  isLoading = true;
+                });
+                notJoinGroup(id);
+              },
+              textColor: Theme.of(context).accentColor,
+              color: Colors.white,
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Reject",
+              )),
+        if (actions.contains(NotAction.ACTION_OPEN))
+          Text(
+            "Joined",
+            style: new TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white54),
+          ),
+      ],
     );
   }
 
@@ -240,11 +213,28 @@ class _NotificationListItemState extends State<NotificationListItem> {
     GroupApiProvider groupApiProvider = GroupApiProvider();
     groupApiProvider.accept(id).then((response) {
       setState(() {
-        action = NotificationState.actionDone;
+        isLoading = false;
+        actions.clear();
+        actions.add(NotAction.ACTION_OPEN);
       });
     }).catchError((error) {
       setState(() {
-        action = NotificationState.actionNeeded;
+        isLoading = false;
+      });
+      showAlertDialog(context, "Error", error.message);
+    });
+  }
+
+  void notJoinGroup(int id) {
+    GroupApiProvider groupApiProvider = GroupApiProvider();
+    groupApiProvider.reject(id).then((response) {
+      setState(() {
+        isLoading = false;
+        actions.clear();
+      });
+    }).catchError((error) {
+      setState(() {
+        isLoading = false;
       });
       showAlertDialog(context, "Error", error.message);
     });

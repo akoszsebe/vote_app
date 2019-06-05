@@ -11,7 +11,7 @@ class RegisterScreenController  extends BaseController{
   String pin = "";
   String email = "";
   String birthDate = "";
-  Sex sex = Sex.male;
+  Sex sex = Sex.MALE;
   String name = "";
   RegisterApiProvider _registerApiProvider = RegisterApiProvider();
 

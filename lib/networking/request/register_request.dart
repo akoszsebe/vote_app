@@ -1,10 +1,10 @@
 import 'package:vote_app/utils/utils.dart';
 
-enum Sex { male, female }
+enum Sex { MALE, FEMALE }
 
 final sexValues = new EnumValues({
-    "m": Sex.male,
-    "f": Sex.female
+    "M": Sex.MALE,
+    "F": Sex.FEMALE
 });
 
 class RegisterRequest {
