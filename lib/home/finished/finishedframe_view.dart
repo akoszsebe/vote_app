@@ -15,10 +15,7 @@ class FinishedFrame extends StatefulWidget {
 class FinishedFrameState extends State<FinishedFrame> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  final List<VoteModel> data = [
-    VoteModel("Party", "2019-05-12", "Friends \nWinner: Flying Circus",
-        IconType.party, "finished"),
-  ];
+  final List<VoteModel> data = [];
   FinishedFrameCrontroller _finishedFrameCrontroller;
 
   @override

@@ -13,20 +13,16 @@ class VoteScreen extends StatefulWidget {
 class VoteScreenState extends State<VoteScreen> {
   int _radioValue = 0;
   VoteModel vote;
+  VoteDetailResponse voteDetails;
   bool isLoading = true;
   VoteSreenController _voteSreenController;
+  bool requestSent = false;
 
   @override
   void initState() {
     super.initState();
     _voteSreenController = VoteSreenController(voteScreenState: this);
     _voteSreenController.init();
-  }
-
-  void setLoading() {
-    setState(() {
-      isLoading = false;
-    });
   }
 
   void setRadioValue(int value) {
@@ -37,7 +33,11 @@ class VoteScreenState extends State<VoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    vote = ModalRoute.of(context).settings.arguments;
+    if (!requestSent) {
+      vote = ModalRoute.of(context).settings.arguments;
+      _voteSreenController.getVotedetails(vote.id);
+      requestSent = true;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Row(children: <Widget>[
@@ -64,13 +64,13 @@ class VoteScreenState extends State<VoteScreen> {
       return buildLoader();
     } else {
       return ListView(children: <Widget>[
-        buildVoteDetails(context, vote),
-        _buildVoteOptions(vote)
+        buildVoteDetails(context, voteDetails),
+        _buildVoteOptions(voteDetails)
       ]);
     }
   }
 
-  Widget _buildVoteOptions(VoteModel vote) {
+  Widget _buildVoteOptions(VoteDetailResponse voteDetails) {
     return Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.all(16.0),
@@ -118,10 +118,12 @@ class VoteScreenState extends State<VoteScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        radioElement("Kebab", 0, _voteSreenController.handleRadioValueChange,
-                            vote.voteIcon.color),
-                        radioElement("Csirkehus majonezes pityokaval", 1,
-                            _voteSreenController.handleRadioValueChange, vote.voteIcon.color),
+                        for (int i = 0; i < voteDetails.responses.length; i++)
+                          radioElement(
+                              voteDetails.responses[i].value,
+                              i,
+                              _voteSreenController.handleRadioValueChange,
+                              vote.voteIcon.color),
                         Padding(
                           padding: EdgeInsets.only(top: 16),
                         ),
@@ -162,5 +164,19 @@ class VoteScreenState extends State<VoteScreen> {
         ],
       ),
     );
+  }
+
+  void showError(message) {
+    setState(() {
+      isLoading = false;
+    });
+    showAlertDialog(context, "Error", message);
+  }
+
+  void setVoteDetails(VoteDetailResponse response) {
+    setState(() {
+      isLoading = false;
+      voteDetails = response;
+    });
   }
 }

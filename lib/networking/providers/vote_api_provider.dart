@@ -20,7 +20,7 @@ class VoteApiProvider extends ApiProvider {
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")),
           cancelToken: token);
-      return List<VoteResponse>.from(response.data);
+      return List<VoteResponse>.from(response.data.map((x) => VoteResponse.fromJson(x)));
     } on DioError catch (e) {
       print("Exception occured: $e");
       throw ApiExeption.fromDioError(e);
@@ -40,7 +40,7 @@ class VoteApiProvider extends ApiProvider {
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")),
           cancelToken: token);
-      return List<VoteResponse>.from(response.data);
+      return List<VoteResponse>.from(response.data.map((x) => VoteResponse.fromJson(x)));
     } on DioError catch (e) {
       print("Exception occured: $e");
       throw ApiExeption.fromDioError(e);

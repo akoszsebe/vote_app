@@ -72,7 +72,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       return buildLoader();
     } else {
       return ListView(children: <Widget>[
-        buildVoteDetails(context, vote),
+        //buildVoteDetails(context, vote),
         _buildVoteResult(vote)
       ]);
     }

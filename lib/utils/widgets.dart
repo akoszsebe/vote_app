@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 
 void showAlertDialog(BuildContext context, String title, String content) {
@@ -63,6 +64,8 @@ Widget buildLoader() {
 
 Widget buildListItem(
     BuildContext context, int index, List<VoteModel> data, VoidCallback onTap) {
+        var format = new DateFormat("yMd");
+        var days = data[index].date.difference(DateTime.now()).inDays;
   return InkWell(
       onTap: onTap,
       child: Container(
@@ -103,7 +106,7 @@ Widget buildListItem(
                     padding: EdgeInsets.only(top: 8),
                   ),
                   new Text(
-                    data[index].date,
+                    format.format(data[index].date),
                     style: new TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -126,7 +129,7 @@ Widget buildListItem(
               ),
             )),
             new Text(
-              data[index].joined,
+              "Vote in \n"+days.toString() + (days > 1 ? " days" : " day"),
               style: new TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -137,7 +140,7 @@ Widget buildListItem(
       ));
 }
 
-Widget buildVoteDetails(BuildContext context, VoteModel vote) {
+Widget buildVoteDetails(BuildContext context, VoteDetailResponse vote) {
   return Container(
       alignment: Alignment.centerLeft,
       margin: new EdgeInsets.all(16.0),
@@ -165,7 +168,7 @@ Widget buildVoteDetails(BuildContext context, VoteModel vote) {
                     padding: EdgeInsets.only(top: 6),
                   ),
                   new Text(
-                    vote.content,
+                    vote.group.name,
                     style: new TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.normal,
@@ -173,6 +176,13 @@ Widget buildVoteDetails(BuildContext context, VoteModel vote) {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 16),
+                  ),
+                  new Text(
+                    vote.description,
+                    style: new TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
                   ),
                 ],
               ),

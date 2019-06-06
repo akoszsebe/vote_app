@@ -13,16 +13,9 @@ class UpcomingFrame extends StatefulWidget {
 }
 
 class UpcomingFrameState extends State<UpcomingFrame> {
-  List<VoteModel> data = [
-    VoteModel('Food for friday lunch', "2019-05-15", "Accenture", IconType.food,
-        "vote"),
-    VoteModel('Food for friday morning', "2019-05-16", "Accenture",
-        IconType.food, "vote in\n 1 day"),
-    VoteModel(
-        'Boss', "2019-05-18", "Romania", IconType.election, "vote in\n 1 day"),
-    VoteModel('What to sport together', "2019-05-18", "Friends", IconType.sport,
-        "vote in\n 2 days")
-  ];
+  List<VoteModel> data = [];
+
+  bool isLoading = true;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   UpComingFrameCrontroller _upcomingFrameCrontroller;
@@ -33,29 +26,30 @@ class UpcomingFrameState extends State<UpcomingFrame> {
     _upcomingFrameCrontroller =
         UpComingFrameCrontroller(upcomingFrameState: this);
     _upcomingFrameCrontroller.init();
-
     _upcomingFrameCrontroller.refresh();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) return buildLoader();
     return DarkRefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _upcomingFrameCrontroller.refresh,
       child: ListView.builder(
         itemBuilder: (context, index) =>
-            buildListItem(context, index, data, (){
-          Navigator.pushNamed(context, VoteScreen.routeName,
-              arguments: data[index]);
-      }),
+            buildListItem(context, index, data, () {
+              Navigator.pushNamed(context, VoteScreen.routeName,
+                  arguments: data[index]);
+            }),
         itemCount: data.length,
       ),
     );
   }
 
-  void setData(List<VoteResponse> response) {
+  void setData(List<VoteModel> response) {
     setState(() {
-     //data = response; 
+      isLoading = false;
+      data = response;
     });
   }
 }
