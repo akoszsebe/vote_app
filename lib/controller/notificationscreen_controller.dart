@@ -19,8 +19,6 @@ class NotificationScreenController extends BaseController {
     _notificationApiProvider
         .getAll()
         .then((response) {
-          print("----");
-          response.forEach((f)=>{print(f.toJson())});
           notificationScreenState.addNotifications(response);
         })
         .catchError((error) {
