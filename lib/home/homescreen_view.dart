@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/homescreen_controller.dart';
+import 'package:vote_app/home/homescreen_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
-import 'package:vote_app/pages/finished_frame.dart';
-import 'package:vote_app/pages/notification_screen.dart';
-import 'package:vote_app/pages/profile_frame.dart';
-import 'package:vote_app/pages/upcoming_frame.dart';
+import 'package:vote_app/home/finished/finishedframe_view.dart';
+import 'package:vote_app/notification/notificationscreen_view.dart';
+import 'package:vote_app/home/profile/profileframe_view.dart';
+import 'package:vote_app/home/upcoming/upcomingframe_view.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class HomeScreen extends StatefulWidget {

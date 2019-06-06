@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/confirmation_controller.dart';
-import 'package:vote_app/pages/home_screen.dart';
+import 'package:vote_app/confirmation/confirmationscreen_controller.dart';
+import 'package:vote_app/home/homescreen_view.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class ConfirmationScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:vote_app/controller/base_controller.dart';
-import 'package:vote_app/pages/finished_frame.dart';
+import 'package:vote_app/base/base_controller.dart';
+import 'package:vote_app/home/finished/finishedframe_view.dart';
 
 class FinishedFrameCrontroller extends BaseController{
   final FinishedFrameState finishedFrameState;

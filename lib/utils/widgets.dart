@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
-import 'package:vote_app/pages/vote_screen.dart';
-import 'package:vote_app/pages/votestatistics_screen.dart';
-import 'package:vote_app/utils/utils.dart';
 
 void showAlertDialog(BuildContext context, String title, String content) {
   // flutter defined function
@@ -27,8 +24,8 @@ void showAlertDialog(BuildContext context, String title, String content) {
   );
 }
 
-
-void showConfirmDialog(BuildContext context, String title, String content,VoidCallback onOK) {
+void showConfirmDialog(
+    BuildContext context, String title, String content, VoidCallback onOK) {
   // flutter defined function
   showDialog(
     context: context,
@@ -65,17 +62,9 @@ Widget buildLoader() {
 }
 
 Widget buildListItem(
-    BuildContext context, int index, List<VoteModel> data, bool finished) {
+    BuildContext context, int index, List<VoteModel> data, VoidCallback onTap) {
   return InkWell(
-      onTap: () {
-        if (finished) {
-          Navigator.pushNamed(context, VoteStatisticsScreen.routeName,
-              arguments: data[index]);
-        } else {
-          Navigator.pushNamed(context, VoteScreen.routeName,
-              arguments: data[index]);
-        }
-      },
+      onTap: onTap,
       child: Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.all(16.0),
@@ -148,48 +137,47 @@ Widget buildListItem(
       ));
 }
 
-
-Widget buildVoteDetails(BuildContext context,VoteModel vote) {
-    return Container(
-        alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.all(16.0),
-        padding: new EdgeInsets.all(16.0),
-        decoration: new BoxDecoration(
-            color: Theme.of(context).primaryColorLight,
-            borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
-            boxShadow: [
-              new BoxShadow(
-                  color: Colors.black38,
-                  offset: new Offset(1.0, 1.0),
-                  blurRadius: 5.0)
-            ]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Expanded(
-              child: new Padding(
-                padding: new EdgeInsets.only(top: 8.0),
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 6),
-                    ),
-                    new Text(
-                      vote.content,
-                      style: new TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white70),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                    ),
-                  ],
-                ),
+Widget buildVoteDetails(BuildContext context, VoteModel vote) {
+  return Container(
+      alignment: Alignment.centerLeft,
+      margin: new EdgeInsets.all(16.0),
+      padding: new EdgeInsets.all(16.0),
+      decoration: new BoxDecoration(
+          color: Theme.of(context).primaryColorLight,
+          borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
+          boxShadow: [
+            new BoxShadow(
+                color: Colors.black38,
+                offset: new Offset(1.0, 1.0),
+                blurRadius: 5.0)
+          ]),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new Expanded(
+            child: new Padding(
+              padding: new EdgeInsets.only(top: 8.0),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 6),
+                  ),
+                  new Text(
+                    vote.content,
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white70),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                  ),
+                ],
               ),
             ),
-          ],
-        ));
-  }
+          ),
+        ],
+      ));
+}

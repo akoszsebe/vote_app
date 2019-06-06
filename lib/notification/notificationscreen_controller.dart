@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:vote_app/controller/base_controller.dart';
+import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/notification_api_provider.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
-import 'package:vote_app/pages/notification_screen.dart';
+import 'package:vote_app/notification/notificationscreen_view.dart';
 
 class NotificationScreenController extends BaseController {
   final NotificationScreenState notificationScreenState;

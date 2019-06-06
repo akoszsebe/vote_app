@@ -1,6 +1,6 @@
-import 'package:vote_app/controller/base_controller.dart';
+import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/group_api_provider.dart';
-import 'package:vote_app/pages/listitems/notification_listitem.dart';
+import 'package:vote_app/notification/listitems/notification_listitem.dart';
 
 class NotificationListItemController extends BaseController {
   final NotificationListItemState notificationListItemState;

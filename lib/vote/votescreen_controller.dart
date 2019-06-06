@@ -1,5 +1,5 @@
-import 'package:vote_app/controller/base_controller.dart';
-import 'package:vote_app/pages/vote_screen.dart';
+import 'package:vote_app/base/base_controller.dart';
+import 'package:vote_app/vote/votescreen_view.dart';
 
 class VoteSreenController extends BaseController {
   final VoteScreenState voteScreenState;

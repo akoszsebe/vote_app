@@ -1,7 +1,7 @@
 import 'package:http/http.dart';
-import 'package:vote_app/controller/base_controller.dart';
+import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/vote_api_provider.dart';
-import 'package:vote_app/pages/upcoming_frame.dart';
+import 'package:vote_app/home/upcoming/upcomingframe_view.dart';
 
 class UpComingFrameCrontroller  extends BaseController{
   final UpcomingFrameState upcomingFrameState;

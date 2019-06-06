@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/pages/notification_screen.dart';
-import 'package:vote_app/pages/splash_screen.dart';
-import 'package:vote_app/pages/register_screen.dart';
-import 'package:vote_app/pages/confirmation_screen.dart';
-import 'package:vote_app/pages/home_screen.dart';
-import 'package:vote_app/pages/vote_screen.dart';
-import 'package:vote_app/pages/votestatistics_screen.dart';
-import 'package:vote_app/utils/firebasenotifications .dart';
+import 'package:vote_app/notification/notificationscreen_view.dart';
+import 'package:vote_app/splash/splashscreen_view.dart';
+import 'package:vote_app/register/registerscreen_view.dart';
+import 'package:vote_app/confirmation/confirmationscreen_view.dart';
+import 'package:vote_app/home/homescreen_view.dart';
+import 'package:vote_app/vote/votescreen_view.dart';
+import 'package:vote_app/votestatistics/votestatisticsscreen_view.dart';
 
 void main() => runApp(MyApp());
 

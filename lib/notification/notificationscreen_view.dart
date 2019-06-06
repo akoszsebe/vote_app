@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/notificationscreen_controller.dart';
-import 'package:vote_app/networking/providers/group_api_provider.dart';
+import 'package:vote_app/notification/notificationscreen_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
-import 'package:vote_app/pages/listitems/notification_listitem.dart';
+import 'package:vote_app/notification/listitems/notification_listitem.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
 

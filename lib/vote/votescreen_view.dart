@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/votescreen_controller.dart';
+import 'package:vote_app/vote/votescreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/widgets.dart';
 

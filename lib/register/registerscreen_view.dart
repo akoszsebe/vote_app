@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vote_app/controller/registerscreen_controller.dart';
-import 'package:vote_app/pages/splash_screen.dart';
+import 'package:vote_app/register/registerscreen_controller.dart';
+import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class RegisterScreen extends StatefulWidget {

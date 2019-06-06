@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/votestatisticsscreen_controller.dart';
+import 'package:vote_app/votestatistics/votestatisticsscreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:vote_app/utils/widgets.dart';

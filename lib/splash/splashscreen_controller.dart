@@ -1,7 +1,7 @@
-import 'package:vote_app/controller/base_controller.dart';
+import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/login_api_provider.dart';
 import 'package:vote_app/networking/request/login_request.dart';
-import 'package:vote_app/pages/splash_screen.dart';
+import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/utils.dart';

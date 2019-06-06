@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/profilescreen_controller.dart';
+import 'package:vote_app/home/profile/profileframe_controller.dart';
 import 'package:vote_app/networking/response/group_response.dart';
-import 'package:vote_app/pages/splash_screen.dart';
+import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/widgets.dart';
 

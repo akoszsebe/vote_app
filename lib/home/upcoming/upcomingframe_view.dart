@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vote_app/controller/upcomingscreen_controller.dart';
+import 'package:vote_app/home/upcoming/upcomingframe_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
+import 'package:vote_app/vote/votescreen_view.dart';
 
 class UpcomingFrame extends StatefulWidget {
   static const routeName = '/uppcoming';
@@ -43,7 +44,10 @@ class UpcomingFrameState extends State<UpcomingFrame> {
       onRefresh: _upcomingFrameCrontroller.refresh,
       child: ListView.builder(
         itemBuilder: (context, index) =>
-            buildListItem(context, index, data, false),
+            buildListItem(context, index, data, (){
+          Navigator.pushNamed(context, VoteScreen.routeName,
+              arguments: data[index]);
+      }),
         itemCount: data.length,
       ),
     );
