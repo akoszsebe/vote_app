@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/groupinfo/groupinfoscreen_view.dart';
 import 'package:vote_app/notification/notificationscreen_view.dart';
 import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/register/registerscreen_view.dart';
@@ -18,6 +19,7 @@ var routes = <String, WidgetBuilder>{
   VoteStatisticsScreen.routeName: (BuildContext context) =>
       VoteStatisticsScreen(),
   NotificationScreen.routeName: (BuildContext context) => NotificationScreen(),
+  GroupInfoScreen.routeName: (BuildContext context) => GroupInfoScreen(),
 };
 
 class MyApp extends StatelessWidget {
