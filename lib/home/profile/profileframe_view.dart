@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/groupinfo/groupinfoscreen_view.dart';
 import 'package:vote_app/home/profile/profileframe_controller.dart';
 import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/splash/splashscreen_view.dart';
@@ -323,19 +324,24 @@ class ProfileFrameState extends State<ProfileFrame> {
   }
 
   Widget _buildChip(String title) {
-    return new Chip(
-      backgroundColor: Colors.white,
-      label: new Text(
-        title,
-        style:
-            TextStyle(color: Colors.blueGrey[700], fontWeight: FontWeight.bold),
-      ),
-      deleteIcon: Icon(Icons.close),
-      deleteIconColor: Theme.of(context).accentColor,
-      onDeleted: () {
-        showAlertDialog(
-            context, "Alert", "Are you sure you want to delete this group ?");
+    return InkWell(
+      onTap: (){
+        Navigator.pushNamed(context, GroupInfoScreen.routeName);
       },
+      child: Chip(
+        backgroundColor: Colors.white,
+        label: new Text(
+          title,
+          style: TextStyle(
+              color: Colors.blueGrey[700], fontWeight: FontWeight.bold),
+        ),
+        deleteIcon: Icon(Icons.close),
+        deleteIconColor: Theme.of(context).accentColor,
+        onDeleted: () {
+          showAlertDialog(
+              context, "Alert", "Are you sure you want to delete this group ?");
+        },
+      ),
     );
   }
 }
