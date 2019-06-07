@@ -18,6 +18,24 @@ class VoteResponse {
       type: iconTypeValues.map[json["type"]]);
 }
 
+class FinishedVoteResponse {
+  int id;
+  String title;
+  int end;
+  String group;
+  IconType type;
+
+  FinishedVoteResponse({this.id, this.title, this.end, this.group, this.type});
+
+  factory FinishedVoteResponse.fromJson(Map<String, dynamic> json) =>
+      new FinishedVoteResponse(
+          id: json["id"],
+          title: json["title"],
+          end: json["end"],
+          group: json["group"],
+          type: iconTypeValues.map[json["type"]]);
+}
+
 class VoteDetailResponse {
   int id;
   String title;
@@ -86,6 +104,15 @@ class VoteModel {
       vote.group,
       vote.type,
       vote.id.toString());
+
+  factory VoteModel.fromFinishedVoteResponse(FinishedVoteResponse vote) =>
+      new VoteModel(
+          vote.id,
+          vote.title,
+          DateTime.fromMillisecondsSinceEpoch(vote.end),
+          vote.group,
+          vote.type,
+          vote.id.toString());
 
   VoteModel(this.id, this.title, this.date, this.content, IconType iconType,
       this.rightText) {

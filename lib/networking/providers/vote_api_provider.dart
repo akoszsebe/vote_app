@@ -27,7 +27,7 @@ class VoteApiProvider extends ApiProvider {
     }
   }
 
-  Future<List<VoteResponse>> getFinished() async {
+  Future<List<FinishedVoteResponse>> getFinished() async {
     try {
       var queryParameters = {
         'page': 0,
@@ -40,7 +40,7 @@ class VoteApiProvider extends ApiProvider {
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")),
           cancelToken: token);
-      return List<VoteResponse>.from(response.data.map((x) => VoteResponse.fromJson(x)));
+      return List<FinishedVoteResponse>.from(response.data.map((x) => FinishedVoteResponse.fromJson(x)));
     } on DioError catch (e) {
       print("Exception occured: $e");
       throw ApiExeption.fromDioError(e);

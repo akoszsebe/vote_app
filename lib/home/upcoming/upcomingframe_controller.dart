@@ -1,37 +1,46 @@
 import 'package:http/http.dart';
 import 'package:vote_app/base/base_controller.dart';
-import 'package:vote_app/networking/providers/vote_api_provider.dart';
 import 'package:vote_app/home/upcoming/upcomingframe_view.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
+import 'package:vote_app/repository/votelist_repository.dart';
 
-class UpComingFrameCrontroller  extends BaseController{
+class UpComingFrameCrontroller extends BaseController {
   final UpcomingFrameState upcomingFrameState;
-  VoteApiProvider _voteApiProvider;
+  VoteListRepository _voteListRepository;
 
   UpComingFrameCrontroller({this.upcomingFrameState});
 
-    var apiUrl =
+  var apiUrl =
       "http://192.168.0.178:8545"; //"http://10.0.2.2:8545";// //Replace with your API
 
   var httpClient = new Client();
   var ethClient;
 
   @override
-  void init(){
-    _voteApiProvider = VoteApiProvider();
+  void init() {
+    _voteListRepository = VoteListRepository();
+    _voteListRepository.getUpComing().then((response) {
+      List<VoteModel> votes = List<VoteModel>();
+      response.forEach((vote) {
+        votes.add(VoteModel.fromVoteResponse(vote));
+      });
+      upcomingFrameState.setData(votes);
+    }).catchError((error) {
+      upcomingFrameState.showError(error.message);
+    });
   }
 
   Future<dynamic> refresh() async {
-    _voteApiProvider.getUpcoming().then((response){
+    _voteListRepository.refreshUpComing().then((response) {
       List<VoteModel> votes = List<VoteModel>();
-      response.forEach((vote){
-       votes.add(VoteModel.fromVoteResponse(vote)); 
+      response.forEach((vote) {
+        votes.add(VoteModel.fromVoteResponse(vote));
       });
       upcomingFrameState.setData(votes);
-    }).catchError((error){
-        print("---------------" + error.toString());
+    }).catchError((error) {
+      upcomingFrameState.showError(error.message);
     });
-        // ethClient = new Web3Client(apiUrl, httpClient);
+    // ethClient = new Web3Client(apiUrl, httpClient);
     // EthereumAddress _address =
     //     EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");
     return null;

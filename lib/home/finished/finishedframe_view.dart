@@ -15,7 +15,8 @@ class FinishedFrame extends StatefulWidget {
 class FinishedFrameState extends State<FinishedFrame> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  final List<VoteModel> data = [];
+  List<VoteModel> data = [];
+  bool isLoading = true;
   FinishedFrameCrontroller _finishedFrameCrontroller;
 
   @override
@@ -23,11 +24,12 @@ class FinishedFrameState extends State<FinishedFrame> {
     super.initState();
     _finishedFrameCrontroller =
         FinishedFrameCrontroller(finishedFrameState: this);
-    _finishedFrameCrontroller.refresh();
+    _finishedFrameCrontroller.init();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) return buildLoader();
     return DarkRefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _finishedFrameCrontroller.refresh,
@@ -40,5 +42,16 @@ class FinishedFrameState extends State<FinishedFrame> {
         itemCount: data.length,
       ),
     );
+  }
+
+  void setData(List<VoteModel> response) {
+    setState(() {
+      isLoading = false;
+      data = response;
+    });
+  }
+
+  void showError(message) {
+    showAlertDialog(context, "Error", message);
   }
 }

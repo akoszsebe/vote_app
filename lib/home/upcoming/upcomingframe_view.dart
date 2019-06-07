@@ -26,7 +26,6 @@ class UpcomingFrameState extends State<UpcomingFrame> {
     _upcomingFrameCrontroller =
         UpComingFrameCrontroller(upcomingFrameState: this);
     _upcomingFrameCrontroller.init();
-    _upcomingFrameCrontroller.refresh();
   }
 
   @override
@@ -51,5 +50,9 @@ class UpcomingFrameState extends State<UpcomingFrame> {
       isLoading = false;
       data = response;
     });
+  }
+
+  void showError(message) {
+    showAlertDialog(context, "Error", message);
   }
 }
