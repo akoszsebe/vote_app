@@ -165,7 +165,7 @@ class SplashScreenState extends State<SplashScreen> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RaisedButton(
+          RoundRaisedButton(
             onPressed: () => {
                   {
                     setState(() {
@@ -173,20 +173,16 @@ class SplashScreenState extends State<SplashScreen> {
                     })
                   },
                 },
-            textColor: Theme.of(context).accentColor,
-            color: Colors.white,
-            padding: const EdgeInsets.all(8.0),
+            context: context,
             child: new Text(
               "Login",
             ),
           ),
-          RaisedButton(
+          RoundInvertedRaisedButton(
             onPressed: () => {
                   {Navigator.pushNamed(context, RegisterScreen.routeName)},
                 },
-            textColor: Theme.of(context).accentColor,
-            color: Colors.white,
-            padding: const EdgeInsets.all(8.0),
+            context: context,
             child: new Text(
               "Register",
             ),

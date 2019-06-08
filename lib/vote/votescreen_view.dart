@@ -39,24 +39,41 @@ class VoteScreenState extends State<VoteScreen> {
       requestSent = true;
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Row(children: <Widget>[
-          CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 20.0,
-              child: Icon(
-                vote.voteIcon.icon.icon,
-                size: 18.0,
-                color: vote.voteIcon.color,
-              )),
-          Padding(
-            padding: EdgeInsets.only(left: 8),
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            expandedHeight: 100.0,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+                titlePadding: EdgeInsets.only(left: 50, bottom: 8),
+                title: Row(children: <Widget>[
+                  CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 20.0,
+                      child: Icon(
+                        vote.voteIcon.icon.icon,
+                        size: 18.0,
+                        color: vote.voteIcon.color,
+                      )),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 200,
+                    child: Text(vote.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                        )),
+                  )
+                ]),
+                background: Container(color: Theme.of(context).primaryColor)),
           ),
-          Text(vote.title)
-        ]),
-      ),
+        ];
+      },
       body: _buildBody(),
-    );
+    ));
   }
 
   Widget _buildBody() {
@@ -127,11 +144,9 @@ class VoteScreenState extends State<VoteScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 16),
                         ),
-                        RaisedButton(
+                        RoundColoredRaisedButton(
                             onPressed: () {},
                             textColor: vote.voteIcon.color,
-                            color: Colors.white,
-                            padding: const EdgeInsets.all(8.0),
                             child: new Text(
                               "Vote",
                             ))

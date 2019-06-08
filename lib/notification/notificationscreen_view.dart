@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vote_app/notification/notificationscreen_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/notification/listitems/notification_listitem.dart';
-import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -18,22 +17,12 @@ class NotificationScreenState extends State<NotificationScreen> {
   List<NotificationResponse> notifications;
   NotificationScreenController _notificationScreenController;
 
-  var scrollController = ScrollController();
-
-  double scroll = 0.0;
-
   @override
   void initState() {
     super.initState();
     _notificationScreenController =
         NotificationScreenController(notificationScreenState: this);
     _notificationScreenController.init();
-    scrollController.addListener(() {
-      setState(() {
-          scroll = scrollController.offset/1.5;
-      });
-      print(scroll);
-    });
   }
 
   void addNotifications(List<NotificationResponse> notifications) {
@@ -48,20 +37,11 @@ class NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text("Notifications"),
-        // ),
-        // body: DarkRefreshIndicator(
-        //     key: _refreshIndicatorKey,
-        //     onRefresh: _notificationScreenController.refresh,
-        //     child: _buildBody(notifications)));
         body: NestedScrollView(
-            controller: scrollController,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  elevation: 0,
                   expandedHeight: 100.0,
                   floating: false,
                   pinned: true,
@@ -77,12 +57,10 @@ class NotificationScreenState extends State<NotificationScreen> {
                 ),
               ];
             },
-            body: Container(
-                padding: EdgeInsets.only(top: scroll),
-                child: DarkRefreshIndicator(
-                    key: _refreshIndicatorKey,
-                    onRefresh: _notificationScreenController.refresh,
-                    child: _buildBody(notifications)))));
+            body: DarkRefreshIndicator(
+                key: _refreshIndicatorKey,
+                onRefresh: _notificationScreenController.refresh,
+                child: _buildBody(notifications))));
   }
 
   Widget _buildBody(List<NotificationResponse> notifications) {
@@ -94,13 +72,16 @@ class NotificationScreenState extends State<NotificationScreen> {
   Widget _buildNotifications() {
     return Container(
         decoration: new BoxDecoration(
-            color: Theme.of(context).primaryColorLight,
-            borderRadius: new BorderRadius.all(const Radius.circular(20.0))),
+            color: Theme.of(context).primaryColor,
+            borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  offset: new Offset(1.0, 1.0),
+                  blurRadius: 5.0)
+            ]),
         alignment: Alignment.centerLeft,
-        child: ListView.separated(
-          separatorBuilder: (context, index) => Divider(
-                color: Theme.of(context).primaryColor,
-              ),
+        child: ListView.builder(
           itemBuilder: (context, index) {
             return NotificationListItem(
               actions: notifications[index].actions,

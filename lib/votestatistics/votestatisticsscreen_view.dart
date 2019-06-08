@@ -33,11 +33,12 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   @override
   void initState() {
     super.initState();
-    _voteStatisticsScreenController = VoteStatisticsScreenController(voteStatisticsScreenState: this);
+    _voteStatisticsScreenController =
+        VoteStatisticsScreenController(voteStatisticsScreenState: this);
     _voteStatisticsScreenController.init();
   }
 
- void setLoading() {
+  void setLoading() {
     setState(() {
       isLoading = false;
     });
@@ -47,24 +48,41 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   Widget build(BuildContext context) {
     vote = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: AppBar(
-        title: Row(children: <Widget>[
-          CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 20.0,
-              child: Icon(
-                vote.voteIcon.icon.icon,
-                size: 18.0,
-                color: vote.voteIcon.color,
-              )),
-          Padding(
-            padding: EdgeInsets.only(left: 8),
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            expandedHeight: 100.0,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+                titlePadding: EdgeInsets.only(left: 50, bottom: 8),
+                title: Row(children: <Widget>[
+                  CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 20.0,
+                      child: Icon(
+                        vote.voteIcon.icon.icon,
+                        size: 18.0,
+                        color: vote.voteIcon.color,
+                      )),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 200,
+                    child: Text(vote.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                        )),
+                  )
+                ]),
+                background: Container(color: Theme.of(context).primaryColor)),
           ),
-          Text(vote.title)
-        ]),
-      ),
+        ];
+      },
       body: _buildBody(),
-    );
+    ));
   }
 
   Widget _buildBody() {
@@ -72,7 +90,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       return buildLoader();
     } else {
       return ListView(children: <Widget>[
-        //buildVoteDetails(context, vote),
+        buildVoteDetails(context, VoteDetailResponse(group: Group(name:vote.content),description: "description")),
         _buildVoteResult(vote)
       ]);
     }
@@ -81,7 +99,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   Widget _buildVoteResult(VoteModel vote) {
     return Container(
         alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(left:16.0,right: 16,bottom: 8),
         padding: new EdgeInsets.all(8.0),
         decoration: new BoxDecoration(
             color: Theme.of(context).primaryColorLight,

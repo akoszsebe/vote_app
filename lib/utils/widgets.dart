@@ -64,13 +64,13 @@ Widget buildLoader() {
 
 Widget buildListItem(
     BuildContext context, int index, List<VoteModel> data, VoidCallback onTap) {
-        var format = new DateFormat("yMd");
-        var days = data[index].date.difference(DateTime.now()).inDays;
+  var format = new DateFormat("yMd");
+  var days = data[index].date.difference(DateTime.now()).inDays;
   return InkWell(
       onTap: onTap,
       child: Container(
         alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
         padding: new EdgeInsets.all(16.0),
         decoration: new BoxDecoration(
             color: Theme.of(context).primaryColorLight,
@@ -129,7 +129,7 @@ Widget buildListItem(
               ),
             )),
             new Text(
-              "Vote in \n"+days.toString() + (days > 1 ? " days" : " day"),
+              "Vote in \n" + days.toString() + (days > 1 ? " days" : " day"),
               style: new TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ Widget buildListItem(
 Widget buildVoteDetails(BuildContext context, VoteDetailResponse vote) {
   return Container(
       alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.all(16.0),
+      margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
       padding: new EdgeInsets.all(16.0),
       decoration: new BoxDecoration(
           color: Theme.of(context).primaryColorLight,
@@ -190,4 +190,74 @@ Widget buildVoteDetails(BuildContext context, VoteDetailResponse vote) {
           ),
         ],
       ));
+}
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
+
+class RoundRaisedButton extends RaisedButton {
+  RoundRaisedButton(
+      {VoidCallback onPressed, BuildContext context, Widget child})
+      : super(
+            onPressed: onPressed,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0)),
+            textColor: Theme.of(context).accentColor,
+            color: Colors.white,
+            padding: const EdgeInsets.all(8.0),
+            child: child);
+}
+
+class RoundColoredRaisedButton extends RaisedButton {
+  RoundColoredRaisedButton(
+      {VoidCallback onPressed, Color textColor, Widget child})
+      : super(
+            onPressed: onPressed,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0)),
+            textColor: textColor,
+            color: Colors.white,
+            padding: const EdgeInsets.all(8.0),
+            child: child);
+}
+
+class RoundInvertedRaisedButton extends RaisedButton {
+  RoundInvertedRaisedButton(
+      {VoidCallback onPressed, BuildContext context, Widget child})
+      : super(
+            onPressed: onPressed,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0)),
+            textColor: Colors.white,
+            color: Theme.of(context).accentColor,
+            padding: const EdgeInsets.all(8.0),
+            child: child);
+}
+
+class DarkRefreshIndicator extends RefreshIndicator {
+  DarkRefreshIndicator({
+    Key key,
+    @required Widget child,
+    double displacement = 40.0,
+    @required RefreshCallback onRefresh,
+    Color color = Colors.white,
+    ScrollNotificationPredicate notificationPredicate =
+        defaultScrollNotificationPredicate,
+    String semanticsLabel,
+    String semanticsValue,
+  }) : super(
+            key: key,
+            child: child,
+            displacement: displacement,
+            onRefresh: onRefresh,
+            color: color,
+            backgroundColor: Colors.blueGrey[600],
+            notificationPredicate: notificationPredicate,
+            semanticsLabel: semanticsLabel,
+            semanticsValue: semanticsValue);
 }

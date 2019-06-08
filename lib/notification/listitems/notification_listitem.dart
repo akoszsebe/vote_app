@@ -33,8 +33,18 @@ class NotificationListItemState extends State<NotificationListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+    return Container(
+        margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+        padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+        decoration: new BoxDecoration(
+            color: Theme.of(context).primaryColorLight,
+            borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  offset: new Offset(1.0, 1.0),
+                  blurRadius: 5.0)
+            ]),
         child: Row(
           children: <Widget>[
             new Expanded(
@@ -75,30 +85,26 @@ class NotificationListItemState extends State<NotificationListItem> {
     return Column(
       children: <Widget>[
         if (actions.contains(NotAction.ACTION_ACCEPT))
-          RaisedButton(
+          RoundRaisedButton(
               onPressed: () {
                 setState(() {
                   isLoading = true;
                 });
                 _notificationListItemController.joinGroup(id);
               },
-              textColor: Theme.of(context).accentColor,
-              color: Colors.white,
-              padding: const EdgeInsets.all(8.0),
+              context: context,
               child: Text(
                 "Join",
               )),
         if (actions.contains(NotAction.ACTION_DECLINE))
-          RaisedButton(
+          RoundRaisedButton(
               onPressed: () {
                 setState(() {
                   isLoading = true;
                 });
                 _notificationListItemController.notJoinGroup(id);
               },
-              textColor: Theme.of(context).accentColor,
-              color: Colors.white,
-              padding: const EdgeInsets.all(8.0),
+              context: context,
               child: Text(
                 "Reject",
               )),

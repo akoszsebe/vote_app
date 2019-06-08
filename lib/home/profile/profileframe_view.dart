@@ -60,7 +60,7 @@ class ProfileFrameState extends State<ProfileFrame> {
   Widget _buildGrupesInfo() {
     return Container(
         alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(left: 16.0, right: 16),
         padding: new EdgeInsets.all(8.0),
         decoration: new BoxDecoration(
             color: Theme.of(context).primaryColorLight,
@@ -118,7 +118,7 @@ class ProfileFrameState extends State<ProfileFrame> {
   Widget _buildPersonalInfo() {
     return Container(
         alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
         padding: new EdgeInsets.all(16.0),
         decoration: new BoxDecoration(
             color: Theme.of(context).primaryColorLight,
@@ -171,15 +171,13 @@ class ProfileFrameState extends State<ProfileFrame> {
                     Padding(
                       padding: EdgeInsets.only(top: 16),
                     ),
-                    RaisedButton(
+                    RoundRaisedButton(
                         onPressed: () {
                           SharedPrefs.setLogedIn(false);
                           Navigator.pushReplacementNamed(
                               context, SplashScreen.routeName);
                         },
-                        textColor: Theme.of(context).accentColor,
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(8.0),
+                        context: context,
                         child: new Text(
                           "Logout",
                         ))
@@ -317,21 +315,21 @@ class ProfileFrameState extends State<ProfileFrame> {
         spacing: 8.0, // gap between adjacent chips
         runSpacing: 4.0, // gap between lines
         children: <Widget>[
-          for (var element in groups) _buildChip(element.name),
+          for (var element in groups) _buildChip(element),
         ],
       );
     }
   }
 
-  Widget _buildChip(String title) {
+  Widget _buildChip(GroupResponse group) {
     return InkWell(
-      onTap: (){
-        Navigator.pushNamed(context, GroupInfoScreen.routeName);
+      onTap: () {
+        Navigator.pushNamed(context, GroupInfoScreen.routeName,arguments: group);
       },
       child: Chip(
         backgroundColor: Colors.white,
         label: new Text(
-          title,
+          group.name,
           style: TextStyle(
               color: Colors.blueGrey[700], fontWeight: FontWeight.bold),
         ),

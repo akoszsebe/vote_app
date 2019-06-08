@@ -9,6 +9,7 @@ class RegisterScreenController  extends BaseController{
   RegisterScreenController({this.registerScreenState});
 
   String pin = "";
+  String confirmPin = "";
   String email = "";
   String birthDate = "";
   Sex sex = Sex.MALE;
@@ -46,6 +47,7 @@ class RegisterScreenController  extends BaseController{
     registerScreenState.emailValidate = false;
     registerScreenState.birthDateValidate = false;
     registerScreenState.pinValidate = false;
+    registerScreenState.confirmPinValidate = false;
     if (name.isEmpty) {
       registerScreenState.nameValidate = true;
       valid = false;
@@ -60,6 +62,15 @@ class RegisterScreenController  extends BaseController{
     }
     if (pin.isEmpty) {
       registerScreenState.pinValidate = true;
+      valid = false;
+    }
+    if (confirmPin.isEmpty) {
+      registerScreenState.confirmPinValidate = true;
+      valid = false;
+    }
+    if (confirmPin != pin){
+      registerScreenState.pinValidate = true;
+      registerScreenState.confirmPinValidate = true;
       valid = false;
     }
     return valid;
