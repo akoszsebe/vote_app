@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/vote/votescreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/widgets.dart';
@@ -12,7 +13,7 @@ class VoteScreen extends StatefulWidget {
 
 class VoteScreenState extends State<VoteScreen> {
   int _radioValue = 0;
-  VoteModel vote;
+  VoteResponse vote;
   VoteDetailResponse voteDetails;
   bool isLoading = true;
   VoteSreenController _voteSreenController;
@@ -48,14 +49,9 @@ class VoteScreenState extends State<VoteScreen> {
             flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.only(left: 50, bottom: 8),
                 title: Row(children: <Widget>[
-                  CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 20.0,
-                      child: Icon(
-                        vote.voteIcon.icon.icon,
-                        size: 18.0,
-                        color: vote.voteIcon.color,
-                      )),
+                  new ClipOval(
+                    child: imageFromBase64String(vote.type.logo, 42),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 8),
                   ),
@@ -88,6 +84,7 @@ class VoteScreenState extends State<VoteScreen> {
   }
 
   Widget _buildVoteOptions(VoteDetailResponse voteDetails) {
+    Color color = HexColor(vote.type.color);
     return Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.all(16.0),
@@ -125,7 +122,7 @@ class VoteScreenState extends State<VoteScreen> {
                     width: 25,
                     child: Container(
                       decoration: new BoxDecoration(
-                        color: vote.voteIcon.color,
+                        color: color,
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
                     ),
@@ -138,15 +135,16 @@ class VoteScreenState extends State<VoteScreen> {
                         for (int i = 0; i < voteDetails.responses.length; i++)
                           radioElement(
                               voteDetails.responses[i].value,
+                              voteDetails.responses[i].description,
                               i,
                               _voteSreenController.handleRadioValueChange,
-                              vote.voteIcon.color),
+                              color),
                         Padding(
                           padding: EdgeInsets.only(top: 16),
                         ),
                         RoundColoredRaisedButton(
                             onPressed: () {},
-                            textColor: vote.voteIcon.color,
+                            textColor: color,
                             child: new Text(
                               "Vote",
                             ))
@@ -160,25 +158,37 @@ class VoteScreenState extends State<VoteScreen> {
         ));
   }
 
-  Widget radioElement(String title, int value, Function listner, Color color) {
+  Widget radioElement(
+      String title, String desc, int value, Function listner, Color color) {
     return new Container(
-      padding: EdgeInsets.only(left: 8),
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          new Text(
-            title,
-            style: new TextStyle(fontSize: 16.0, color: Colors.white),
-          ),
-          new Radio(
-            value: value,
-            groupValue: _radioValue,
-            onChanged: listner,
-            activeColor: color,
-          ),
-        ],
-      ),
-    );
+        padding: EdgeInsets.only(left: 8),
+        child: Column(
+          children: <Widget>[
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text(
+                  title,
+                  style: new TextStyle(fontSize: 16.0, color: Colors.white),
+                ),
+                new Radio(
+                  value: value,
+                  groupValue: _radioValue,
+                  onChanged: listner,
+                  activeColor: color,
+                ),
+              ],
+            ),
+            if (desc.isNotEmpty)
+              Container(
+                width: MediaQuery.of(context).size.width - 92,
+                child: new Text(
+                  desc,
+                  style: new TextStyle(fontSize: 14.0, color: Colors.white70),
+                ),
+              ),
+          ],
+        ));
   }
 
   void showError(message) {

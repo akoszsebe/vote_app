@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/votestatistics/votestatisticsscreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
@@ -20,13 +21,12 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       <CircularSegmentEntry>[
         new CircularSegmentEntry(500.0, Colors.red[200], rankKey: 'Q1'),
         new CircularSegmentEntry(1000.0, Colors.green[200], rankKey: 'Q2'),
-        new CircularSegmentEntry(2000.0, Colors.orange[200], rankKey: 'Q3'),
       ],
       rankKey: 'Quarterly Profits',
     ),
   ];
 
-  VoteModel vote;
+  FinishedVoteResponse vote;
   bool isLoading = true;
   VoteStatisticsScreenController _voteStatisticsScreenController;
 
@@ -57,14 +57,10 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
             flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.only(left: 50, bottom: 8),
                 title: Row(children: <Widget>[
-                  CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 20.0,
-                      child: Icon(
-                        vote.voteIcon.icon.icon,
-                        size: 18.0,
-                        color: vote.voteIcon.color,
-                      )),
+                  new ClipOval(
+                    child: imageFromBase64String(
+                        vote.type.logo, 42), //data[index].type.logo,
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 8),
                   ),
@@ -90,16 +86,20 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       return buildLoader();
     } else {
       return ListView(children: <Widget>[
-        buildVoteDetails(context, VoteDetailResponse(group: Group(name:vote.content),description: "description")),
+        buildVoteDetails(
+            context,
+            VoteDetailResponse(
+                group: Group(name: vote.group), description: "description")),
         _buildVoteResult(vote)
       ]);
     }
   }
 
-  Widget _buildVoteResult(VoteModel vote) {
+  Widget _buildVoteResult(FinishedVoteResponse vote) {
+    Color color = HexColor(vote.type.color);
     return Container(
         alignment: Alignment.centerLeft,
-        margin: new EdgeInsets.only(left:16.0,right: 16,bottom: 8),
+        margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
         padding: new EdgeInsets.all(8.0),
         decoration: new BoxDecoration(
             color: Theme.of(context).primaryColorLight,
@@ -134,7 +134,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                     width: 25,
                     child: Container(
                       decoration: new BoxDecoration(
-                        color: vote.voteIcon.color,
+                        color: color,
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
                     ),
@@ -142,36 +142,26 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 16),
                   ),
-                  Row(
+                  Wrap(
+                    spacing: 8.0, // gap between adjacent chips
+                    runSpacing: 4.0,
                     children: <Widget>[
-                      CircleAvatar(
+                      Chip(
                         backgroundColor: data[0].entries[0].color,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, right: 8),
-                        child: Text(
-                          "After8",
-                          style: TextStyle(color: Colors.white),
+                        label: new Text(
+                          "Igen",
+                          style: TextStyle(
+                              color: Colors.blueGrey[700],
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
-                      CircleAvatar(
+                      Chip(
                         backgroundColor: data[0].entries[1].color,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, right: 8),
-                        child: Text(
-                          "/Form",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      CircleAvatar(
-                        backgroundColor: data[0].entries[2].color,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, right: 8),
-                        child: Text(
-                          "Flying",
-                          style: TextStyle(color: Colors.white),
+                        label: new Text(
+                          "Nem",
+                          style: TextStyle(
+                              color: Colors.blueGrey[700],
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

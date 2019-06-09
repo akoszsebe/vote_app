@@ -1,7 +1,6 @@
 import 'package:http/http.dart';
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/home/upcoming/upcomingframe_view.dart';
-import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/repository/votelist_repository.dart';
 
 class UpComingFrameCrontroller extends BaseController {
@@ -20,11 +19,7 @@ class UpComingFrameCrontroller extends BaseController {
   void init() {
     _voteListRepository = VoteListRepository();
     _voteListRepository.getUpComing().then((response) {
-      List<VoteModel> votes = List<VoteModel>();
-      response.forEach((vote) {
-        votes.add(VoteModel.fromVoteResponse(vote));
-      });
-      upcomingFrameState.setData(votes);
+      upcomingFrameState.setData(response);
     }).catchError((error) {
       upcomingFrameState.showError(error.message);
     });
@@ -32,11 +27,7 @@ class UpComingFrameCrontroller extends BaseController {
 
   Future<dynamic> refresh() async {
     _voteListRepository.refreshUpComing().then((response) {
-      List<VoteModel> votes = List<VoteModel>();
-      response.forEach((vote) {
-        votes.add(VoteModel.fromVoteResponse(vote));
-      });
-      upcomingFrameState.setData(votes);
+      upcomingFrameState.setData(response);
     }).catchError((error) {
       upcomingFrameState.showError(error.message);
     });

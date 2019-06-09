@@ -1,6 +1,5 @@
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/home/finished/finishedframe_view.dart';
-import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/repository/votelist_repository.dart';
 
 class FinishedFrameCrontroller extends BaseController{
@@ -14,11 +13,7 @@ class FinishedFrameCrontroller extends BaseController{
   void init() {
     _voteListRepository = VoteListRepository();
     _voteListRepository.getFinished().then((response) {
-      List<VoteModel> votes = List<VoteModel>();
-      response.forEach((vote) {
-        votes.add(VoteModel.fromFinishedVoteResponse(vote));
-      });
-      finishedFrameState.setData(votes);
+      finishedFrameState.setData(response);
     }).catchError((error) {
       finishedFrameState.showError(error.toString());
     });
@@ -26,11 +21,7 @@ class FinishedFrameCrontroller extends BaseController{
 
   Future<dynamic> refresh() async {
     _voteListRepository.refreshFinished().then((response) {
-      List<VoteModel> votes = List<VoteModel>();
-      response.forEach((vote) {
-        votes.add(VoteModel.fromFinishedVoteResponse(vote));
-      });
-      finishedFrameState.setData(votes);
+      finishedFrameState.setData(response);
     }).catchError((error) {
       finishedFrameState.showError(error.message);
     });

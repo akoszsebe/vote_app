@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:vote_app/utils/utils.dart';
-
 class VoteResponse {
   int id;
   String title;
   int beginning;
   String group;
-  IconType type;
+  VoteType type;
 
   VoteResponse({this.id, this.title, this.beginning, this.group, this.type});
 
@@ -15,7 +12,7 @@ class VoteResponse {
       title: json["title"],
       beginning: json["beginning"],
       group: json["group"],
-      type: iconTypeValues.map[json["type"]]);
+      type: VoteType.fromJson(json["type"]));
 }
 
 class FinishedVoteResponse {
@@ -23,7 +20,7 @@ class FinishedVoteResponse {
   String title;
   int end;
   String group;
-  IconType type;
+  VoteType type;
 
   FinishedVoteResponse({this.id, this.title, this.end, this.group, this.type});
 
@@ -33,7 +30,7 @@ class FinishedVoteResponse {
           title: json["title"],
           end: json["end"],
           group: json["group"],
-          type: iconTypeValues.map[json["type"]]);
+          type: VoteType.fromJson(json["type"]));
 }
 
 class VoteDetailResponse {
@@ -43,7 +40,7 @@ class VoteDetailResponse {
   int beginning;
   int end;
   Group group;
-  String type;
+  VoteType type;
   List<VoteOptions> responses;
 
   VoteDetailResponse(
@@ -64,7 +61,7 @@ class VoteDetailResponse {
         beginning: json["beginning"],
         end: json["end"],
         group: Group.fromJson(json["group"]),
-        type: json["type"],
+        type: VoteType.fromJson(json["type"]),
         responses: List<VoteOptions>.from(
             json["responses"].map((x) => VoteOptions.fromJson(x))));
   }
@@ -83,103 +80,22 @@ class VoteOptions {
 
 class Group {
   String name;
+  int id;
 
-  Group({this.name});
+  Group({this.name, this.id});
+
   factory Group.fromJson(Map<String, dynamic> json) =>
-      new Group(name: json["name"]);
+      new Group(name: json["name"], id: json["id"]);
 }
 
-class VoteModel {
-  final int id;
-  final String title;
-  final DateTime date;
-  final String content;
-  final String rightText;
-  VoteIcon voteIcon;
+//      DateTime.fromMillisecondsSinceEpoch(vote.beginning),
+class VoteType {
+  final String color;
+  final String name;
+  final String logo;
 
-  factory VoteModel.fromVoteResponse(VoteResponse vote) => new VoteModel(
-      vote.id,
-      vote.title,
-      DateTime.fromMillisecondsSinceEpoch(vote.beginning),
-      vote.group,
-      vote.type,
-      vote.id.toString());
+  VoteType({this.color, this.name, this.logo});
 
-  factory VoteModel.fromFinishedVoteResponse(FinishedVoteResponse vote) =>
-      new VoteModel(
-          vote.id,
-          vote.title,
-          DateTime.fromMillisecondsSinceEpoch(vote.end),
-          vote.group,
-          vote.type,
-          vote.id.toString());
-
-  VoteModel(this.id, this.title, this.date, this.content, IconType iconType,
-      this.rightText) {
-    this.voteIcon = VoteIcon(iconType);
-  }
-}
-
-enum IconType { FOOD, ELECTION, PARTY, LIFE, SPORT, GROUP }
-
-final iconTypeValues = new EnumValues({
-  "FOOD": IconType.FOOD,
-  "ELECTION": IconType.ELECTION,
-  "PARTY": IconType.PARTY,
-  "LIFE": IconType.LIFE,
-  "SPORT": IconType.SPORT,
-  "GROUP": IconType.GROUP,
-});
-
-class VoteIcon {
-  Icon icon;
-  Color color;
-
-  VoteIcon(IconType iconType) {
-    switch (iconType) {
-      case IconType.FOOD:
-        this.color = Colors.green;
-        this.icon = Icon(
-          Icons.fastfood,
-          color: this.color,
-        );
-        break;
-      case IconType.ELECTION:
-        this.color = Colors.lime;
-        this.icon = Icon(
-          Icons.group,
-          color: this.color,
-        );
-        break;
-      case IconType.PARTY:
-        this.color = Colors.orange;
-        this.icon = Icon(
-          Icons.party_mode,
-          color: this.color,
-        );
-        break;
-      case IconType.LIFE:
-        this.color = Colors.purple;
-        this.icon = Icon(
-          Icons.location_city,
-          color: this.color,
-        );
-
-        break;
-      case IconType.SPORT:
-        this.color = Colors.pink;
-        this.icon = Icon(
-          Icons.directions_run,
-          color: this.color,
-        );
-        break;
-      case IconType.GROUP:
-        this.color = Colors.brown;
-        this.icon = Icon(
-          Icons.people,
-          color: this.color,
-        );
-        break;
-    }
-  }
+  factory VoteType.fromJson(Map<String, dynamic> json) => new VoteType(
+      color: json["color"], name: json["name"], logo: json["logo"]);
 }

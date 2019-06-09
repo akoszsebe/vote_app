@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter/material.dart';
 
 class EnumValues<T> {
   Map<String, T> map;
@@ -32,4 +36,21 @@ Future<String> getDeviceDetails() async {
   }
 
   return identifier;
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
+Image imageFromBase64String(String base64String, double size) {
+  Uint8List bytes = base64Decode(base64String.split(',')[1]);
+  return Image.memory(bytes, height: size,width: size,);
 }

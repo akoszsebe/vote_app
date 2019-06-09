@@ -12,7 +12,7 @@ class UpcomingFrame extends StatefulWidget {
 }
 
 class UpcomingFrameState extends State<UpcomingFrame> {
-  List<VoteModel> data = [];
+  List<VoteResponse> data = [];
 
   bool isLoading = true;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -44,7 +44,7 @@ class UpcomingFrameState extends State<UpcomingFrame> {
     );
   }
 
-  void setData(List<VoteModel> response) {
+  void setData(List<VoteResponse> response) {
     setState(() {
       isLoading = false;
       data = response;

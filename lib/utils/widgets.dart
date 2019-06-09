@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vote_app/home/finished/finishedframe_view.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
+import 'package:vote_app/utils/utils.dart';
 
 void showAlertDialog(BuildContext context, String title, String content) {
   // flutter defined function
@@ -62,10 +64,11 @@ Widget buildLoader() {
           valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)));
 }
 
-Widget buildListItem(
-    BuildContext context, int index, List<VoteModel> data, VoidCallback onTap) {
+Widget buildListItem(BuildContext context, int index, List<VoteResponse> data,
+    VoidCallback onTap) {
   var format = new DateFormat("yMd");
-  var days = data[index].date.difference(DateTime.now()).inDays;
+  var date = DateTime.fromMillisecondsSinceEpoch(data[index].beginning);
+  var days = date.difference(DateTime.now()).inDays;
   return InkWell(
       onTap: onTap,
       child: Container(
@@ -83,10 +86,9 @@ Widget buildListItem(
             ]),
         child: new Row(
           children: <Widget>[
-            new CircleAvatar(
-              backgroundColor: Colors.white,
-              child: data[index].voteIcon.icon,
-              radius: 20.0,
+            new ClipOval(
+              child: imageFromBase64String(
+                  data[index].type.logo, 48), //data[index].type.logo,
             ),
             new Expanded(
                 child: new Padding(
@@ -106,7 +108,7 @@ Widget buildListItem(
                     padding: EdgeInsets.only(top: 8),
                   ),
                   new Text(
-                    format.format(data[index].date),
+                    format.format(date),
                     style: new TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -116,7 +118,7 @@ Widget buildListItem(
                     padding: EdgeInsets.only(top: 8),
                   ),
                   new Text(
-                    data[index].content,
+                    data[index].group,
                     style: new TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
@@ -135,6 +137,76 @@ Widget buildListItem(
                   fontWeight: FontWeight.bold,
                   color: Colors.white54),
             ),
+          ],
+        ),
+      ));
+}
+
+Widget buildFinishedListItem(BuildContext context, int index,
+    List<FinishedVoteResponse> data, VoidCallback onTap) {
+  var format = new DateFormat("yMd");
+  var date = DateTime.fromMillisecondsSinceEpoch(data[index].end);
+  return InkWell(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.centerLeft,
+        margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
+        padding: new EdgeInsets.all(16.0),
+        decoration: new BoxDecoration(
+            color: Theme.of(context).primaryColorLight,
+            borderRadius: new BorderRadius.all(new Radius.circular(10.0)),
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  offset: new Offset(1.0, 1.0),
+                  blurRadius: 5.0)
+            ]),
+        child: new Row(
+          children: <Widget>[
+            new ClipOval(
+              child: imageFromBase64String(
+                  data[index].type.logo, 48), //data[index].type.logo,
+            ),
+            new Expanded(
+                child: new Padding(
+              padding: new EdgeInsets.only(left: 16.0, top: 8.0),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(
+                    data[index].title,
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                  ),
+                  new Text(
+                    format.format(date),
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white54),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                  ),
+                  new Text(
+                    data[index].group,
+                    style: new TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                  ),
+                ],
+              ),
+            )),
           ],
         ),
       ));

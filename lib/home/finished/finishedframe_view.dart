@@ -14,7 +14,7 @@ class FinishedFrame extends StatefulWidget {
 class FinishedFrameState extends State<FinishedFrame> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  List<VoteModel> data = [];
+  List<FinishedVoteResponse> data = [];
   bool isLoading = true;
   FinishedFrameCrontroller _finishedFrameCrontroller;
 
@@ -34,7 +34,7 @@ class FinishedFrameState extends State<FinishedFrame> {
       onRefresh: _finishedFrameCrontroller.refresh,
       child: ListView.builder(
         itemBuilder: (context, index) =>
-            buildListItem(context, index, data, () {
+            buildFinishedListItem(context, index, data, () {
               Navigator.pushNamed(context, VoteStatisticsScreen.routeName,
                   arguments: data[index]);
             }),
@@ -43,7 +43,7 @@ class FinishedFrameState extends State<FinishedFrame> {
     );
   }
 
-  void setData(List<VoteModel> response) {
+  void setData(List<FinishedVoteResponse> response) {
     setState(() {
       isLoading = false;
       data = response;
