@@ -86,7 +86,6 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   }
 
   Widget _buildVoteResult(FinishedVoteResponse vote) {
-    Color color = HexColor(vote.type.color);
     return Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
@@ -110,7 +109,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   new Text(
-                    "Result",
+                    voteDetails.results[0].title,
                     style: new TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -120,14 +119,17 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                     padding: EdgeInsets.only(top: 16),
                   ),
                   Wrap(
-                    spacing: 8.0, 
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.spaceBetween,
+                    verticalDirection: VerticalDirection.down,
+                    spacing: 8.0,
                     runSpacing: 4.0,
                     children: <Widget>[
-                      for (int i = 0; i < voteDetails.responses.length; i++)
+                      for (int i = 0; i <= voteDetails.results.length; i++)
                         _buildChips(
                             data[0].entries[i].color,
-                            voteDetails.responses[i].value,
-                            voteDetails.responses[i].description),
+                            voteDetails.results[0].items[i].label,
+                            voteDetails.results[0].items[i].value.toString()),
                     ],
                   ),
                   Padding(
@@ -168,9 +170,9 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
 
       List<CircularSegmentEntry> r = List<CircularSegmentEntry>();
       var i = 0;
-      voteDetails.responses.forEach((option) {
+      voteDetails.results[0].items.forEach((option) {
         r.add(CircularSegmentEntry(
-            (i + 1).toDouble(), ChartColors.getColor(i++),
+            (option.value).toDouble(), ChartColors.getColor(i++),
             rankKey: 'Q1'));
       });
       data = <CircularStackEntry>[
@@ -183,18 +185,23 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   }
 
   _buildChips(Color color, String title, String desc) {
-    return Chip(
-      backgroundColor: color,
-      label: new Text(
-        title,
-        style:
-            TextStyle(color: Colors.blueGrey[600], fontWeight: FontWeight.bold),
+    return GestureDetector(
+      child: Chip(
+        backgroundColor: color,
+        label: new Text(
+          title,
+          style: TextStyle(
+              color: Colors.blueGrey[600], fontWeight: FontWeight.bold),
+        ),
+        deleteIcon: Icon(
+          Icons.info,
+          color: Colors.blueGrey[600],
+        ),
+        onDeleted: () {
+          showAlertDialog(context, title, desc);
+        },
       ),
-      deleteIcon: Icon(
-        Icons.info,
-        color: Colors.blueGrey[600],
-      ),
-      onDeleted: () {
+      onTap: () {
         showAlertDialog(context, title, desc);
       },
     );

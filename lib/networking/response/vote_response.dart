@@ -16,19 +16,19 @@ class VoteResponse {
 
   factory VoteResponse.fromJsonNullable(Map<String, dynamic> json) {
     VoteResponse response = VoteResponse();
-    if (json.containsKey("id")){
+    if (json.containsKey("id")) {
       response.id = json["id"];
     }
-    if (json.containsKey("title")){
+    if (json.containsKey("title")) {
       response.title = json["title"];
     }
-    if (json.containsKey("beginning")){
+    if (json.containsKey("beginning")) {
       response.beginning = json["beginning"];
     }
-    if (json.containsKey("group")){
+    if (json.containsKey("group")) {
       response.group = json["group"];
     }
-    if (json.containsKey("type")){
+    if (json.containsKey("type")) {
       response.type = VoteType.fromJson(json["type"]);
     }
     return response;
@@ -52,21 +52,21 @@ class FinishedVoteResponse {
           group: json["group"],
           type: VoteType.fromJson(json["type"]));
 
-    factory FinishedVoteResponse.fromJsonNullable(Map<String, dynamic> json) {
+  factory FinishedVoteResponse.fromJsonNullable(Map<String, dynamic> json) {
     FinishedVoteResponse response = FinishedVoteResponse();
-    if (json.containsKey("id")){
+    if (json.containsKey("id")) {
       response.id = json["id"];
     }
-    if (json.containsKey("title")){
+    if (json.containsKey("title")) {
       response.title = json["title"];
     }
-    if (json.containsKey("beginning")){
+    if (json.containsKey("beginning")) {
       response.end = json["end"];
     }
-    if (json.containsKey("group")){
+    if (json.containsKey("group")) {
       response.group = json["group"];
     }
-    if (json.containsKey("type")){
+    if (json.containsKey("type")) {
       response.type = VoteType.fromJson(json["type"]);
     }
     return response;
@@ -74,14 +74,15 @@ class FinishedVoteResponse {
 }
 
 class VoteDetailResponse {
-  int id;
-  String title;
-  String description;
-  int beginning;
-  int end;
-  Group group;
-  VoteType type;
-  List<VoteOptions> responses;
+  final int id;
+  final String title;
+  final String description;
+  final int beginning;
+  final int end;
+  final Group group;
+  final VoteType type;
+  final List<VoteOptions> responses;
+  final List<VoteResults> results;
 
   VoteDetailResponse(
       {this.id,
@@ -91,7 +92,8 @@ class VoteDetailResponse {
       this.end,
       this.group,
       this.type,
-      this.responses});
+      this.responses,
+      this.results});
 
   factory VoteDetailResponse.fromJson(Map<String, dynamic> json) {
     return new VoteDetailResponse(
@@ -103,8 +105,32 @@ class VoteDetailResponse {
         group: Group.fromJson(json["group"]),
         type: VoteType.fromJson(json["type"]),
         responses: List<VoteOptions>.from(
-            json["responses"].map((x) => VoteOptions.fromJson(x))));
+            json["responses"].map((x) => VoteOptions.fromJson(x))),
+        results: List<VoteResults>.from(
+            json["results"].map((x) => VoteResults.fromJson(x))));
   }
+}
+
+class VoteResults {
+  final String title;
+  final List<ResultItem> items;
+
+  VoteResults({this.title, this.items});
+
+  factory VoteResults.fromJson(Map<String, dynamic> json) => VoteResults(
+      title: json["title"],
+      items: List<ResultItem>.from(
+          json["items"].map((x) => ResultItem.fromJson(x))));
+}
+
+class ResultItem {
+  final String label;
+  final int value;
+
+  ResultItem({this.label, this.value});
+
+  factory ResultItem.fromJson(Map<String, dynamic> json) =>
+      ResultItem(label: json["label"], value: json["value"]);
 }
 
 class VoteOptions {
