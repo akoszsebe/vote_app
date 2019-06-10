@@ -117,23 +117,10 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                         color: Colors.white),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 5),
-                  ),
-                  SizedBox(
-                    height: 5,
-                    width: 25,
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        color: color,
-                        borderRadius: new BorderRadius.circular(5.0),
-                      ),
-                    ),
-                  ),
-                  Padding(
                     padding: EdgeInsets.only(top: 16),
                   ),
                   Wrap(
-                    spacing: 8.0, // gap between adjacent chips
+                    spacing: 8.0, 
                     runSpacing: 4.0,
                     children: <Widget>[
                       for (int i = 0; i < voteDetails.responses.length; i++)
@@ -233,7 +220,17 @@ class ChartColors {
   ];
 
   static getColor(index) {
+    List<Color> colors = [
+      Colors.redAccent,
+      Colors.orangeAccent,
+      Colors.yellowAccent,
+      Colors.greenAccent,
+      Colors.blueAccent,
+      Colors.purpleAccent,
+      Colors.grey,
+    ];
     Random r = Random();
-    return colors[r.nextInt(12)];
+    if (index < colors.length) return colors[index];
+    return colors[r.nextInt(7)];
   }
 }

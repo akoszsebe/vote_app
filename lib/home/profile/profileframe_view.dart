@@ -90,19 +90,6 @@ class ProfileFrameState extends State<ProfileFrame> {
                             color: Colors.white),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      SizedBox(
-                        height: 5,
-                        width: 50,
-                        child: Container(
-                          decoration: new BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: new BorderRadius.circular(5.0),
-                          ),
-                        ),
-                      ),
-                      Padding(
                         padding: EdgeInsets.only(top: 16),
                       ),
                     ],
@@ -221,16 +208,6 @@ class ProfileFrameState extends State<ProfileFrame> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 5),
-                  ),
-                  SizedBox(
-                    height: 5,
-                    width: 30,
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: new BorderRadius.circular(5.0),
-                      ),
-                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 16),
