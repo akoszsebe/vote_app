@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/votestatistics/votestatisticsscreen_controller.dart';
@@ -16,18 +18,12 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   final GlobalKey<AnimatedCircularChartState> _chartKey =
       new GlobalKey<AnimatedCircularChartState>();
 
-  List<CircularStackEntry> data = <CircularStackEntry>[
-    new CircularStackEntry(
-      <CircularSegmentEntry>[
-        new CircularSegmentEntry(500.0, Colors.red[200], rankKey: 'Q1'),
-        new CircularSegmentEntry(1000.0, Colors.green[200], rankKey: 'Q2'),
-      ],
-      rankKey: 'Quarterly Profits',
-    ),
-  ];
+  List<CircularStackEntry> data;
 
   FinishedVoteResponse vote;
+  VoteDetailResponse voteDetails;
   bool isLoading = true;
+  Image image;
   VoteStatisticsScreenController _voteStatisticsScreenController;
 
   @override
@@ -36,12 +32,6 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     _voteStatisticsScreenController =
         VoteStatisticsScreenController(voteStatisticsScreenState: this);
     _voteStatisticsScreenController.init();
-  }
-
-  void setLoading() {
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -55,24 +45,23 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
             expandedHeight: 100.0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.only(left: 50, bottom: 8),
-                title: Row(children: <Widget>[
-                  new ClipOval(
-                    child: imageFromBase64String(
-                        vote.type.logo, 42), //data[index].type.logo,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 200,
-                    child: Text(vote.title,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        )),
-                  )
-                ]),
+                titlePadding: EdgeInsets.only(bottom: 8),
+                centerTitle: true,
+                title: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      new ClipOval(child: loadImage(vote.type.logo)),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8),
+                      ),
+                      Text(vote.title,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          )),
+                    ]),
                 background: Container(color: Theme.of(context).primaryColor)),
           ),
         ];
@@ -83,6 +72,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
 
   Widget _buildBody() {
     if (isLoading) {
+      _voteStatisticsScreenController.getDetails(vote.id);
       return buildLoader();
     } else {
       return ListView(children: <Widget>[
@@ -146,24 +136,11 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                     spacing: 8.0, // gap between adjacent chips
                     runSpacing: 4.0,
                     children: <Widget>[
-                      Chip(
-                        backgroundColor: data[0].entries[0].color,
-                        label: new Text(
-                          "Igen",
-                          style: TextStyle(
-                              color: Colors.blueGrey[700],
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Chip(
-                        backgroundColor: data[0].entries[1].color,
-                        label: new Text(
-                          "Nem",
-                          style: TextStyle(
-                              color: Colors.blueGrey[700],
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                      for (int i = 0; i < voteDetails.responses.length; i++)
+                        _buildChips(
+                            data[0].entries[i].color,
+                            voteDetails.responses[i].value,
+                            voteDetails.responses[i].description),
                     ],
                   ),
                   Padding(
@@ -181,5 +158,82 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
             ),
           ],
         ));
+  }
+
+  Image loadImage(String logo) {
+    if (image == null) {
+      image = imageFromBase64String(logo, 42);
+    }
+    return image;
+  }
+
+  void showError(message) {
+    setState(() {
+      isLoading = false;
+    });
+    showAlertDialog(context, "Error", message);
+  }
+
+  void setDetails(VoteDetailResponse resonse) {
+    setState(() {
+      isLoading = false;
+      voteDetails = resonse;
+
+      List<CircularSegmentEntry> r = List<CircularSegmentEntry>();
+      var i = 0;
+      voteDetails.responses.forEach((option) {
+        r.add(CircularSegmentEntry(
+            (i + 1).toDouble(), ChartColors.getColor(i++),
+            rankKey: 'Q1'));
+      });
+      data = <CircularStackEntry>[
+        new CircularStackEntry(
+          r,
+          rankKey: 'Quarterly Profits',
+        ),
+      ];
+    });
+  }
+
+  _buildChips(Color color, String title, String desc) {
+    return Chip(
+      backgroundColor: color,
+      label: new Text(
+        title,
+        style:
+            TextStyle(color: Colors.blueGrey[600], fontWeight: FontWeight.bold),
+      ),
+      deleteIcon: Icon(
+        Icons.info,
+        color: Colors.blueGrey[600],
+      ),
+      onDeleted: () {
+        showAlertDialog(context, title, desc);
+      },
+    );
+  }
+}
+
+class ChartColors {
+  static final List<Color> colors = [
+    Colors.indigo[600],
+    Colors.blue[600],
+    Colors.lightBlue[600],
+    Colors.cyan[600],
+    Colors.teal[600],
+    Colors.green[600],
+    Colors.lightGreen[600],
+    Colors.lime[600],
+    Colors.yellow[600],
+    Colors.amber[600],
+    Colors.orange[600],
+    Colors.deepOrange[600],
+    Colors.brown[600],
+    Colors.grey[600],
+  ];
+
+  static getColor(index) {
+    Random r = Random();
+    return colors[r.nextInt(12)];
   }
 }

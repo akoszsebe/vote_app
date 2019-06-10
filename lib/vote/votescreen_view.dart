@@ -18,6 +18,7 @@ class VoteScreenState extends State<VoteScreen> {
   bool isLoading = true;
   VoteSreenController _voteSreenController;
   bool requestSent = false;
+  Image image;
 
   @override
   void initState() {
@@ -47,23 +48,23 @@ class VoteScreenState extends State<VoteScreen> {
             expandedHeight: 100.0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.only(left: 50, bottom: 8),
-                title: Row(children: <Widget>[
-                  new ClipOval(
-                    child: imageFromBase64String(vote.type.logo, 42),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width - 200,
-                    child: Text(vote.title,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        )),
-                  )
-                ]),
+                titlePadding: EdgeInsets.only(bottom: 8),
+                centerTitle: true,
+                title: Wrap(
+                    spacing: 8.0, 
+                    runSpacing: 4.0,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      new ClipOval(child: loadImage(vote.type.logo)),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8),
+                      ),
+                      Text(vote.title,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          )),
+                    ]),
                 background: Container(color: Theme.of(context).primaryColor)),
           ),
         ];
@@ -203,5 +204,12 @@ class VoteScreenState extends State<VoteScreen> {
       isLoading = false;
       voteDetails = response;
     });
+  }
+
+  Image loadImage(String logo) {
+    if (image == null) {
+      image = imageFromBase64String(logo, 42);
+    }
+    return image;
   }
 }
