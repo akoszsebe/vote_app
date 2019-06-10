@@ -22,6 +22,20 @@ class GroupApiProvider extends ApiProvider {
     }
   }
 
+  Future<GroupDetailResponse> getById(int id) async {
+    try {
+      String authToken = await SharedPrefs.getAuthToken();
+      Response response = await dio.get(baseUrl + "/group/$id",
+          options: Options(
+              headers: {"Authorization": "Bearer $authToken"},
+              contentType: ContentType.parse("application/json")),cancelToken: token);
+      return GroupDetailResponse.fromJson(response.data); 
+    } on DioError catch (e) {
+      print("Exception occured: $e");
+      throw ApiExeption.fromDioError(e);
+    }
+  }
+
   Future<bool> accept(int id) async {
     try {
       GroupAcceptRequest body = GroupAcceptRequest(accepted: true);

@@ -28,7 +28,7 @@ class FirebaseNotifications {
     //   onLaunch: (Map<String, dynamic> message) async {
     //     print('on launch $message');
     //   },
-    // );
+    //);
   }
 
   void iOSPermission() {

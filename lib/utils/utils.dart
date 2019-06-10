@@ -51,6 +51,6 @@ class HexColor extends Color {
 }
 
 Image imageFromBase64String(String base64String, double size) {
-  Uint8List bytes = base64Decode(base64String.split(',')[1]);
+  Uint8List bytes = base64Decode(base64String);
   return Image.memory(bytes, height: size,width: size,);
 }

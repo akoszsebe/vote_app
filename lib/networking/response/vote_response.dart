@@ -13,6 +13,26 @@ class VoteResponse {
       beginning: json["beginning"],
       group: json["group"],
       type: VoteType.fromJson(json["type"]));
+
+  factory VoteResponse.fromJsonNullable(Map<String, dynamic> json) {
+    VoteResponse response = VoteResponse();
+    if (json.containsKey("id")){
+      response.id = json["id"];
+    }
+    if (json.containsKey("title")){
+      response.title = json["title"];
+    }
+    if (json.containsKey("beginning")){
+      response.beginning = json["beginning"];
+    }
+    if (json.containsKey("group")){
+      response.group = json["group"];
+    }
+    if (json.containsKey("type")){
+      response.type = VoteType.fromJson(json["type"]);
+    }
+    return response;
+  }
 }
 
 class FinishedVoteResponse {
@@ -31,6 +51,26 @@ class FinishedVoteResponse {
           end: json["end"],
           group: json["group"],
           type: VoteType.fromJson(json["type"]));
+
+    factory FinishedVoteResponse.fromJsonNullable(Map<String, dynamic> json) {
+    FinishedVoteResponse response = FinishedVoteResponse();
+    if (json.containsKey("id")){
+      response.id = json["id"];
+    }
+    if (json.containsKey("title")){
+      response.title = json["title"];
+    }
+    if (json.containsKey("beginning")){
+      response.end = json["end"];
+    }
+    if (json.containsKey("group")){
+      response.group = json["group"];
+    }
+    if (json.containsKey("type")){
+      response.type = VoteType.fromJson(json["type"]);
+    }
+    return response;
+  }
 }
 
 class VoteDetailResponse {
