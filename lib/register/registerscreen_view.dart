@@ -123,7 +123,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         onPressed: _registerScreenController.register,
         context: context,
         child: new Text(
-          "Register",
+          "Register", style: TextStyle(fontSize: 18),
         ),
       );
     }

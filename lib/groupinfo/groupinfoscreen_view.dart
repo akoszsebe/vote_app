@@ -4,6 +4,8 @@ import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
+import 'package:vote_app/vote/votescreen_view.dart';
+import 'package:vote_app/votestatistics/votestatisticsscreen_view.dart';
 
 class GroupInfoScreen extends StatefulWidget {
   static const routeName = '/groupinfo';
@@ -62,7 +64,11 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
     if (isLoading) {
       return buildLoader();
     } else {
-      return ListView(children: <Widget>[buildGroupDetails(), buildUpcoming(), buildFinished()]);
+      return ListView(children: <Widget>[
+        buildGroupDetails(),
+        buildUpcoming(),
+        buildFinished()
+      ]);
     }
   }
 
@@ -110,12 +116,12 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                     new Text(
                       "Upcoming Votes",
                       style: new TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.normal,
                           color: Colors.white),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 6),
+                      padding: EdgeInsets.only(top: 16),
                     ),
                     for (var v in groupDetailResponse.voting.upcoming)
                       _buildUpcomingItem(v),
@@ -155,17 +161,17 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 6),
+                      padding: EdgeInsets.only(top: 8),
                     ),
                     new Text(
                       "Finished Votes",
                       style: new TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.normal,
                           color: Colors.white),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 6),
+                      padding: EdgeInsets.only(top: 16),
                     ),
                     for (var v in groupDetailResponse.voting.finished)
                       _buildFinishedItem(v),
@@ -230,18 +236,63 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
   }
 
   _buildUpcomingItem(VoteResponse v) {
-    return Text(
-      v.title,
-      style: new TextStyle(
-          fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white),
+    return Material(
+      child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new ClipOval(
+              child: imageFromBase64String(v.type.logo, 24),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16),
+            ),
+            Text(
+              v.title,
+              style: new TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white),
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.pushNamed(context, VoteScreen.routeName, arguments: v);
+        },
+      ),
+      color: Colors.transparent,
     );
   }
 
   _buildFinishedItem(FinishedVoteResponse v) {
-    return Text(
-      v.title,
-      style: new TextStyle(
-          fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white),
+    return Material(
+      child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new ClipOval(
+              child: imageFromBase64String(v.type.logo, 24),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16),
+            ),
+            Text(
+              v.title,
+              style: new TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white),
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.pushNamed(context, VoteStatisticsScreen.routeName,
+              arguments: v);
+        },
+      ),
+      color: Colors.transparent,
     );
   }
 }

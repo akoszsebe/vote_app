@@ -165,28 +165,37 @@ class SplashScreenState extends State<SplashScreen> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RoundRaisedButton(
-            onPressed: () => {
-                  {
-                    setState(() {
-                      isLoaded = SplashType.showEmail;
-                    })
-                  },
-                },
-            context: context,
-            child: new Text(
-              "Login",
-            ),
+          new Container(
+              height: 48.0,
+              width: 100.0,
+              child: RoundRaisedButton(
+                onPressed: () => {
+                      {
+                        setState(() {
+                          isLoaded = SplashType.showEmail;
+                        })
+                      },
+                    },
+                context: context,
+                child: new Text(
+                  "Login", style: TextStyle(fontSize: 18),
+                ),
+              )),
+          Padding(
+            padding: EdgeInsets.only(top: 8),
           ),
-          RoundInvertedRaisedButton(
-            onPressed: () => {
-                  {Navigator.pushNamed(context, RegisterScreen.routeName)},
-                },
-            context: context,
-            child: new Text(
-              "Register",
-            ),
-          ),
+          Container(
+              height: 48.0,
+              width: 100.0,
+              child: RoundInvertedRaisedButton(
+                onPressed: () => {
+                      {Navigator.pushNamed(context, RegisterScreen.routeName)},
+                    },
+                context: context,
+                child: new Text(
+                  "Register",style: TextStyle(fontSize: 16),
+                ),
+              )),
         ]);
   }
 

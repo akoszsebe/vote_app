@@ -42,14 +42,14 @@ class SplashScreenController extends BaseController {
           print(decodedToken.toString());
           SharedPrefs.setAuthToken(response.authToken);
           SharedPrefs.setRefreshToken(response.refreshToken);
-          // if (decodedToken["active"] == true) {
+          if (decodedToken["active"] == true) {
           SharedPrefs.setLogedIn(true);
           SharedPrefs.setEmail(splashScreenState.email);
           splashScreenState.navigateHome();
-          //} else {
-          //   splashScreenState.navigateConfirmation();
-          //   splashScreenState.showLoginRegister();
-          // }
+          } else {
+            splashScreenState.navigateConfirmation();
+            splashScreenState.showLoginRegister();
+          }
         }).catchError((error) {
           SharedPrefs.setAuthToken("");
           SharedPrefs.setRefreshToken("");
