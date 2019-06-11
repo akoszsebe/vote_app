@@ -144,7 +144,7 @@ class VoteScreenState extends State<VoteScreen> {
                           padding: EdgeInsets.only(top: 16),
                         ),
                         RoundColoredRaisedButton(
-                            onPressed: () {},
+                            onPressed: () {_voteSreenController.connectToChain();},
                             textColor: color,
                             child: new Text(
                               "Vote",

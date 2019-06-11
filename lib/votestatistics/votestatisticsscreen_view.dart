@@ -87,7 +87,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   }
 
   Widget _buildVoteResult(FinishedVoteResponse vote) {
-    var size = MediaQuery.of(context).size.width/1.5;
+    var size = MediaQuery.of(context).size.width / 1.5;
     return Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
@@ -146,6 +146,19 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                     )),
                   ),
                   buildColumnChart(),
+                 // for(VoteResult )
+                  ExpansionTile(
+                    key: Key("1"),
+                    title: Text(
+                      voteDetails.results[1].title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    children: <Widget>[Text("data")],
+                  ),
                 ],
               ),
             ),

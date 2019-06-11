@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/home/upcoming/upcomingframe_view.dart';
 import 'package:vote_app/repository/votelist_repository.dart';
@@ -9,11 +8,7 @@ class UpComingFrameCrontroller extends BaseController {
 
   UpComingFrameCrontroller({this.upcomingFrameState});
 
-  var apiUrl =
-      "http://192.168.0.178:8545"; //"http://10.0.2.2:8545";// //Replace with your API
-
-  var httpClient = new Client();
-  var ethClient;
+  
 
   @override
   void init() {
