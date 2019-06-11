@@ -6,6 +6,7 @@ import 'package:vote_app/votestatistics/votestatisticsscreen_controller.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:vote_app/utils/widgets.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class VoteStatisticsScreen extends StatefulWidget {
   static const routeName = '/votestatistics';
@@ -86,6 +87,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
   }
 
   Widget _buildVoteResult(FinishedVoteResponse vote) {
+    var size = MediaQuery.of(context).size.width/1.5;
     return Container(
         alignment: Alignment.centerLeft,
         margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
@@ -99,8 +101,9 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                   offset: new Offset(1.0, 1.0),
                   blurRadius: 5.0)
             ]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          alignment: WrapAlignment.center,
           children: <Widget>[
             new Padding(
               padding: new EdgeInsets.only(top: 8.0),
@@ -120,7 +123,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                   ),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.spaceBetween,
+                    alignment: WrapAlignment.center,
                     verticalDirection: VerticalDirection.down,
                     spacing: 8.0,
                     runSpacing: 4.0,
@@ -137,11 +140,12 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                     child: Center(
                         child: new AnimatedCircularChart(
                       key: _chartKey,
-                      size: const Size(300.0, 300.0),
+                      size: Size(size.toDouble(), size.toDouble()),
                       initialChartData: data,
                       chartType: CircularChartType.Radial,
                     )),
                   ),
+                  buildColumnChart(),
                 ],
               ),
             ),
@@ -168,13 +172,40 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       isLoading = false;
       voteDetails = resonse;
 
+      var dataChart = List<VotesColumnChartItem>();
+
       List<CircularSegmentEntry> r = List<CircularSegmentEntry>();
       var i = 0;
       voteDetails.results[0].items.forEach((option) {
         r.add(CircularSegmentEntry(
-            (option.value).toDouble(), ChartColors.getColor(i++),
-            rankKey: 'Q1'));
+            (option.value).toDouble(), ChartColors.getColor(i)));
+        dataChart.add(VotesColumnChartItem(
+            i.toString(), option.value, ChartColors.getColor(i++)));
       });
+      var series = [
+        new charts.Series<VotesColumnChartItem, String>(
+          id: 'Clicks',
+          domainFn: (VotesColumnChartItem clickData, _) => clickData.title,
+          measureFn: (VotesColumnChartItem clickData, _) => clickData.value,
+          colorFn: (VotesColumnChartItem clickData, _) => clickData.color,
+          data: dataChart,
+        )
+      ];
+      chart = new charts.BarChart(
+        series,
+        animate: true,
+        domainAxis: new charts.OrdinalAxisSpec(
+            renderSpec: new charts.SmallTickRendererSpec(
+                labelStyle: new charts.TextStyleSpec(
+                    fontSize: 10, color: charts.MaterialPalette.transparent),
+                lineStyle: new charts.LineStyleSpec(
+                    color: charts.MaterialPalette.transparent))),
+        primaryMeasureAxis: new charts.NumericAxisSpec(
+            renderSpec: new charts.GridlineRendererSpec(
+                labelStyle: new charts.TextStyleSpec(
+                    fontSize: 16, color: charts.MaterialPalette.white))),
+        defaultInteractions: false,
+      );
       data = <CircularStackEntry>[
         new CircularStackEntry(
           r,
@@ -206,35 +237,40 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       },
     );
   }
+
+  charts.BarChart chart;
+
+  Widget buildColumnChart() {
+    return Padding(
+      padding: new EdgeInsets.all(32.0),
+      child: new SizedBox(
+        height: 200.0,
+        child: chart,
+      ),
+    );
+  }
+}
+
+class VotesColumnChartItem {
+  final String title;
+  final int value;
+  final charts.Color color;
+
+  VotesColumnChartItem(this.title, this.value, Color color)
+      : this.color = new charts.Color(
+            r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }
 
 class ChartColors {
-  static final List<Color> colors = [
-    Colors.indigo[600],
-    Colors.blue[600],
-    Colors.lightBlue[600],
-    Colors.cyan[600],
-    Colors.teal[600],
-    Colors.green[600],
-    Colors.lightGreen[600],
-    Colors.lime[600],
-    Colors.yellow[600],
-    Colors.amber[600],
-    Colors.orange[600],
-    Colors.deepOrange[600],
-    Colors.brown[600],
-    Colors.grey[600],
-  ];
-
   static getColor(index) {
     List<Color> colors = [
-      Colors.redAccent,
-      Colors.orangeAccent,
-      Colors.yellowAccent,
-      Colors.greenAccent,
-      Colors.blueAccent,
-      Colors.purpleAccent,
-      Colors.grey,
+      Colors.blueGrey[100],
+      Colors.purple[300],
+      Colors.blue[300],
+      Colors.teal[300],
+      Colors.yellow[300],
+      Colors.orange[300],
+      Colors.red[300],
     ];
     Random r = Random();
     if (index < colors.length) return colors[index];
