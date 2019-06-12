@@ -5,7 +5,7 @@ import 'package:vote_app/utils/utils.dart';
 
 
 void showErrorDialog(BuildContext context, String error){
-  showAlertDialog(context,"OOPS something went wrong", error);
+  showAlertDialog(context,"OOPS! something went wrong.", error);
 }
 
 void showAlertDialog(BuildContext context, String title, String content) {
