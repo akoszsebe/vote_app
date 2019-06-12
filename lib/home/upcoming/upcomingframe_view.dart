@@ -52,6 +52,6 @@ class UpcomingFrameState extends State<UpcomingFrame> {
   }
 
   void showError(message) {
-    showAlertDialog(context, "Error", message);
+    showErrorDialog(context, message);
   }
 }

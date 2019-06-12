@@ -76,7 +76,7 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
     setState(() {
       isLoading = false;
     });
-    showAlertDialog(context, "Error", message);
+    showErrorDialog(context, message);
   }
 
   void setUI(GroupDetailResponse response) {

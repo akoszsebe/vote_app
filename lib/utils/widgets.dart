@@ -3,6 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 
+
+void showErrorDialog(BuildContext context, String error){
+  showAlertDialog(context,"OOPS something went wrong", error);
+}
+
 void showAlertDialog(BuildContext context, String title, String content) {
   // flutter defined function
   showDialog(
@@ -10,8 +15,11 @@ void showAlertDialog(BuildContext context, String title, String content) {
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        title: new Text(title),
-        content: new Text(content),
+        shape:  RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0))),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: new Text(title, style: TextStyle(color: Colors.white),),
+        content: new Text(content, style: TextStyle(color: Colors.white70),),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(
@@ -34,8 +42,11 @@ void showConfirmDialog(
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        title: new Text(title),
-        content: new Text(content),
+        shape:  RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0))),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: new Text(title , style: TextStyle(color: Colors.white),),
+        content: new Text(content, style: TextStyle(color: Colors.white70),),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(

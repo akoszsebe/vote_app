@@ -139,7 +139,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     setState(() {
       isLoading = false;
     });
-    showAlertDialog(context, "Error", message);
+    showErrorDialog(context, message);
   }
 
   void setDetails(VoteDetailResponse resonse) {

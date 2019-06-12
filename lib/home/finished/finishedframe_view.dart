@@ -51,6 +51,6 @@ class FinishedFrameState extends State<FinishedFrame> {
   }
 
   void showError(message) {
-    showAlertDialog(context, "Error", message);
+    showErrorDialog(context, message);
   }
 }

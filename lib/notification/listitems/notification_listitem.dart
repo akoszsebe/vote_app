@@ -139,6 +139,6 @@ class NotificationListItemState extends State<NotificationListItem> {
     setState(() {
       isLoading = false;
     });
-    showAlertDialog(context, "Error", error.message);
+    showErrorDialog(context, error.message);
   }
 }

@@ -149,6 +149,6 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
   }
 
   void showError(String s) {
-     showAlertDialog(context, "Error", s);
+     showErrorDialog(context, s);
   }
 }

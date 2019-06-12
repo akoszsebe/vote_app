@@ -199,6 +199,6 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
   void showError(String s) {
-    showAlertDialog(context, "Error", s);
+    showErrorDialog(context, s);
   }
 }

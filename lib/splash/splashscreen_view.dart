@@ -61,7 +61,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void showError(String error) {
-    showAlertDialog(context, "Error", error);
+    showErrorDialog(context, error);
   }
 
   @override

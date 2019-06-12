@@ -313,8 +313,10 @@ class ProfileFrameState extends State<ProfileFrame> {
         deleteIcon: Icon(Icons.close),
         deleteIconColor: Theme.of(context).accentColor,
         onDeleted: () {
-          showAlertDialog(
-              context, "Alert", "Are you sure you want to delete this group ?");
+          showConfirmDialog(
+              context, "Alert", "Are you sure you want to disconnect from '${group.name}' group ?",(){
+                
+              });
         },
       ),
     );

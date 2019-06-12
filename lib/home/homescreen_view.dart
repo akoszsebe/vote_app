@@ -123,7 +123,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           textColor: Colors.white,
                           splashColor: Colors.grey,
                           onPressed: () {
-                            showAlertDialog(context, "Alert", "todo filter");
+                            showAlertDialog(context, "TODO", "todo filter");
                           },
                           child: Icon(
                             Icons.sort,
