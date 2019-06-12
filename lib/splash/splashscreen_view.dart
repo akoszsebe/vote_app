@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:vote_app/notification/firebase/firebasenotifications.dart';
 import 'package:vote_app/splash/splashscreen_controller.dart';
 import 'package:vote_app/confirmation/confirmationscreen_view.dart';
 import 'package:vote_app/utils/code_input.dart';
@@ -22,12 +21,9 @@ class SplashScreenState extends State<SplashScreen> {
   SplashType isLoaded = SplashType.showLoader;
 
   String email = "";
-
   @override
   void initState() {
     super.initState();
-    new FirebaseNotifications().setUpFirebase();
-    print("--------------------------------- init ----------------");
     _splashScreenController = SplashScreenController(splashScreenState: this);
     _splashScreenController.init();
   }
@@ -57,7 +53,11 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateHome() {
-    Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomeScreen(
+                firebaseNotifications: _splashScreenController.getFirebase())));
   }
 
   void showError(String error) {
@@ -178,7 +178,8 @@ class SplashScreenState extends State<SplashScreen> {
                     },
                 context: context,
                 child: new Text(
-                  "Login", style: TextStyle(fontSize: 18),
+                  "Login",
+                  style: TextStyle(fontSize: 18),
                 ),
               )),
           Padding(
@@ -193,7 +194,8 @@ class SplashScreenState extends State<SplashScreen> {
                     },
                 context: context,
                 child: new Text(
-                  "Register",style: TextStyle(fontSize: 16),
+                  "Register",
+                  style: TextStyle(fontSize: 16),
                 ),
               )),
         ]);

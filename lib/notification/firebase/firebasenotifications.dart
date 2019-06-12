@@ -1,34 +1,38 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:flutter/foundation.dart';
 
 class FirebaseNotifications {
   FirebaseMessaging _firebaseMessaging;
 
   void setUpFirebase() {
     _firebaseMessaging = FirebaseMessaging();
-   firebaseCloudMessagingListeners();
+    firebaseCloudMessagingListeners();
   }
+
+  VoidCallback _listener;
 
   void firebaseCloudMessagingListeners() {
     if (Platform.isIOS) iOSPermission();
 
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
-    });
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        if (_listener != null) {
+          _listener();
+        }
+      },
+    );
+  }
 
-    // _firebaseMessaging.configure(
-    //   onMessage: (Map<String, dynamic> message) async {
-    //     print('on message $message');
-    //   },
-    //   onResume: (Map<String, dynamic> message) async {
-    //     print('on resume $message');
-    //   },
-    //   onLaunch: (Map<String, dynamic> message) async {
-    //     print('on launch $message');
-    //   },
-    //);
+  void addListener(VoidCallback listener) {
+    _listener = listener;
+  }
+
+  Future<String> getToken() async {
+    String token = await _firebaseMessaging.getToken();
+    return token;
   }
 
   void iOSPermission() {

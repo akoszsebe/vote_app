@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vote_app/home/homescreen_controller.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
 import 'package:vote_app/home/finished/finishedframe_view.dart';
+import 'package:vote_app/notification/firebase/firebasenotifications.dart';
 import 'package:vote_app/notification/notificationscreen_view.dart';
 import 'package:vote_app/home/profile/profileframe_view.dart';
 import 'package:vote_app/home/upcoming/upcomingframe_view.dart';
@@ -10,14 +11,22 @@ import 'package:vote_app/utils/widgets.dart';
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
 
+  final FirebaseNotifications firebaseNotifications;
+
+  HomeScreen({this.firebaseNotifications});
+
   @override
-  State<StatefulWidget> createState() => HomeScreenState();
+  State<StatefulWidget> createState() =>
+      HomeScreenState(firebaseNotifications: firebaseNotifications);
 }
 
-class HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
+  final FirebaseNotifications firebaseNotifications;
   int _currentIndex = 0;
   int _notificationCount = 0;
   bool isFilterVisible = true;
+
+  HomeScreenState({this.firebaseNotifications});
 
   HomeSreenController _homeSreenController;
 
@@ -37,6 +46,9 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     _homeSreenController = HomeSreenController(homeScreenState: this);
     _homeSreenController.init();
+    firebaseNotifications.addListener(() {
+      _homeSreenController.fillNotifications();
+    });
   }
 
   void setNotifications(List<NotificationResponse> notifications) {
@@ -49,6 +61,13 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentIndex = 0;
     });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _homeSreenController.fillNotifications();
+    }
   }
 
   int getCurrentIndex() {

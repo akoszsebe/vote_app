@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vote_app/home/finished/finishedframe_view.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 

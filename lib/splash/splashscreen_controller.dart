@@ -1,10 +1,10 @@
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/login_api_provider.dart';
 import 'package:vote_app/networking/request/login_request.dart';
+import 'package:vote_app/notification/firebase/firebasenotifications.dart';
 import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
-import 'package:vote_app/utils/utils.dart';
 
 class SplashScreenController extends BaseController {
   final SplashScreenState splashScreenState;
@@ -12,30 +12,38 @@ class SplashScreenController extends BaseController {
 
   SplashScreenController({this.splashScreenState});
   bool _logedIn = false;
+  FirebaseNotifications _firebaseNotifications;
+  String firebaseDeviceId = "";
 
   @override
   void init() {
+    _firebaseNotifications = new FirebaseNotifications();
+    _firebaseNotifications..setUpFirebase();
+
     loadData();
   }
 
-  void loadData() {
-    Future.delayed(const Duration(milliseconds: 300), () async {
-      _logedIn = await SharedPrefs.getLogedIn();
-      if (_logedIn) {
-        splashScreenState.showPin();
-      } else {
-        splashScreenState.showLoginRegister();
-      }
-    });
+  Future loadData() async {
+    print("--------------------------------- init ----------------");
+    firebaseDeviceId = await _firebaseNotifications.getToken();
+    print(firebaseDeviceId);
+    _logedIn = await SharedPrefs.getLogedIn();
+    if (_logedIn) {
+      splashScreenState.showPin();
+    } else {
+      splashScreenState.showLoginRegister();
+    }
   }
 
   Future loginEmailPin(String _pin) async {
     splashScreenState.showLoader();
-    var deviceId = await getDeviceDetails();
     if (splashScreenState.email.length != 0) {
       if (_pin.length == 6) {
         _loginApiProvider
-            .login(new LoginRequest(email: splashScreenState.email, pin: _pin,deviceId: deviceId))
+            .login(new LoginRequest(
+                email: splashScreenState.email,
+                pin: _pin,
+                deviceId: firebaseDeviceId))
             .then((response) {
           print(response.toString());
           var decodedToken = parseJwt(response.authToken);
@@ -43,9 +51,9 @@ class SplashScreenController extends BaseController {
           SharedPrefs.setAuthToken(response.authToken);
           SharedPrefs.setRefreshToken(response.refreshToken);
           if (decodedToken["active"] == true) {
-          SharedPrefs.setLogedIn(true);
-          SharedPrefs.setEmail(splashScreenState.email);
-          splashScreenState.navigateHome();
+            SharedPrefs.setLogedIn(true);
+            SharedPrefs.setEmail(splashScreenState.email);
+            splashScreenState.navigateHome();
           } else {
             splashScreenState.navigateConfirmation();
             splashScreenState.showLoginRegister();
@@ -61,14 +69,16 @@ class SplashScreenController extends BaseController {
         splashScreenState.showError("Wrong Pin Please try again");
       }
     } else {
-      loginPin(_pin, deviceId);
+      loginPin(_pin);
     }
   }
 
-  Future loginPin(String _pin, String deviceId) async {
+  Future loginPin(String _pin) async {
     splashScreenState.showLoader();
     if (_pin.length == 6) {
-      _loginApiProvider.loginPin(LoginPinRequest(pin: _pin,deviceId: deviceId)).then((response) {
+      _loginApiProvider
+          .loginPin(LoginPinRequest(pin: _pin, deviceId: firebaseDeviceId))
+          .then((response) {
         if (response) {
           SharedPrefs.setLogedIn(true);
           splashScreenState.navigateHome();
@@ -83,5 +93,9 @@ class SplashScreenController extends BaseController {
       splashScreenState.showPin();
       splashScreenState.showError("Wrong Pin Please try again");
     }
+  }
+
+  getFirebase() {
+    return _firebaseNotifications;
   }
 }
