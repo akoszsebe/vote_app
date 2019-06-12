@@ -272,6 +272,10 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateConfirmation() {
-    Navigator.pushNamed(context, ConfirmationScreen.routeName);
+     Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ConfirmationScreen(
+                firebaseNotifications: _splashScreenController.getFirebase())));
   }
 }

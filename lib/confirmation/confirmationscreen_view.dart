@@ -2,18 +2,28 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:vote_app/confirmation/confirmationscreen_controller.dart';
 import 'package:vote_app/home/homescreen_view.dart';
+import 'package:vote_app/notification/firebase/firebasenotifications.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   static const routeName = '/confirmation';
 
+  final FirebaseNotifications firebaseNotifications;
+
+   ConfirmationScreen({this.firebaseNotifications});
+
   @override
-  ConfirmationScreenState createState() => ConfirmationScreenState();
+  ConfirmationScreenState createState() => ConfirmationScreenState(firebaseNotifications: firebaseNotifications);
 }
 
 class ConfirmationScreenState extends State<ConfirmationScreen> {
   var loading = false;
   ConfirmationScreenController _confirmationScreenController;
+
+  final FirebaseNotifications firebaseNotifications;
+
+
+  ConfirmationScreenState({this.firebaseNotifications});
 
   @override
   void initState() {
@@ -145,7 +155,11 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
   }
 
   void navigateHome() {
-     Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+     Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomeScreen(
+                firebaseNotifications: firebaseNotifications)));
   }
 
   void showError(String s) {
