@@ -3,9 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 
-
-void showErrorDialog(BuildContext context, String error){
-  showAlertDialog(context,"OOPS! something went wrong.", error);
+void showErrorDialog(BuildContext context, String error) {
+  showAlertDialog(context, "OOPS!", "Something went wrong: " + error);
 }
 
 void showAlertDialog(BuildContext context, String title, String content) {
@@ -15,19 +14,30 @@ void showAlertDialog(BuildContext context, String title, String content) {
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        shape:  RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
         backgroundColor: Theme.of(context).primaryColor,
-        title: new Text(title, style: TextStyle(color: Colors.white),),
-        content: new Text(content, style: TextStyle(color: Colors.white70),),
+        title: Center(
+            child: new Text(
+          title,
+          style: TextStyle(color: Colors.white),
+        )),
+        content: new Text(
+          content,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white70),
+        ),
         actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          new FlatButton(
-            child: new Text("OK"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width - 96,
+              child: Center(
+                child: new FlatButton(
+                  child: new Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )),
         ],
       );
     },
@@ -36,32 +46,50 @@ void showAlertDialog(BuildContext context, String title, String content) {
 
 void showConfirmDialog(
     BuildContext context, String title, String content, VoidCallback onOK) {
-  // flutter defined function
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return object of type Dialog
       return AlertDialog(
-        shape:  RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
         backgroundColor: Theme.of(context).primaryColor,
-        title: new Text(title , style: TextStyle(color: Colors.white),),
-        content: new Text(content, style: TextStyle(color: Colors.white70),),
+        title: Center(
+            child: new Text(
+          title,
+          style: TextStyle(color: Colors.white),
+        )),
+        content: new Text(
+          content,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white70),
+        ),
         actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          new FlatButton(
-            child: new Text("Cancel"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          new FlatButton(
-            child: new Text("OK"),
-            onPressed: () {
-              onOK();
-              Navigator.of(context).pop();
-            },
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width - 96,
+              child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new FlatButton(
+                      child: new Text("Cancel"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    Container(
+                      height: 20.0,
+                      width: 1.0,
+                      color: Colors.white30,
+                      margin: const EdgeInsets.only(left: 25.0, right: 15.0),
+                    ),
+                    new FlatButton(
+                      child: new Text("Ok"),
+                      onPressed: () {
+                        onOK();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ])),
         ],
       );
     },

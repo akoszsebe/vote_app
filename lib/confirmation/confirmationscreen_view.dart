@@ -10,10 +10,11 @@ class ConfirmationScreen extends StatefulWidget {
 
   final FirebaseNotifications firebaseNotifications;
 
-   ConfirmationScreen({this.firebaseNotifications});
+  ConfirmationScreen({this.firebaseNotifications});
 
   @override
-  ConfirmationScreenState createState() => ConfirmationScreenState(firebaseNotifications: firebaseNotifications);
+  ConfirmationScreenState createState() =>
+      ConfirmationScreenState(firebaseNotifications: firebaseNotifications);
 }
 
 class ConfirmationScreenState extends State<ConfirmationScreen> {
@@ -22,78 +23,94 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
 
   final FirebaseNotifications firebaseNotifications;
 
-
   ConfirmationScreenState({this.firebaseNotifications});
 
   @override
   void initState() {
     super.initState();
-    _confirmationScreenController = ConfirmationScreenController(confirmationScreenState: this);
+    _confirmationScreenController =
+        ConfirmationScreenController(confirmationScreenState: this);
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              exit(0);
-            },
-          ),
-        ],
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 50.0,
-                        child: Icon(
-                          Icons.done,
-                          color: Theme.of(context).accentColor,
-                          size: 50.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          "Confirm your account please enter the code from email",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0),
-                        ),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                _buildInputOrLoader(context),
-                              ]))
-                    ],
+        resizeToAvoidBottomPadding: true,
+        body: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+          },
+          child: new ListView(children: <Widget>[
+            AppBar(
+              elevation: 0,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    exit(0);
+                  },
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 50.0,
+                  child: Icon(
+                    Icons.done,
+                    color: Theme.of(context).accentColor,
+                    size: 50.0,
                   ),
                 ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    "To confirm your account please enter the code from email",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 48),
+                ),
+                _buildInputOrLoader(context),
+                Padding(
+                  padding: EdgeInsets.only(top: 24.0, bottom: 8),
+                  child: Text(
+                    "Don`t got a code ?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white54,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 20.0),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 40),
+                  child: Text(
+                    "resend",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 21.0),
+                  ),
+                ),
+              ],
+            )
+          ]),
+        ));
   }
 
   Widget _buildInputOrLoader(BuildContext context) {
@@ -155,14 +172,14 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
   }
 
   void navigateHome() {
-     Navigator.pushReplacement(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => HomeScreen(
-                firebaseNotifications: firebaseNotifications)));
+            builder: (context) =>
+                HomeScreen(firebaseNotifications: firebaseNotifications)));
   }
 
   void showError(String s) {
-     showErrorDialog(context, s);
+    showErrorDialog(context, s);
   }
 }

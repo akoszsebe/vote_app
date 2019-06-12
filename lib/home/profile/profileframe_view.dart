@@ -48,13 +48,17 @@ class ProfileFrameState extends State<ProfileFrame> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        _buildPersonalInfo(),
-        _buildGrupesInfo(),
-        _buildAbout()
-      ],
-    );
+    return NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
+        },
+        child: ListView(
+          children: <Widget>[
+            _buildPersonalInfo(),
+            _buildGrupesInfo(),
+            _buildAbout()
+          ],
+        ));
   }
 
   Widget _buildGrupesInfo() {
@@ -301,7 +305,8 @@ class ProfileFrameState extends State<ProfileFrame> {
   Widget _buildChip(GroupResponse group) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, GroupInfoScreen.routeName,arguments: group);
+        Navigator.pushNamed(context, GroupInfoScreen.routeName,
+            arguments: group);
       },
       child: Chip(
         backgroundColor: Colors.white,
@@ -314,9 +319,10 @@ class ProfileFrameState extends State<ProfileFrame> {
         deleteIconColor: Theme.of(context).accentColor,
         onDeleted: () {
           showConfirmDialog(
-              context, "Alert", "Are you sure you want to disconnect from '${group.name}' group ?",(){
-                
-              });
+              context,
+              "Alert",
+              "Are you sure you want to disconnect from '${group.name}' group ?",
+              () {});
         },
       ),
     );

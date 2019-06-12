@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -32,4 +33,9 @@ class HexColor extends Color {
 Image imageFromBase64String(String base64String, double size) {
   Uint8List bytes = base64Decode(base64String);
   return Image.memory(bytes, height: size,width: size,);
+}
+
+String imageToBase64String(File image){
+  List<int> imageBytes = image.readAsBytesSync();
+  return base64Encode(imageBytes);
 }

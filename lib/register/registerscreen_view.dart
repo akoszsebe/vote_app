@@ -56,7 +56,11 @@ class RegisterScreenState extends State<RegisterScreen> {
             ),
           ];
         },
-        body: new ListView(
+        body: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+          },
+          child :new ListView(
           padding: new EdgeInsets.all(16.0),
           children: <Widget>[
             Container(
@@ -132,7 +136,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildButtonOrLoader() {
@@ -141,8 +145,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     } else {
       return RoundRaisedButton(
         onPressed:
-          // List<int> imageBytes = image.readAsBytesSync();
-          // String base64Image = base64Encode(imageBytes);
+        //imageToBase64String(image);
          _registerScreenController.register,
         context: context,
         child: new Text(
