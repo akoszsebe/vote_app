@@ -19,10 +19,12 @@ class VoteScreenState extends State<VoteScreen> {
   VoteSreenController _voteSreenController;
   bool requestSent = false;
   Image image;
+  VoteAction action;
 
   @override
   void initState() {
     super.initState();
+    action = VoteAction.ACTION;
     _voteSreenController = VoteSreenController(voteScreenState: this);
     _voteSreenController.init();
   }
@@ -51,7 +53,7 @@ class VoteScreenState extends State<VoteScreen> {
                 titlePadding: EdgeInsets.only(bottom: 8),
                 centerTitle: true,
                 title: Wrap(
-                    spacing: 8.0, 
+                    spacing: 8.0,
                     runSpacing: 4.0,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
@@ -143,12 +145,7 @@ class VoteScreenState extends State<VoteScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 16),
                         ),
-                        RoundColoredRaisedButton(
-                            onPressed: () {_voteSreenController.connectToChain();},
-                            textColor: color,
-                            child: new Text(
-                              "Vote",
-                            ))
+                        _buildAction(color)
                       ],
                     ),
                   ),
@@ -212,4 +209,34 @@ class VoteScreenState extends State<VoteScreen> {
     }
     return image;
   }
+
+  _buildAction(Color color) {
+    switch(action){
+      case VoteAction.ACTION:
+        return RoundColoredRaisedButton(
+        onPressed: () {
+          setState(() {
+           action = VoteAction.LOADING; 
+          });
+          
+          //_voteSreenController.connectToChain();
+        },
+        textColor: color,
+        child: new Text(
+          "Vote",
+        ));
+      case VoteAction.LOADING:
+        return buildLoader();
+      case VoteAction.VERIFY:
+        return buildLoader();
+    }
+    return buildLoader();
+  }
+}
+
+
+enum VoteAction{
+  ACTION,
+  LOADING,
+  VERIFY
 }

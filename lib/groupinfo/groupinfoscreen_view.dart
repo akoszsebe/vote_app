@@ -49,7 +49,7 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                   groupResponse.name,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 20.0,
                   ),
                 ),
                 background: Container(color: Theme.of(context).primaryColor)),
@@ -116,7 +116,7 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                     new Text(
                       "Upcoming Votes",
                       style: new TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 20.0,
                           fontWeight: FontWeight.normal,
                           color: Colors.white),
                     ),
@@ -166,7 +166,7 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                     new Text(
                       "Finished Votes",
                       style: new TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 20.0,
                           fontWeight: FontWeight.normal,
                           color: Colors.white),
                     ),
@@ -251,10 +251,14 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
             Text(
               v.title,
               style: new TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 18.0,
                   fontWeight: FontWeight.normal,
                   color: Colors.white),
             ),
+             Padding(
+              padding: EdgeInsets.only(left: 16),
+            ),
+            Icon(Icons.navigate_next,color: Colors.white70,)
           ],
         ),
         onTap: () {
@@ -272,7 +276,7 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new ClipOval(
+           new ClipOval(
               child: imageFromBase64String(v.type.logo, 24),
             ),
             Padding(
@@ -281,10 +285,14 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
             Text(
               v.title,
               style: new TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 18.0,
                   fontWeight: FontWeight.normal,
                   color: Colors.white),
             ),
+             Padding(
+              padding: EdgeInsets.only(left: 16),
+            ),
+            Icon(Icons.navigate_next,color: Colors.white70,)
           ],
         ),
         onTap: () {
