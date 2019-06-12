@@ -1,6 +1,4 @@
 PODS:
-  - device_info (0.0.1):
-    - Flutter
   - Firebase/Core (6.2.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.0.1)
@@ -64,6 +62,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.2.0):
     - GoogleUtilities/Logger
+  - image_picker (0.0.1):
+    - Flutter
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
@@ -74,24 +74,23 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - device_info (from `.symlinks/plugins/device_info/ios`)
   - Firebase/Core
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 EXTERNAL SOURCES:
-  device_info:
-    :path: .symlinks/plugins/device_info/ios
   firebase_messaging:
     :path: .symlinks/plugins/firebase_messaging/ios
   Flutter:
     :path: .symlinks/flutter/ios
+  image_picker:
+    :path: .symlinks/plugins/image_picker/ios
   shared_preferences:
     :path: .symlinks/plugins/shared_preferences/ios
 
 SPEC CHECKSUMS:
-  device_info: 76ce0b32e13034d1883be4a382433648f9dcee63
   Firebase: 5965bac23e7fcb5fa6d926ed429c9ecef8a2014e
   firebase_messaging: a5f5d4a9491b660f33a1f94bd0596558f820bad1
   FirebaseAnalytics: 629301c2b9925f3537d4093a17a72751ae5b7084
@@ -102,6 +101,7 @@ SPEC CHECKSUMS:
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   GoogleAppMeasurement: 51d8d9ea48f0ca44484d29cfbdef976fbd4fc336
   GoogleUtilities: 996e0db07153674fd1b54b220fda3a3dc3547cba
+  image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
