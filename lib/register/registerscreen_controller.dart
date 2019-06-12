@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/register_request.dart';
 import 'package:vote_app/register/registerscreen_view.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreenController  extends BaseController{
   final RegisterScreenState registerScreenState;
@@ -14,7 +17,14 @@ class RegisterScreenController  extends BaseController{
   String birthDate = "";
   Sex sex = Sex.MALE;
   String name = "";
+
   RegisterApiProvider _registerApiProvider = RegisterApiProvider();
+
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    registerScreenState.setImage(image);
+  }
 
   @override
   void init() {
@@ -76,3 +86,4 @@ class RegisterScreenController  extends BaseController{
     return valid;
   }
 }
+

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vote_app/register/registerscreen_controller.dart';
@@ -20,6 +23,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   bool birthDateValidate = false;
   bool nameValidate = false;
   var loading = false;
+  File image;
 
   var txt = new TextEditingController();
 
@@ -67,6 +71,22 @@ class RegisterScreenState extends State<RegisterScreen> {
                         blurRadius: 5.0)
                   ]),
               child: Column(children: <Widget>[
+                Center(
+                  child: image == null
+                      ? Text('')
+                      : ClipOval(
+                          child: Image.file(
+                          image,
+                          height: 120,
+                          width: 120,
+                          fit: BoxFit.cover,
+                        )),
+                ),
+                FloatingActionButton(
+                  onPressed: _registerScreenController.getImage,
+                  tooltip: 'Pick Image',
+                  child: Icon(Icons.add_a_photo),
+                ),
                 inputField('User Name', 'Enter your name', TextInputType.text,
                     Icons.person, onFieldSubmitted: (s) {
                   _registerScreenController.name = s;
@@ -120,10 +140,14 @@ class RegisterScreenState extends State<RegisterScreen> {
       return buildLoader();
     } else {
       return RoundRaisedButton(
-        onPressed: _registerScreenController.register,
+        onPressed:
+          // List<int> imageBytes = image.readAsBytesSync();
+          // String base64Image = base64Encode(imageBytes);
+         _registerScreenController.register,
         context: context,
         child: new Text(
-          "Register", style: TextStyle(fontSize: 18),
+          "Register",
+          style: TextStyle(fontSize: 18),
         ),
       );
     }
@@ -200,5 +224,11 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   void showError(String s) {
     showErrorDialog(context, s);
+  }
+
+  void setImage(File image) {
+    setState(() {
+      this.image = image;
+    });
   }
 }
