@@ -36,6 +36,9 @@ Image imageFromBase64String(String base64String, double size) {
 }
 
 String imageToBase64String(File image){
+  if (image == null){
+    return "";
+  }
   List<int> imageBytes = image.readAsBytesSync();
   return base64Encode(imageBytes);
 }

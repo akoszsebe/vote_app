@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:vote_app/groupinfo/groupinfoscreen_view.dart';
 import 'package:vote_app/home/profile/profileframe_controller.dart';
@@ -16,6 +18,8 @@ class ProfileFrame extends StatefulWidget {
 class ProfileFrameState extends State<ProfileFrame> {
   String userName = "";
   String email = "";
+  bool editMode = false;
+  File image;
 
   List<GroupResponse> groups;
 
@@ -130,15 +134,36 @@ class ProfileFrameState extends State<ProfileFrame> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 40.0,
-                      child: Icon(
-                        Icons.person_outline,
-                        color: Theme.of(context).accentColor,
-                        size: 60.0,
-                      ),
-                    ),
+                    Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: 42,
+                          ),
+                          Expanded(flex: 1, child: _buildImage()),
+                          Container(
+                            width: 42,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(34.0)),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Icon(
+                                      editMode ? Icons.save : Icons.edit,
+                                      color: Colors.white),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    editMode = !editMode;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ]),
                     Padding(
                       padding: EdgeInsets.only(top: 16),
                     ),
@@ -326,5 +351,64 @@ class ProfileFrameState extends State<ProfileFrame> {
         },
       ),
     );
+  }
+
+  _buildImage() {
+    if (editMode) {
+      return Column(
+        children: <Widget>[
+          Center(
+            child: image == null
+                ? CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 40.0,
+                    child: Icon(
+                      Icons.person_outline,
+                      color: Theme.of(context).accentColor,
+                      size: 60.0,
+                    ),
+                  )
+                : ClipOval(
+                    child: Image.file(
+                    image,
+                    height: 120,
+                    width: 120,
+                    fit: BoxFit.cover,
+                  )),
+          ),
+          FloatingActionButton(
+            mini: true,
+            onPressed: _profileScreenController.getImage,
+            tooltip: 'Pick Image',
+            child: Icon(Icons.add_a_photo),
+          ),
+        ],
+      );
+    }
+    return Center(
+      child: image == null
+          ? CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 40.0,
+              child: Icon(
+                Icons.person_outline,
+                color: Theme.of(context).accentColor,
+                size: 60.0,
+              ),
+            )
+          : ClipOval(
+              child: Image.file(
+              image,
+              height: 120,
+              width: 120,
+              fit: BoxFit.cover,
+            )),
+    );
+  }
+
+  void setImage(File image) {
+    setState(() {
+      this.image = image;
+    });
   }
 }

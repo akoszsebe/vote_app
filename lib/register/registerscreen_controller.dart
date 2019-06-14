@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/register_api_provider.dart';
 import 'package:vote_app/networking/request/register_request.dart';
 import 'package:vote_app/register/registerscreen_view.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vote_app/utils/utils.dart';
 
 class RegisterScreenController  extends BaseController{
   final RegisterScreenState registerScreenState;
@@ -33,8 +32,9 @@ class RegisterScreenController  extends BaseController{
 
   void register() {
     registerScreenState.showLoading();
+    var pic = imageToBase64String(registerScreenState.image);
     var registerRequest = RegisterRequest(
-        email: email, name: name, birthDate: birthDate, pin: pin, sex: sex);
+        email: email, name: name, birthDate: birthDate, picture: pic, pin: pin, sex: sex);
     print(registerRequest.toJson().toString());
     if (validateForm()) {
       print("valid");

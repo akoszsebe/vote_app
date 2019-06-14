@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -87,6 +86,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         )),
                 ),
                 FloatingActionButton(
+                  mini:  true,
                   onPressed: _registerScreenController.getImage,
                   tooltip: 'Pick Image',
                   child: Icon(Icons.add_a_photo),
@@ -145,7 +145,6 @@ class RegisterScreenState extends State<RegisterScreen> {
     } else {
       return RoundRaisedButton(
         onPressed:
-        //imageToBase64String(image);
          _registerScreenController.register,
         context: context,
         child: new Text(
