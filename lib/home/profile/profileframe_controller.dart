@@ -10,7 +10,7 @@ import 'package:vote_app/repository/group_repository.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/utils.dart';
 
-class ProfileScreenController extends BaseController{
+class ProfileScreenController extends BaseController {
   final ProfileFrameState profileFrameState;
   UserApiProvider userApiProvider;
   File imageFile;
@@ -19,10 +19,9 @@ class ProfileScreenController extends BaseController{
 
   @override
   Future init() async {
-    String email = await 
-    SharedPrefs.getEmail();
+    String email = await SharedPrefs.getEmail();
     userApiProvider = UserApiProvider();
-    userApiProvider.getMe().then((response){
+    userApiProvider.getMe().then((response) {
       profileFrameState.setUserInfo(response.name, response.picture, email);
     });
     GroupRepository groupRepository = GroupRepository();
@@ -40,11 +39,17 @@ class ProfileScreenController extends BaseController{
   }
 
   void updateProfilePic() {
-    userApiProvider.updateProfilePic(imageToBase64String(imageFile)).then((response){
+    if (imageFile != null) {
+      userApiProvider
+          .updateProfilePic(imageToBase64String(imageFile))
+          .then((response) {
+        profileFrameState.stopLoader();
+      }).catchError((error) {
+        profileFrameState.stopLoader();
+        profileFrameState.showError(error.message);
+      });
+    } else {
       profileFrameState.stopLoader();
-    }).catchError((error){
-      profileFrameState.stopLoader();
-      profileFrameState.showError(error.message);
-    });
+    }
   }
 }
