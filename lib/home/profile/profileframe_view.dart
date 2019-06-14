@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:vote_app/groupinfo/groupinfoscreen_view.dart';
 import 'package:vote_app/home/profile/profileframe_controller.dart';
 import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
+import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class ProfileFrame extends StatefulWidget {
@@ -19,7 +18,8 @@ class ProfileFrameState extends State<ProfileFrame> {
   String userName = "";
   String email = "";
   bool editMode = false;
-  File image;
+  Image image;
+  bool loading = true;
 
   List<GroupResponse> groups;
 
@@ -32,21 +32,20 @@ class ProfileFrameState extends State<ProfileFrame> {
     _profileScreenController.init();
   }
 
-  void setName(String userName) {
+  void setUserInfo(String userName, String image, String email) {
     setState(() {
+      loading = false;
       this.userName = userName;
+      if (image.isNotEmpty) {
+        this.image = imageFromBase64String(image, 120);
+      }
+      this.email = email;
     });
   }
 
   void setGroups(List<GroupResponse> groups) {
     setState(() {
       this.groups = groups;
-    });
-  }
-
-  void setEmail(String email) {
-    setState(() {
-      this.email = email;
     });
   }
 
@@ -157,6 +156,10 @@ class ProfileFrameState extends State<ProfileFrame> {
                                 ),
                                 onTap: () {
                                   setState(() {
+                                    if (editMode) {
+                                      _profileScreenController.updateProfilePic();
+                                      loading = true;
+                                    }
                                     editMode = !editMode;
                                   });
                                 },
@@ -167,23 +170,31 @@ class ProfileFrameState extends State<ProfileFrame> {
                     Padding(
                       padding: EdgeInsets.only(top: 16),
                     ),
-                    new Text(
-                      userName,
-                      style: new TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 6),
-                    ),
-                    new Text(
-                      email,
-                      style: new TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white70),
-                    ),
+                    if (loading)
+                      buildLoader()
+                    else
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            new Text(
+                              userName,
+                              style: new TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 6),
+                            ),
+                            new Text(
+                              email,
+                              style: new TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white70),
+                            ),
+                          ]),
                     Padding(
                       padding: EdgeInsets.only(top: 16),
                     ),
@@ -355,32 +366,36 @@ class ProfileFrameState extends State<ProfileFrame> {
 
   _buildImage() {
     if (editMode) {
-      return Column(
+      return Stack(
+        alignment: AlignmentDirectional.center,
         children: <Widget>[
           Center(
             child: image == null
                 ? CircleAvatar(
                     backgroundColor: Colors.white,
-                    radius: 40.0,
+                    radius: 60.0,
                     child: Icon(
                       Icons.person_outline,
                       color: Theme.of(context).accentColor,
-                      size: 60.0,
+                      size: 70.0,
                     ),
                   )
                 : ClipOval(
-                    child: Image.file(
-                    image,
+                    child: Image(
+                    image: image.image,
                     height: 120,
                     width: 120,
                     fit: BoxFit.cover,
                   )),
           ),
-          FloatingActionButton(
-            mini: true,
-            onPressed: _profileScreenController.getImage,
-            tooltip: 'Pick Image',
-            child: Icon(Icons.add_a_photo),
+          Transform.translate(
+            offset: const Offset(40, 40.0),
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: _profileScreenController.getImage,
+              tooltip: 'Pick Image',
+              child: Icon(Icons.add_a_photo),
+            ),
           ),
         ],
       );
@@ -389,16 +404,16 @@ class ProfileFrameState extends State<ProfileFrame> {
       child: image == null
           ? CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 40.0,
+              radius: 60.0,
               child: Icon(
                 Icons.person_outline,
                 color: Theme.of(context).accentColor,
-                size: 60.0,
+                size: 70.0,
               ),
             )
           : ClipOval(
-              child: Image.file(
-              image,
+              child: Image(
+              image: image.image,
               height: 120,
               width: 120,
               fit: BoxFit.cover,
@@ -406,9 +421,19 @@ class ProfileFrameState extends State<ProfileFrame> {
     );
   }
 
-  void setImage(File image) {
+  void setImage(Image image) {
     setState(() {
       this.image = image;
     });
+  }
+
+  void stopLoader() {
+    setState(() {
+      this.loading = false;
+    });
+  }
+
+  void showError(message) {
+    showError(message);
   }
 }
