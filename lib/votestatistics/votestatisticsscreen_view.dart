@@ -119,7 +119,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 16),
                   ),
-                  buildCharts(size, 0),
+                  buildCharts(size, 0, true),
                   buildMoreResults(voteDetails.results, size),
                 ],
               ),
@@ -187,13 +187,13 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
-            children: <Widget>[buildCharts(size, i++)],
+            children: <Widget>[buildCharts(size, i++, false)],
           ),
       ],
     );
   }
 
-  buildCharts(double size, int index) {
+  buildCharts(double size, int index, bool needLegende) {
     var chart;
     var dataChart = List<VotesColumnChartItem>();
     var data;
@@ -238,20 +238,21 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     _chartKey = new GlobalKey<AnimatedCircularChartState>();
     return Column(
       children: <Widget>[
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          alignment: WrapAlignment.center,
-          verticalDirection: VerticalDirection.down,
-          spacing: 8.0,
-          runSpacing: 4.0,
-          children: <Widget>[
-            for (int i = 0; i <= voteDetails.results.length; i++)
-              _buildChips(
-                  data[0].entries[i].color,
-                  voteDetails.results[0].items[i].label,
-                  voteDetails.results[0].items[i].value.toString()),
-          ],
-        ),
+        if (needLegende)
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.center,
+            verticalDirection: VerticalDirection.down,
+            spacing: 8.0,
+            runSpacing: 4.0,
+            children: <Widget>[
+              for (int i = 0; i <= voteDetails.results.length; i++)
+                _buildChips(
+                    data[0].entries[i].color,
+                    voteDetails.results[0].items[i].label,
+                    voteDetails.results[0].items[i].value.toString()),
+            ],
+          ),
         Padding(
           padding: EdgeInsets.only(left: 5, right: 5, top: 0),
           child: Center(
