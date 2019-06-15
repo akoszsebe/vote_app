@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/user_api_provider.dart';
@@ -5,20 +8,21 @@ import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/home/profile/profileframe_view.dart';
 import 'package:vote_app/repository/group_repository.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
+import 'package:vote_app/utils/utils.dart';
 
-class ProfileScreenController extends BaseController{
+class ProfileScreenController extends BaseController {
   final ProfileFrameState profileFrameState;
+  UserApiProvider userApiProvider;
+  File imageFile;
 
   ProfileScreenController({this.profileFrameState});
 
   @override
-  void init() {
-    SharedPrefs.getEmail().then((_email) {
-      profileFrameState.setEmail(_email);
-    });
-    UserApiProvider userApiProvider = UserApiProvider();
-    userApiProvider.getMe().then((response){
-      profileFrameState.setName(response.name);
+  Future init() async {
+    String email = await SharedPrefs.getEmail();
+    userApiProvider = UserApiProvider();
+    userApiProvider.getMe().then((response) {
+      profileFrameState.setUserInfo(response.name, response.picture, email);
     });
     GroupRepository groupRepository = GroupRepository();
     groupRepository.getAll().then((response) {
@@ -30,6 +34,22 @@ class ProfileScreenController extends BaseController{
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    profileFrameState.setImage(image);
+    imageFile = image;
+    profileFrameState.setImage(Image.file(image));
+  }
+
+  void updateProfilePic() {
+    if (imageFile != null) {
+      userApiProvider
+          .updateProfilePic(imageToBase64String(imageFile))
+          .then((response) {
+        profileFrameState.stopLoader();
+      }).catchError((error) {
+        profileFrameState.stopLoader();
+        profileFrameState.showError(error.message);
+      });
+    } else {
+      profileFrameState.stopLoader();
+    }
   }
 }
