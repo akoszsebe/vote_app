@@ -32,73 +32,62 @@ class VoteSreenController extends BaseController {
 
   Future connectToChain() async {
     //"http://10.0.2.2:8545";// //Replace with your API
-    String privateKey = "a5dc2899cefa17dafea024a6feec5766eea5c7ddea944965ac4ef94497f0ed04";
-
-    EthereumAddress myAddr =
-        EthereumAddress.fromHex('0xef7d3d1cc870200355e101f6e3686ffe0cd8c0c0');
+    String privateKey =
+        "8d3a052b8a2525cec3b3cb65acb5bf32cd770c0295c13692ae757936467d5bd2";
 
     EthereumAddress contractAddr =
-        EthereumAddress.fromHex('0x939eaDA3aAFCed0502c9A26CBa59A34Ef9AD79f1');
+        EthereumAddress.fromHex('0x889A9cECbe12fD3DdF80dCf8c7F9646D9e775A9e');
 
     var httpClient = new Client();
     var client;
 
-    
     client = new Web3Client(apiUrl, httpClient);
 
-    
+// send all our MetaCoins to the other address by calling the sendCoin
+    // function
+    Credentials credentials =
+        await client.credentialsFromPrivateKey(privateKey);
+
+    final ownAddress = await credentials.extractAddress();
     // final ownAddress = await credentials.extractAddress();
-    print("-------send--"+myAddr.toString());
+    print("-------send--" + ownAddress.toString());
 
-
-    client.getBalance(myAddr).then((balance) {
+    client.getBalance(ownAddress).then((balance) {
       print("---------");
       print(balance.getValueInUnit(EtherUnit.ether));
       print("---------");
     });
 
+    final abiCode =
+        '[{"constant":true,"inputs":[],"name":"getVotes","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateNames","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getDeleteToken","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"option","type":"string"},{"name":"userid","type":"uint256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateIds","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserIds","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_id","type":"string"},{"name":"_title","type":"string"},{"name":"_options","type":"string[]"},{"name":"_user_ids","type":"uint256[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"},{"name":"_coinbase","type":"address"},{"name":"_deleteToken","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]';
+    final contract =
+        DeployedContract(ContractAbi.fromJson(abiCode, 'Voter'), contractAddr);
+
+    print("-------- Abi -");
+    contract.abi.functions.toList().forEach((f) => print(f.name));
+
     
 
-    final abiCode =
-        '[{"constant":true,"inputs":[],"name":"getVotes","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateNames","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateIds","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"option","type":"string"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_title","type":"string"},{"name":"_options","type":"string[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]';
-    final contract =
-        DeployedContract(ContractAbi.fromJson(abiCode, 'ETH'), contractAddr);
-
-  print("-------- Abi -");
-  contract.abi.functions.toList().forEach((f)=> print(f.name));
-
-    // final subscription = client
-    //     .events(FilterOptions.events(contract: contract, event: transferEvent))
-    //     .take(1)
-    //     .listen((event) {
-    //   final decoded = transferEvent.decodeResults(event.topics, event.data);
-
-    //   final from = decoded[0] as EthereumAddress;
-    //   final to = decoded[1] as EthereumAddress;
-    //   final value = decoded[2] as BigInt;
-
-    //   print('$from sent $value ETH to $to');
-    // });
+    final trans = await client.sendTransaction(
+      credentials,
+      Transaction.callContract(
+        from: ownAddress,
+        contract: contract,
+        function: contract.function('vote'),
+        parameters: ["1",BigInt.from(10)],
+      ),
+      chainId : 2019,
+    );
+    print('We have ${trans.toString()} ');
 
     final balance = await client.call(
-        contract: contract, function: contract.function('getVotes'), params: []);
-    print('We have ${balance.toString()} Eth');
+        contract: contract,
+        function: contract.function('getVotes'),
+        params: []);
+    print('We have ${balance.toString()} ');
 
-    // send all our MetaCoins to the other address by calling the sendCoin
-    // function
-    final credentials = await client.credentialsFromPrivateKey(privateKey);
-    print(credentials.toString());
-
-    // await client.sendTransaction(
-    //   credentials,
-    //   Transaction.callContract(
-    //     contract: contract,
-    //     function: contract.function('vote'),
-    //     parameters: ["2"],
-    //   ),
-    // );
-
-    // await subscription.asFuture();
-    // await subscription.cancel();
+    await client.dispose();
   }
 }
+
+ 

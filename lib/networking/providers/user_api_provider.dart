@@ -9,13 +9,8 @@ import 'package:vote_app/utils/shared_prefs.dart';
 class UserApiProvider extends ApiProvider {
   Future<UserDetailsResponse> getMe() async {
     try {
-      var queryParameters = {
-        'page': 0,
-        'size': 100,
-      };
       String authToken = await SharedPrefs.getAuthToken();
       Response response = await dio.get(baseUrl + "/user/me",
-          queryParameters: queryParameters,
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")),

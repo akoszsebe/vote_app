@@ -216,10 +216,11 @@ class VoteScreenState extends State<VoteScreen> {
         return RoundColoredRaisedButton(
         onPressed: () {
           setState(() {
-           action = VoteAction.LOADING; 
+          // action = VoteAction.LOADING; 
           });
           
-          //_voteSreenController.connectToChain();
+          _voteSreenController.connectToChain();
+//_voteSreenController.sendTrans();
         },
         textColor: color,
         child: new Text(
