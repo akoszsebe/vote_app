@@ -239,28 +239,33 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
     return Material(
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new ClipOval(
-              child: imageFromBase64String(v.type.logo, 24),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16),
-            ),
-            Text(
-              v.title,
-              style: new TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white),
-            ),
-             Padding(
-              padding: EdgeInsets.only(left: 16),
-            ),
-            Icon(Icons.navigate_next,color: Colors.white70,)
-          ],
-        ),
+        child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new ClipOval(
+                  child: imageFromBase64String(v.type.logo, 24),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                ),
+                Text(
+                  v.title,
+                  style: new TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                ),
+                Icon(
+                  Icons.navigate_next,
+                  color: Colors.white70,
+                )
+              ],
+            )),
         onTap: () {
           Navigator.pushNamed(context, VoteScreen.routeName, arguments: v);
         },
@@ -273,28 +278,33 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
     return Material(
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-           new ClipOval(
-              child: imageFromBase64String(v.type.logo, 24),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16),
-            ),
-            Text(
-              v.title,
-              style: new TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white),
-            ),
-             Padding(
-              padding: EdgeInsets.only(left: 16),
-            ),
-            Icon(Icons.navigate_next,color: Colors.white70,)
-          ],
-        ),
+        child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new ClipOval(
+                  child: imageFromBase64String(v.type.logo, 24),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                ),
+                Text(
+                  v.title,
+                  style: new TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16),
+                ),
+                Icon(
+                  Icons.navigate_next,
+                  color: Colors.white70,
+                )
+              ],
+            )),
         onTap: () {
           Navigator.pushNamed(context, VoteStatisticsScreen.routeName,
               arguments: v);

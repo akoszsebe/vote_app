@@ -97,7 +97,7 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 40),
-                  child: Text(
+                  child: InkWell(child:Text(
                     "resend",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -105,6 +105,10 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
                         color: Colors.white70,
                         fontWeight: FontWeight.bold,
                         fontSize: 21.0),
+                  ),
+                  onTap: (){
+                    _confirmationScreenController.resendCode();
+                  },
                   ),
                 ),
               ],

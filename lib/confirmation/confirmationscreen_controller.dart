@@ -4,7 +4,7 @@ import 'package:vote_app/networking/request/verification_request.dart';
 import 'package:vote_app/confirmation/confirmationscreen_view.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
-class ConfirmationScreenController extends BaseController{
+class ConfirmationScreenController extends BaseController {
   final ConfirmationScreenState confirmationScreenState;
   RegisterApiProvider _registerApiProvider = RegisterApiProvider();
 
@@ -15,7 +15,7 @@ class ConfirmationScreenController extends BaseController{
     SharedPrefs.getAuthToken().then((authToken) {
       if (authToken.isNotEmpty) {
         _registerApiProvider
-            .confirm(VerificationRequest(token: s), authToken)
+            .confirm(VerificationRequest(token: s))
             .then((onValue) {
           if (onValue) {
             SharedPrefs.setLogedIn(true);
@@ -32,8 +32,17 @@ class ConfirmationScreenController extends BaseController{
     });
   }
 
-  @override
-  void init() {
+  void resendCode() {
+    _registerApiProvider.resend().then((onValue) {
+      if (onValue) {
+        confirmationScreenState.hideLoading();
+      }
+    }).catchError((error) {
+      confirmationScreenState.hideLoading();
+      confirmationScreenState.showError(error.message);
+    });
   }
 
+  @override
+  void init() {}
 }
