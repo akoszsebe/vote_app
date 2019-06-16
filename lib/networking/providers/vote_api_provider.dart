@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:vote_app/networking/api_provider.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
+import 'package:vote_app/repository/session_repository.dart';
 import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
@@ -56,6 +57,20 @@ class VoteApiProvider extends ApiProvider {
               contentType: ContentType.parse("application/json")),
           cancelToken: token);
       return VoteDetailResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print("Exception occured: $e");
+      throw ApiExeption.fromDioError(e);
+    }
+  }
+
+   Future<VerifyVoteResopnse> verifyVote(String voteId,String optionId) async {
+    try {
+      String authToken = SessionRepository().getAuthToken();
+      Response response = await dio.get(baseUrl + "/api/vote/$voteId/$optionId",
+          options: Options(
+              headers: {"Authorization": "Bearer $authToken"},
+              contentType: ContentType.parse("application/json")),cancelToken: token);
+      return VerifyVoteResopnse.fromJson(response.data);
     } on DioError catch (e) {
       print("Exception occured: $e");
       throw ApiExeption.fromDioError(e);

@@ -53,7 +53,7 @@ class SplashScreenController extends BaseController {
           SessionRepository().setAuthToken(response.authToken);
           SessionRepository().setSalt(response.salt);
           SharedPrefs.setRefreshToken(response.refreshToken);
-          if (decodedToken["active"] != true) {
+          if (decodedToken["active"] == true) {
             SharedPrefs.setLogedIn(true);
             SharedPrefs.setEmail(splashScreenState.email);
             splashScreenState.navigateHome();
@@ -91,7 +91,7 @@ class SplashScreenController extends BaseController {
       }).catchError((error) {
         SharedPrefs.setLogedIn(false);
         splashScreenState.showLoginRegister();
-        splashScreenState.showError("login again");
+        splashScreenState.showError(error.message);
       });
     } else {
       splashScreenState.showPin();

@@ -1,5 +1,5 @@
-
 import 'package:vote_app/base/base_controller.dart';
+import 'package:vote_app/networking/providers/vote_api_provider.dart';
 import 'package:vote_app/repository/votedetail_repository.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
@@ -31,6 +31,15 @@ class VoteSreenController extends BaseController {
       voteScreenState.setVoteDetails(response);
     }).catchError((error) {
       voteScreenState.showError(error.toString());
+    });
+  }
+
+  void verifyVote(String voteId, String optionId){
+    VoteApiProvider voteApiProvider = VoteApiProvider();
+    voteApiProvider.verifyVote(voteId, optionId).then((response){
+      voteScreenState.valid();
+    }).catchError((error){
+      voteScreenState.showError(error.message);
     });
   }
 

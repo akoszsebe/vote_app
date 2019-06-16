@@ -211,31 +211,35 @@ class VoteScreenState extends State<VoteScreen> {
   }
 
   _buildAction(Color color) {
-    switch(action){
+    switch (action) {
       case VoteAction.ACTION:
         return RoundColoredRaisedButton(
-        onPressed: () {
-          setState(() {
-          // action = VoteAction.LOADING; 
-          });
-          _voteSreenController.vote();
-        },
-        textColor: color,
-        child: new Text(
-          "Vote",
-        ));
+            onPressed: () {
+              setState(() {
+                action = VoteAction.LOADING;
+              });
+
+              _voteSreenController.verifyVote(
+                  vote.id.toString(), _radioValue.toString());
+              //_voteSreenController.vote();
+            },
+            textColor: color,
+            child: new Text(
+              "Vote",
+            ));
       case VoteAction.LOADING:
         return buildLoader();
       case VoteAction.VERIFY:
-        return buildLoader();
+        return Text("verified");
     }
     return buildLoader();
   }
+
+  void valid() {
+    setState(() {
+      action = VoteAction.VERIFY;
+    });
+  }
 }
 
-
-enum VoteAction{
-  ACTION,
-  LOADING,
-  VERIFY
-}
+enum VoteAction { ACTION, LOADING, VERIFY }

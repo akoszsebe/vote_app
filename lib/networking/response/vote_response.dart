@@ -165,3 +165,12 @@ class VoteType {
   factory VoteType.fromJson(Map<String, dynamic> json) => new VoteType(
       color: json["color"], name: json["name"], logo: json["logo"]);
 }
+
+class VerifyVoteResopnse {
+  String encryptedData;
+
+  VerifyVoteResopnse({this.encryptedData,});
+
+  factory VerifyVoteResopnse.fromJson(Map<String, dynamic> json) =>
+      new VerifyVoteResopnse(encryptedData: json["encryptedData"]);
+}
