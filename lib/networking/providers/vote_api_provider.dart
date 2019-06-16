@@ -66,7 +66,7 @@ class VoteApiProvider extends ApiProvider {
    Future<VerifyVoteResopnse> verifyVote(String voteId,String optionId) async {
     try {
       String authToken = SessionRepository().getAuthToken();
-      Response response = await dio.get(baseUrl + "/api/vote/$voteId/$optionId",
+      Response response = await dio.get(baseUrl + "/vote/$voteId/$optionId",
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
               contentType: ContentType.parse("application/json")),cancelToken: token);
