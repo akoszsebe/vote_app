@@ -38,9 +38,7 @@ class EthereumProvider {
       ),
       chainId: ethereumResponse.chainId,
     );
-    print('We have ${trans.toString()} ');
-
-    await _client.dispose();
+    print('${trans.toString()} ');
   }
 
   getBalance() {

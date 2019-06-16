@@ -9,6 +9,7 @@ import 'package:vote_app/home/profile/profileframe_view.dart';
 import 'package:vote_app/repository/group_repository.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/utils.dart';
+import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 
 class ProfileScreenController extends BaseController {
   final ProfileFrameState profileFrameState;
@@ -34,6 +35,7 @@ class ProfileScreenController extends BaseController {
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    //image = await FlutterExifRotation.rotateImage(path: image.path);
     imageFile = image;
     profileFrameState.setImage(Image.file(image));
   }
