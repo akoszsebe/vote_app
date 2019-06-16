@@ -9,7 +9,6 @@ import 'package:vote_app/home/profile/profileframe_view.dart';
 import 'package:vote_app/repository/group_repository.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/utils.dart';
-import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 
 class ProfileScreenController extends BaseController {
   final ProfileFrameState profileFrameState;

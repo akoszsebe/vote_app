@@ -28,7 +28,8 @@ class HomeSreenController extends BaseController{
   }
 
   Future<bool> onWillPop() async {
-    if (homeScreenState.getCurrentIndex == 0)
+    print(homeScreenState.getCurrentIndex());
+    if (homeScreenState.getCurrentIndex() == 0)
       return true;
     else {
       homeScreenState.resetCurentIndex();

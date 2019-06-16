@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:vote_app/networking/api_provider.dart';
 import 'package:vote_app/networking/response/notification_response.dart';
+import 'package:vote_app/repository/session_repository.dart';
 import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
@@ -34,7 +35,7 @@ class NotificationApiProvider extends ApiProvider {
         'page': 0,
         'size': 10,
       };
-      String authToken = await SharedPrefs.getAuthToken();
+      String authToken = SessionRepository().getAuthToken();
       Response response = await dio.get(baseUrl + "/notification/new",
       queryParameters: queryParameters,
           options: Options(

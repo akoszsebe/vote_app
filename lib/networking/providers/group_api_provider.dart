@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:vote_app/networking/api_provider.dart';
 import 'package:vote_app/networking/request/gorupaccenpt_request.dart';
 import 'package:vote_app/networking/response/group_response.dart';
+import 'package:vote_app/repository/session_repository.dart';
 import 'package:vote_app/utils/api_exeption.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
@@ -24,7 +25,7 @@ class GroupApiProvider extends ApiProvider {
 
   Future<GroupDetailResponse> getById(int id) async {
     try {
-      String authToken = await SharedPrefs.getAuthToken();
+      String authToken = SessionRepository().getAuthToken();
       Response response = await dio.get(baseUrl + "/group/$id",
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
@@ -39,7 +40,7 @@ class GroupApiProvider extends ApiProvider {
   Future<bool> accept(int id) async {
     try {
       GroupAcceptRequest body = GroupAcceptRequest(accepted: true);
-      String authToken = await SharedPrefs.getAuthToken();
+      String authToken = SessionRepository().getAuthToken();
       Response response = await dio.put(baseUrl + "/group/invite/$id",
           data: body.toJson(),
           options: Options(
@@ -55,7 +56,7 @@ class GroupApiProvider extends ApiProvider {
   Future<bool> reject(int id) async {
     try {
       GroupAcceptRequest body = GroupAcceptRequest(accepted: false);
-      String authToken = await SharedPrefs.getAuthToken();
+      String authToken = SessionRepository().getAuthToken();
       Response response = await dio.put(baseUrl + "/group/invite/$id",
           data: body.toJson(),
           options: Options(

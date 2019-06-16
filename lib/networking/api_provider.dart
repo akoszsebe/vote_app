@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:vote_app/networking/request/refreshToken_request.dart';
+import 'package:vote_app/repository/session_repository.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 
@@ -37,6 +38,7 @@ abstract class ApiProvider {
             if (response.statusCode == 200) {
               String token = response.data["authToken"];
               SharedPrefs.setAuthToken(token);
+              SessionRepository().setAuthToken(token);
               options.headers["Authorization"] = 'Bearer $token';
               dio.interceptors.requestLock.unlock();
               return options;

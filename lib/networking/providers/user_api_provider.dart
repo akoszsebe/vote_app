@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:vote_app/networking/api_provider.dart';
 import 'package:vote_app/networking/request/user_request.dart';
 import 'package:vote_app/networking/response/userdetails_response.dart';
+import 'package:vote_app/repository/session_repository.dart';
 import 'package:vote_app/utils/api_exeption.dart';
-import 'package:vote_app/utils/shared_prefs.dart';
 
 class UserApiProvider extends ApiProvider {
   Future<UserDetailsResponse> getMe() async {
     try {
-      String authToken = await SharedPrefs.getAuthToken();
+      String authToken = SessionRepository().getAuthToken();
       Response response = await dio.get(baseUrl + "/user/me",
           options: Options(
               headers: {"Authorization": "Bearer $authToken"},
@@ -26,7 +26,7 @@ class UserApiProvider extends ApiProvider {
    Future<bool> updateProfilePic(String base64Picture) async {
     try {
       ProfilPicUpdateRequest body = ProfilPicUpdateRequest(picture: base64Picture);
-      String authToken = await SharedPrefs.getAuthToken();
+      String authToken = SessionRepository().getAuthToken();
       Response response = await dio.put(baseUrl + "/user/picture",
           data: body.toJson(),
           options: Options(
