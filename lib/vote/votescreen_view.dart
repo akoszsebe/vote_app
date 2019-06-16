@@ -218,9 +218,7 @@ class VoteScreenState extends State<VoteScreen> {
           setState(() {
           // action = VoteAction.LOADING; 
           });
-          
-          _voteSreenController.connectToChain();
-//_voteSreenController.sendTrans();
+          _voteSreenController.vote();
         },
         textColor: color,
         child: new Text(
