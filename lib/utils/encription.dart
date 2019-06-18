@@ -32,7 +32,9 @@ class AesHelper {
   static String decryptBase64(
       String dataBase64, String tokenBase64, String cipherIVBase64) {
     Uint8List key = base64Decode(tokenBase64);
+    print("key - " + key.length.toString());
     Uint8List iv = base64Decode(cipherIVBase64);
+     print("iv - " + iv.length.toString());
     CipherParameters params = new PaddedBlockCipherParameters(
         new ParametersWithIV(new KeyParameter(key), iv), null);
 
