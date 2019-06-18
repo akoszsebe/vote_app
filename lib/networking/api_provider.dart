@@ -18,6 +18,10 @@ abstract class ApiProvider {
       // If no token, request token firstly and lock this interceptor
       // to prevent other request enter this interceptor.
       dio.interceptors.requestLock.lock();
+      if (options.path == baseUrl + "/auth/registration" && options.method == 'POST') {
+        dio.interceptors.requestLock.unlock();
+        return options;
+      }
       if (options.path == baseUrl + '/auth' && options.method == 'POST') {
         dio.interceptors.requestLock.unlock();
         return options;

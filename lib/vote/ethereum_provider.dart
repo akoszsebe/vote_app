@@ -62,9 +62,16 @@ class EthereumProvider {
 class EthereumResponse {
   final String privateKey;
   final String contractAddress;
-  final int chainId;
+  final String chainId;
   final String abiJson;
 
   EthereumResponse(
       {this.privateKey, this.contractAddress, this.chainId, this.abiJson});
+
+  factory EthereumResponse.fromJson(Map<String, dynamic> json) =>
+      new EthereumResponse(
+          privateKey: json["privateKey"],
+          abiJson: json["abi"],
+          chainId: json["chainId"],
+          contractAddress: json["contractAddress"]);
 }
