@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:vote_app/base/base_controller.dart';
 import 'package:vote_app/networking/providers/vote_api_provider.dart';
 import 'package:vote_app/repository/session_repository.dart';
 import 'package:vote_app/repository/votedetail_repository.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:vote_app/utils/encription.dart';
 import 'package:vote_app/utils/jwt_decode.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/vote/ethereum_provider.dart';
@@ -35,36 +38,44 @@ class VoteSreenController extends BaseController {
     });
   }
 
-  void verifyVote(String voteId, String optionId) {
+  Future verifyVote(String voteId, String optionId) async {
     // VoteApiProvider voteApiProvider = VoteApiProvider();
     // voteApiProvider.verifyVote(voteId, optionId).then((response) {
     //   voteScreenState.valid();
 
     // var password = SessionRepository().getSalt();
     // print("--------salt---------" + password);
-    // final key = Key.fromUtf8("12345678912345612345678123456782");
+
+    //final plainText = "{abi: 'this is a fake abi',\nchainId: 'this is a fake chain id',\ncontractAddress: 'this is a fake contract address',\nprivateKey: 'this is a fake private key',}";
+    // final key = Key.fromUtf8("7D6F855E85E514398136A5E8B9C97D67");
     // final iv = IV.fromLength(16);
-    // final encrypter = Encrypter(AES(key));
-    // Encrypted  encrypted = Encrypted.fromBase64("gwCLk8v/rGjMdOLYX9+GyTnWOeLUQEl4K+hzMEiCCVEzHg8Dsn55mQSjMI3VnczpGn7SMQ6ADwhYcos4KXVbus3a5QJ7jK6hOPqcarBoPOkwmBQ72Twm0mGkgNWnFGiS2yzQj9AGgB2eGq4IxEp8rkjjfwMtx4l5d5MHAavqoCpuhr1U8lTIqsaZaFjuLtBDL9Sv1QYYqlsK2TGvYlWEs5fu5SRZy66BwuH2uJw/D6qCaeUFSeK61vRoPJEWDVuF");
+
+    // final encrypter = Encrypter(AES(key,mode: AESMode.ctr,padding: null));
+
+    // final encrypted = Encrypted.fromBase16("d365b2483e8b24f986aa848e373fb7e9cc78a084e6");//encrypter.encrypt(plainText, iv: iv);
     // final decrypted = encrypter.decrypt(encrypted, iv: iv);
-    // print("-----------------" + decrypted);
 
-    final plainText = "{abi: 'this is a fake abi',\nchainId: 'this is a fake chain id',\ncontractAddress: 'this is a fake contract address',\nprivateKey: 'this is a fake private key',}";
-    final key = Key.fromBase64("1scJlW/F1tjTh3/KWTx5JQ==");
-    final iv = IV.fromLength(16);
-
-    final encrypter = Encrypter(AES(key));
-
-    final encrypted = encrypter.encrypt(plainText,iv:iv);//Encrypted.fromBase64("cI3hhRrhv44TWrtozQmq0fQaG+FPZ4s6NqZBZ/Fiag1tiAR1bsHW4DVPMNtEN8Jhr/4S4KBgnEU20CK3kz3YmDNAQB0WfoV/R4idL1JQb/dUZD8FDncPWxUyr5CwluhBDK2DteVuvXNyXIr0fMWcEHmWOxDgEKluRsl2MuR+mQgkO1oH2h//c1V7fKZEiX2/mGekOj/+9weUE5K3HQ3OdQ==");//encrypter.encrypt(plainText, iv: iv);
-    final decrypted = encrypter.decrypt(encrypted, iv: iv);
-
-    print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    print(encrypted.base64); // R4PxiU3h8YoIRqVowBXm
+    // print("result : "+decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    // R4PxiU3h8YoIRqVowBXm
 
     // }).catchError((error) {
     //   print(error.toString());
     //   voteScreenState.showError(error.message);
     // });
+
+    var saltbase64 = "4QdIba2QA2iV3+857rN6RL3YPaay7UuH";
+
+    //var message = 'Hello world!';
+    var token = saltbase64;
+    var cipherIV = '81kTkXrSEoD3JbeT';
+   // var result = AesHelper.encrypt(message, token, cipherIV);
+
+   // print('result=$result');
+
+    var encoded = "6/VaZs8ISly6rczcgnbr4nnPA6PjvdtxdzyIlneHNnBd5ObFxBrqE1KUsvC/icOcjJHn/u2KlcC58oJ4VD2f4ZunlNQBlOdd+Tg20H+b35CbFij2B7cwjLKUQq4tWPDjrKLNOVsP681ZsQu0EIqQBFUPueHSTHHz9nsmRe+67fBnL51AYk60mDeAndZEF1VwmSHnjYMxI6Ya7GpaWqk=";
+
+    var dec = AesHelper.decryptBase64(encoded, token, cipherIV);
+    print('dec=$dec');
   }
 
   Future vote() async {
