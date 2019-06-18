@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
       HomeScreenState(firebaseNotifications: firebaseNotifications);
 }
 
-class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
+class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final FirebaseNotifications firebaseNotifications;
   int _currentIndex = 0;
   int _notificationCount = 0;
@@ -123,7 +123,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                           textColor: Colors.white,
                           splashColor: Colors.grey,
                           onPressed: () {
-                            showAlertDialog(context, "TODO", "todo filter");
+                            showFilterDialog(context,
+                                ["Accenture", "UBB",],["Food", "Education","Election","Life"]);
                           },
                           child: Icon(
                             Icons.sort,

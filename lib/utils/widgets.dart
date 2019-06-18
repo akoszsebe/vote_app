@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vote_app/home/filter_dialog.dart';
 import 'package:vote_app/networking/response/vote_response.dart';
 import 'package:vote_app/utils/utils.dart';
 
@@ -33,6 +34,38 @@ void showAlertDialog(BuildContext context, String title, String content) {
               child: Center(
                 child: new FlatButton(
                   child: new Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )),
+        ],
+      );
+    },
+  );
+}
+
+void showFilterDialog(BuildContext context, List<String> _dropdownValuesGroup,List<String> _dropdownValuesType) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0))),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Center(
+            child: new Text(
+          "Filter",
+          style: TextStyle(color: Colors.white),
+        )),
+        content: FilterDialog(dropdownValuesGroup: _dropdownValuesGroup,dropdownValuesType: _dropdownValuesType),
+        actions: <Widget>[
+          Container(
+              width: MediaQuery.of(context).size.width - 96,
+              child: Center(
+                child: new FlatButton(
+                  child: new Text("Apply"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

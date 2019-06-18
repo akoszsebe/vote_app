@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:vote_app/networking/request/register_request.dart';
 import 'package:vote_app/register/registerscreen_controller.dart';
 import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/widgets.dart';
@@ -36,30 +37,30 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 100.0,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Text(
-                    "Register",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            expandedHeight: 100.0,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text(
+                  "Register",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
                   ),
-                  background: Container(color: Theme.of(context).primaryColor)),
-            ),
-          ];
+                ),
+                background: Container(color: Theme.of(context).primaryColor)),
+          ),
+        ];
+      },
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overscroll) {
+          overscroll.disallowGlow();
         },
-        body: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
-          },
-          child :new ListView(
+        child: new ListView(
           padding: new EdgeInsets.all(16.0),
           children: <Widget>[
             Container(
@@ -86,7 +87,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         )),
                 ),
                 FloatingActionButton(
-                  mini:  true,
+                  mini: true,
                   onPressed: _registerScreenController.getImage,
                   tooltip: 'Pick Image',
                   child: Icon(Icons.add_a_photo),
@@ -117,6 +118,42 @@ class RegisterScreenState extends State<RegisterScreen> {
                     onFieldSubmitted: (s) {
                   _registerScreenController.confirmPin = s;
                 }, maxLength: 6, validate: confirmPinValidate),
+                ListTile(
+                  leading: Icon(Icons.accessibility, color: Colors.white),
+                  contentPadding: EdgeInsets.only(top: 16, right: 0, left: 0),
+                  subtitle: Transform.translate(
+                    offset: Offset(-16,0),
+                    child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Text("Male", style: TextStyle(color: Colors.white)),
+                      Radio(
+                          groupValue: _registerScreenController.groupvalue,
+                          activeColor: Colors.white,
+                          value: Sex.MALE,
+                          onChanged: (v) {
+                            setState(() {
+                            _registerScreenController.groupvalue = v;
+                            });
+                          }),
+                      Text("Female", style: TextStyle(color: Colors.white)),
+                      Radio(
+                        groupValue: _registerScreenController.groupvalue,
+                        activeColor: Colors.white,
+                        value: Sex.FEMALE,
+                        onChanged: (v) {
+                           setState(() {
+                            _registerScreenController.groupvalue = v;
+                            });
+                        },
+                      )
+                    ],
+                  )),
+                  title: Align(child:Text("Gender",
+                      style: TextStyle(color: Colors.white, fontSize: 12)),
+                      alignment: Alignment(-1.13, 0),),
+                )
               ]),
             ),
             new Row(
@@ -144,8 +181,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       return buildLoader();
     } else {
       return RoundRaisedButton(
-        onPressed:
-         _registerScreenController.register,
+        onPressed: _registerScreenController.register,
         context: context,
         child: new Text(
           "Register",

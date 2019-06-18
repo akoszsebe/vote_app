@@ -14,8 +14,8 @@ class RegisterScreenController  extends BaseController{
   String confirmPin = "";
   String email = "";
   String birthDate = "";
-  Sex sex = Sex.MALE;
   String name = "";
+  Sex groupvalue = Sex.MALE;
 
   RegisterApiProvider _registerApiProvider = RegisterApiProvider();
 
@@ -34,7 +34,7 @@ class RegisterScreenController  extends BaseController{
     registerScreenState.showLoading();
     var pic = imageToBase64String(registerScreenState.image);
     var registerRequest = RegisterRequest(
-        email: email, name: name, birthDate: birthDate, picture: pic, pin: pin, sex: sex);
+        email: email, name: name, birthDate: birthDate, picture: pic, pin: pin, sex: groupvalue);
     print(registerRequest.toJson().toString());
     if (validateForm()) {
       print("valid");
