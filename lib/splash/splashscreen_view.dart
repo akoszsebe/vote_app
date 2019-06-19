@@ -5,6 +5,7 @@ import 'package:vote_app/utils/code_input.dart';
 import 'package:flutter/material.dart';
 import 'package:vote_app/register/registerscreen_view.dart';
 import 'package:vote_app/home/homescreen_view.dart';
+import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/widgets.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -42,6 +43,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   void showLoginRegister() {
     setState(() {
+      SharedPrefs.setLogedIn(false);
       isLoaded = SplashType.showLoginRegister;
     });
   }
@@ -97,6 +99,7 @@ class SplashScreenState extends State<SplashScreen> {
                     onPressed: checkBackArrowVisibility()
                         ? () {
                             setState(() {
+                              SharedPrefs.setLogedIn(false);
                               isLoaded = SplashType.showLoginRegister;
                             });
                           }

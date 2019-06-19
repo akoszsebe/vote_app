@@ -157,8 +157,8 @@ class ProfileFrameState extends State<ProfileFrame> {
                                 onTap: () {
                                   setState(() {
                                     if (editMode) {
-                                      _profileScreenController.updateProfilePic();
                                       loading = true;
+                                      _profileScreenController.updateProfilePic();
                                     }
                                     editMode = !editMode;
                                   });
@@ -206,7 +206,7 @@ class ProfileFrameState extends State<ProfileFrame> {
                         },
                         context: context,
                         child: new Text(
-                          "Logout",
+                          "Logout", style: TextStyle(fontWeight:FontWeight.bold),
                         ))
                   ],
                 ),
@@ -349,10 +349,10 @@ class ProfileFrameState extends State<ProfileFrame> {
         label: new Text(
           group.name,
           style: TextStyle(
-              color: Colors.blueGrey[700], fontWeight: FontWeight.bold),
+              color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
         ),
         deleteIcon: Icon(Icons.close),
-        deleteIconColor: Theme.of(context).accentColor,
+        deleteIconColor: Theme.of(context).primaryColorLight,
         onDeleted: () {
           showConfirmDialog(
               context,
@@ -392,9 +392,10 @@ class ProfileFrameState extends State<ProfileFrame> {
             offset: const Offset(40, 40.0),
             child: FloatingActionButton(
               mini: true,
+              //backgroundColor: Colors.blueGrey[300],
               onPressed: _profileScreenController.getImage,
               tooltip: 'Pick Image',
-              child: Icon(Icons.add_a_photo),
+              child: Icon(Icons.photo_camera),
             ),
           ),
         ],

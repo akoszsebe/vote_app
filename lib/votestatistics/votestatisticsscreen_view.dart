@@ -156,11 +156,11 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
         label: new Text(
           title,
           style: TextStyle(
-              color: Colors.blueGrey[600], fontWeight: FontWeight.bold),
+              color: Theme.of(context).primaryColorLight, fontWeight: FontWeight.bold),
         ),
         deleteIcon: Icon(
           Icons.info,
-          color: Colors.blueGrey[600],
+          color: Theme.of(context).primaryColorLight,
         ),
         onDeleted: () {
           showAlertDialog(context, title, desc);
@@ -288,7 +288,7 @@ class VotesColumnChartItem {
 class ChartColors {
   static getColor(index) {
     List<Color> colors = [
-      Colors.blueGrey[100],
+      Colors.amber[300],
       Colors.purple[300],
       Colors.blue[300],
       Colors.teal[300],

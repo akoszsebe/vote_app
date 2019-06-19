@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Vote App',
         theme: ThemeData(
-            primaryColor: Colors.blueGrey[800],
-            primaryColorLight: Colors.blueGrey[600],
+            primaryColor: Colors.blueGrey[900],
+            primaryColorLight: Colors.blueGrey[700],
             accentColor: Colors.cyan[600],
-            scaffoldBackgroundColor: Colors.blueGrey[800],
+            scaffoldBackgroundColor: Colors.blueGrey[900],
             unselectedWidgetColor: Colors.white),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
