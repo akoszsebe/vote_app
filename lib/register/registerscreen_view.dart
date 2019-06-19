@@ -215,7 +215,11 @@ class RegisterScreenState extends State<RegisterScreen> {
       Function onTap,
       TextEditingController controller,
       bool validate = false}) {
-    return Container(
+    return new Theme(
+    data: Theme.of(context).copyWith(
+          primaryColor: Colors.white,
+        ),
+    child: Container(
         padding: const EdgeInsets.only(top: 10.0),
         child: new TextField(
             controller: controller,
@@ -241,7 +245,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                 errorBorder: new UnderlineInputBorder(
                     borderSide: new BorderSide(color: Colors.red[200])),
                 enabledBorder: new UnderlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.white)))));
+                    borderSide: new BorderSide(color: Colors.white))))));
   }
 
   void showLoading() {
