@@ -122,37 +122,39 @@ class RegisterScreenState extends State<RegisterScreen> {
                   leading: Icon(Icons.accessibility, color: Colors.white),
                   contentPadding: EdgeInsets.only(top: 16, right: 0, left: 0),
                   subtitle: Transform.translate(
-                    offset: Offset(-16,0),
-                    child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Text("Male", style: TextStyle(color: Colors.white)),
-                      Radio(
-                          groupValue: _registerScreenController.groupvalue,
-                          activeColor: Colors.white,
-                          value: Sex.MALE,
-                          onChanged: (v) {
-                            setState(() {
-                            _registerScreenController.groupvalue = v;
-                            });
-                          }),
-                      Text("Female", style: TextStyle(color: Colors.white)),
-                      Radio(
-                        groupValue: _registerScreenController.groupvalue,
-                        activeColor: Colors.white,
-                        value: Sex.FEMALE,
-                        onChanged: (v) {
-                           setState(() {
-                            _registerScreenController.groupvalue = v;
-                            });
-                        },
-                      )
-                    ],
-                  )),
-                  title: Align(child:Text("Gender",
-                      style: TextStyle(color: Colors.white, fontSize: 12)),
-                      alignment: Alignment(-1.13, 0),),
+                      offset: Offset(-16, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Text("Male", style: TextStyle(color: Colors.white)),
+                          Radio(
+                              groupValue: _registerScreenController.groupvalue,
+                              activeColor: Colors.white,
+                              value: Sex.MALE,
+                              onChanged: (v) {
+                                setState(() {
+                                  _registerScreenController.groupvalue = v;
+                                });
+                              }),
+                          Text("Female", style: TextStyle(color: Colors.white)),
+                          Radio(
+                            groupValue: _registerScreenController.groupvalue,
+                            activeColor: Colors.white,
+                            value: Sex.FEMALE,
+                            onChanged: (v) {
+                              setState(() {
+                                _registerScreenController.groupvalue = v;
+                              });
+                            },
+                          )
+                        ],
+                      )),
+                  title: Transform.translate(
+                    offset: Offset(-16, 0),
+                    child: Text("Gender",
+                        style: TextStyle(color: Colors.white, fontSize: 12)),
+                  ),
                 )
               ]),
             ),
@@ -216,36 +218,36 @@ class RegisterScreenState extends State<RegisterScreen> {
       TextEditingController controller,
       bool validate = false}) {
     return new Theme(
-    data: Theme.of(context).copyWith(
+        data: Theme.of(context).copyWith(
           primaryColor: Colors.white,
         ),
-    child: Container(
-        padding: const EdgeInsets.only(top: 10.0),
-        child: new TextField(
-            controller: controller,
-            maxLength: maxLength,
-            style: TextStyle(color: Colors.white),
-            keyboardType: type,
-            onTap: onTap,
-            onChanged: onFieldSubmitted,
-            onSubmitted: onFieldSubmitted,
-            obscureText: obscureText,
-            decoration: new InputDecoration(
-                hintStyle: TextStyle(color: Colors.white),
-                hintText: hint,
-                counterText: "",
-                labelStyle: TextStyle(color: Colors.white),
-                labelText: label,
-                errorText: validate ? 'Value Can\'t Be Empty' : null,
-                errorStyle: TextStyle(color: Colors.red[200]),
-                icon: new Icon(
-                  icon,
-                  color: Colors.white,
-                ),
-                errorBorder: new UnderlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.red[200])),
-                enabledBorder: new UnderlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.white))))));
+        child: Container(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: new TextField(
+                controller: controller,
+                maxLength: maxLength,
+                style: TextStyle(color: Colors.white),
+                keyboardType: type,
+                onTap: onTap,
+                onChanged: onFieldSubmitted,
+                onSubmitted: onFieldSubmitted,
+                obscureText: obscureText,
+                decoration: new InputDecoration(
+                    hintStyle: TextStyle(color: Colors.white),
+                    hintText: hint,
+                    counterText: "",
+                    labelStyle: TextStyle(color: Colors.white),
+                    labelText: label,
+                    errorText: validate ? 'Value Can\'t Be Empty' : null,
+                    errorStyle: TextStyle(color: Colors.red[200]),
+                    icon: new Icon(
+                      icon,
+                      color: Colors.white,
+                    ),
+                    errorBorder: new UnderlineInputBorder(
+                        borderSide: new BorderSide(color: Colors.red[200])),
+                    enabledBorder: new UnderlineInputBorder(
+                        borderSide: new BorderSide(color: Colors.white))))));
   }
 
   void showLoading() {

@@ -78,7 +78,7 @@ class VoteSreenController extends BaseController {
         );
     await ethereumProvider.init();
     String token = await SharedPrefs.getAuthToken();
-    var id = parseJwt(token)["id"];
+    var id = int.parse(parseJwt(token)["id"]);
     ethereumProvider.vote(id, selectedOption);
   }
 }

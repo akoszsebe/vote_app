@@ -2,7 +2,7 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 class EthereumProvider {
-  var _apiUrl = "http://192.168.0.150:8543";
+  // var _apiUrl = "http://192.168.0.150:8543";
 
   var _httpClient = new Client();
   var _client;
@@ -13,7 +13,7 @@ class EthereumProvider {
   DeployedContract _contract;
 
   EthereumProvider({this.ethereumResponse}) {
-    _client = new Web3Client(_apiUrl, _httpClient);
+    _client = new Web3Client(ethereumResponse.chainIp, _httpClient);
   }
 
   Future init() async {
@@ -62,16 +62,18 @@ class EthereumProvider {
 class EthereumResponse {
   final String privateKey;
   final String contractAddress;
-  final String chainId;
+  final int chainId;
   final String abiJson;
+  final String chainIp;
 
   EthereumResponse(
-      {this.privateKey, this.contractAddress, this.chainId, this.abiJson});
+      {this.privateKey, this.contractAddress, this.chainId, this.abiJson,this.chainIp});
 
   factory EthereumResponse.fromJson(Map<String, dynamic> json) =>
       new EthereumResponse(
           privateKey: json["privateKey"],
           abiJson: json["abi"],
           chainId: json["chainId"],
+          chainIp: json["chainIp"],
           contractAddress: json["contractAddress"]);
 }

@@ -158,7 +158,8 @@ class ProfileFrameState extends State<ProfileFrame> {
                                   setState(() {
                                     if (editMode) {
                                       loading = true;
-                                      _profileScreenController.updateProfilePic();
+                                      _profileScreenController
+                                          .updateProfilePic();
                                     }
                                     editMode = !editMode;
                                   });
@@ -206,7 +207,8 @@ class ProfileFrameState extends State<ProfileFrame> {
                         },
                         context: context,
                         child: new Text(
-                          "Logout", style: TextStyle(fontWeight:FontWeight.bold),
+                          "Logout",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ))
                   ],
                 ),
@@ -279,9 +281,20 @@ class ProfileFrameState extends State<ProfileFrame> {
   Widget _createPersonInfo(String name, String role, String pic) {
     return Column(
       children: <Widget>[
-        CircleAvatar(
-          backgroundImage: ExactAssetImage(pic),
-          radius: 30.0,
+        Container(
+          width: 62.0,
+          height: 62.0,
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: ExactAssetImage(pic),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: new BorderRadius.all(new Radius.circular(31.0)),
+            border: new Border.all(
+              color: Colors.blueGrey,//Theme.of(context).accentColor,
+              width: 2.0,
+            ),
+          ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 16),
@@ -349,7 +362,8 @@ class ProfileFrameState extends State<ProfileFrame> {
         label: new Text(
           group.name,
           style: TextStyle(
-              color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
+              color: Theme.of(context).accentColor,
+              fontWeight: FontWeight.bold),
         ),
         deleteIcon: Icon(Icons.close),
         deleteIconColor: Theme.of(context).primaryColorLight,
@@ -371,28 +385,45 @@ class ProfileFrameState extends State<ProfileFrame> {
         children: <Widget>[
           Center(
             child: image == null
-                ? CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 60.0,
+                ? Container(
+                    width: 120.0,
+                    height: 120.0,
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(60.0)),
+                      border: new Border.all(
+                        color: Theme.of(context).accentColor,
+                        width: 2.0,
+                      ),
+                    ),
                     child: Icon(
                       Icons.person_outline,
                       color: Theme.of(context).accentColor,
                       size: 70.0,
                     ),
                   )
-                : ClipOval(
-                    child: Image(
-                    image: image.image,
-                    height: 120,
-                    width: 120,
-                    fit: BoxFit.cover,
-                  )),
+                : Container(
+                    width: 120.0,
+                    height: 120.0,
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        image: image.image,
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(60.0)),
+                      border: new Border.all(
+                        color: Theme.of(context).accentColor,
+                        width: 3.0,
+                      ),
+                    ),
+                  ),
           ),
           Transform.translate(
             offset: const Offset(40, 40.0),
             child: FloatingActionButton(
               mini: true,
-              //backgroundColor: Colors.blueGrey[300],
               onPressed: _profileScreenController.getImage,
               tooltip: 'Pick Image',
               child: Icon(Icons.photo_camera),
@@ -403,22 +434,38 @@ class ProfileFrameState extends State<ProfileFrame> {
     }
     return Center(
       child: image == null
-          ? CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 60.0,
+          ? Container(
+              width: 120.0,
+              height: 120.0,
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.all(new Radius.circular(60.0)),
+                border: new Border.all(
+                  color: Colors.blueGrey,//Theme.of(context).accentColor,
+                  width: 2.0,
+                ),
+              ),
               child: Icon(
                 Icons.person_outline,
                 color: Theme.of(context).accentColor,
                 size: 70.0,
               ),
             )
-          : ClipOval(
-              child: Image(
-              image: image.image,
-              height: 120,
-              width: 120,
-              fit: BoxFit.cover,
-            )),
+          : Container(
+              width: 120.0,
+              height: 120.0,
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  image: image.image,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: new BorderRadius.all(new Radius.circular(60.0)),
+                border: new Border.all(
+                  color: Colors.blueGrey,//Theme.of(context).accentColor,
+                  width: 3.0,
+                ),
+              ),
+            ),
     );
   }
 
