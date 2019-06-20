@@ -75,23 +75,55 @@ class RegisterScreenState extends State<RegisterScreen> {
                         blurRadius: 5.0)
                   ]),
               child: Column(children: <Widget>[
-                Center(
-                  child: image == null
-                      ? Text('')
-                      : ClipOval(
-                          child: Image.file(
-                          image,
-                          height: 120,
-                          width: 120,
-                          fit: BoxFit.cover,
-                        )),
-                ),
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: _registerScreenController.getImage,
-                  tooltip: 'Pick Image',
-                  child: Icon(Icons.add_a_photo),
-                ),
+                Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: <Widget>[
+                      Center(
+                        child: image == null
+                            ? Container(
+                                width: 120.0,
+                                height: 120.0,
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: new BorderRadius.all(
+                                      new Radius.circular(60.0)),
+                                  border: new Border.all(
+                                    color: Theme.of(context).accentColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.person_outline,
+                                  color: Theme.of(context).accentColor,
+                                  size: 70.0,
+                                ),
+                              )
+                            : Container(
+                                width: 123.0,
+                                height: 123.0,
+                                decoration: new BoxDecoration(
+                                  image: new DecorationImage(
+                                    image: Image.file(image).image,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: new BorderRadius.all(
+                                      new Radius.circular(61.0)),
+                                  border: new Border.all(
+                                    color: Theme.of(context).accentColor,
+                                    width: 3.0,
+                                  ),
+                                ),
+                              ),
+                      ),
+                      Transform.translate(
+                          offset: const Offset(40.0, 40.0),
+                          child: FloatingActionButton(
+                            mini: true,
+                            onPressed: _registerScreenController.getImage,
+                            tooltip: 'Pick Image',
+                            child: Icon(Icons.photo_camera),
+                          )),
+                    ]),
                 inputField('User Name', 'Enter your name', TextInputType.text,
                     Icons.person, onFieldSubmitted: (s) {
                   _registerScreenController.name = s;

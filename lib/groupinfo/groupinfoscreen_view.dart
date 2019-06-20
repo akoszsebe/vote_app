@@ -250,12 +250,15 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                 Padding(
                   padding: EdgeInsets.only(left: 16),
                 ),
-                Text(
-                  v.title,
-                  style: new TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white),
+                Container(
+                  width: MediaQuery.of(context).size.width - 176,
+                  child: Text(
+                    v.title,
+                    style: new TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16),
@@ -289,12 +292,15 @@ class GroupInfoScreenState extends State<GroupInfoScreen> {
                 Padding(
                   padding: EdgeInsets.only(left: 16),
                 ),
-                Text(
-                  v.title,
-                  style: new TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white),
+                Container(
+                  width: MediaQuery.of(context).size.width - 176,
+                  child: Text(
+                    v.title,
+                    style: new TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16),

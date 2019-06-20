@@ -45,21 +45,29 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
             flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.only(bottom: 8),
                 centerTitle: true,
-                title: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 4.0,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
+                title:Container(
+                    width: MediaQuery.of(context).size.width - 184,
+                    child: 
+                    Row(
+                      children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                      ),
                       new ClipOval(child: loadImage(vote.type.logo)),
                       Padding(
                         padding: EdgeInsets.only(left: 8),
                       ),
-                      Text(vote.title,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          )),
-                    ]),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 250,
+                        child: Text(vote.title,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                            )),
+                      )
+                    ]
+                    ),
+                    ),
                 background: Container(color: Theme.of(context).primaryColor)),
           ),
         ];
