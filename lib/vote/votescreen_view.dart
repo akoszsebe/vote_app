@@ -55,6 +55,7 @@ class VoteScreenState extends State<VoteScreen> {
                 title:
                  Container(
                     width: MediaQuery.of(context).size.width - 184,
+                    height: 42,
                     child: 
                     Row(
                       children: <Widget>[
