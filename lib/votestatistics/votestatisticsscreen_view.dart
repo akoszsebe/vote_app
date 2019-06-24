@@ -73,14 +73,22 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
       _voteStatisticsScreenController.getDetails(vote.id);
       return buildLoader();
     } else {
-      return ListView(children: <Widget>[
-        buildVoteDetails(
-            context,
-            VoteDetailResponse(
-                group: Group(name: voteDetails.group.name),
-                description: voteDetails.description)),
-        _buildVoteResult(vote)
-      ]);
+      if (voteDetails != null)
+        return ListView(children: <Widget>[
+          buildVoteDetails(
+              context,
+              VoteDetailResponse(
+                  group: Group(name: voteDetails.group.name),
+                  description: voteDetails.description)),
+          if (voteDetails.results.isNotEmpty) _buildVoteResult(vote)
+        ]);
+      else
+        return Center(
+          child: Text(
+            "No Data Available",
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        );
     }
   }
 
@@ -156,7 +164,8 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
         label: new Text(
           title,
           style: TextStyle(
-              color: Theme.of(context).primaryColorLight, fontWeight: FontWeight.bold),
+              color: Theme.of(context).primaryColorLight,
+              fontWeight: FontWeight.bold),
         ),
         deleteIcon: Icon(
           Icons.info,

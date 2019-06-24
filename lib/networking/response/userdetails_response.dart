@@ -1,5 +1,5 @@
 class UserDetailsResponse {
-  final String picture;
+  String picture;
   final String name;
 
   UserDetailsResponse({this.picture, this.name});

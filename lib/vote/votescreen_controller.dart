@@ -30,7 +30,6 @@ class VoteSreenController extends BaseController {
 
   void getVotedetails(int id) {
     _voteDetailRepository.getDetails(id).then((response) {
-      print(response);
       voteScreenState.setVoteDetails(response);
     }).catchError((error) {
       voteScreenState.showError(error.toString());
@@ -61,6 +60,7 @@ class VoteSreenController extends BaseController {
     }).catchError((error) {
       print(error.toString());
       voteScreenState.showError(error.message);
+      voteScreenState.setLoading();
     });
   }
 

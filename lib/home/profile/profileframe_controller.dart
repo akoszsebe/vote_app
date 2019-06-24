@@ -7,12 +7,14 @@ import 'package:vote_app/networking/providers/user_api_provider.dart';
 import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/home/profile/profileframe_view.dart';
 import 'package:vote_app/repository/group_repository.dart';
+import 'package:vote_app/repository/user_repository.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/utils.dart';
 
 class ProfileScreenController extends BaseController {
   final ProfileFrameState profileFrameState;
   UserApiProvider userApiProvider;
+  UserRepository userRepository;
   File imageFile;
 
   ProfileScreenController({this.profileFrameState});
@@ -21,7 +23,8 @@ class ProfileScreenController extends BaseController {
   Future init() async {
     String email = await SharedPrefs.getEmail();
     userApiProvider = UserApiProvider();
-    userApiProvider.getMe().then((response) {
+    userRepository = UserRepository();
+    userRepository.getMe().then((response) {
       profileFrameState.setUserInfo(response.name, response.picture, email);
     });
     GroupRepository groupRepository = GroupRepository();

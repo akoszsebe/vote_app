@@ -12,7 +12,7 @@ class VoteScreen extends StatefulWidget {
 }
 
 class VoteScreenState extends State<VoteScreen> {
-  int _radioValue = 0;
+  int _radioValue = -1;
   VoteResponse vote;
   VoteDetailResponse voteDetails;
   bool isLoading = true;
@@ -79,10 +79,18 @@ class VoteScreenState extends State<VoteScreen> {
     if (isLoading) {
       return buildLoader();
     } else {
-      return ListView(children: <Widget>[
-        buildVoteDetails(context, voteDetails),
-        _buildVoteOptions(voteDetails)
-      ]);
+      if (voteDetails != null)
+        return ListView(children: <Widget>[
+          buildVoteDetails(context, voteDetails),
+          _buildVoteOptions(voteDetails)
+        ]);
+      else
+        return Center(
+          child: Text(
+            "No Data Available",
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        );
     }
   }
 
@@ -139,7 +147,7 @@ class VoteScreenState extends State<VoteScreen> {
                           radioElement(
                               voteDetails.responses[i].value,
                               voteDetails.responses[i].description,
-                              i,
+                              voteDetails.responses[i].id,
                               _voteSreenController.handleRadioValueChange,
                               color),
                         Padding(
@@ -238,6 +246,12 @@ class VoteScreenState extends State<VoteScreen> {
   void valid() {
     setState(() {
       action = VoteAction.VERIFY;
+    });
+  }
+
+  void setLoading() {
+    setState(() {
+      action = VoteAction.ACTION;
     });
   }
 }
