@@ -13,7 +13,7 @@ class EthereumProvider {
   DeployedContract _contract;
 
   EthereumProvider({this.ethereumResponse}) {
-    _client = new Web3Client(ethereumResponse.chainIp, _httpClient);
+    _client = new Web3Client("http://"+ ethereumResponse.chainIp, _httpClient);
   }
 
   Future init() async {
