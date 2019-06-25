@@ -26,31 +26,6 @@ class UpComingFrameCrontroller extends BaseController {
     }).catchError((error) {
       upcomingFrameState.showError(error.message);
     });
-    // ethClient = new Web3Client(apiUrl, httpClient);
-    // EthereumAddress _address =
-    //     EthereumAddress("0x336352bb0820e31f2d657f33e909735b372f9843");
     return null;
-    // ethClient.getBalance(_address).then((balance) {
-    //   print("---------");
-    //   print(balance.getValueInUnit(EtherUnit.ether));
-    //   print("---------");
-    //   setState(() {
-    //     //account = _address.toString();
-    //     //eth = balance.getValueInUnit(EtherUnit.ether).toString();
-    //   });
-    // });
-    // final EthereumServerClient client =
-    //     EthereumServerClient.withConnectionParameters("192.168.0.178");
-    // client.printError = true;
-
-    // client.rpcClient.request("eth_getBalance",
-    //     ["0x336352bb0820e31f2d657f33e909735b372f9843"]).then((onValue) {
-    //   int p = int.parse(onValue["result"].toString());
-    //   print("-------------------" + p.toString());
-    //   setState(() {
-    //     account = "0x336352bb0820e31f2d657f33e909735b372f9843";
-    //     eth = p.toString();
-    //   });
-    // });
   }
 }

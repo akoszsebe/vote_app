@@ -2,7 +2,6 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 class EthereumProvider {
-  // var _apiUrl = "http://192.168.0.150:8543";
 
   var _httpClient = new Client();
   var _client;
@@ -27,7 +26,7 @@ class EthereumProvider {
     _contract.abi.functions.toList().forEach((f) => print(f.name));
   }
 
-  Future vote(int userId, String option) async {
+  Future<String> vote(int userId, String option) async {
     final trans = await _client.sendTransaction(
       _credentials,
       Transaction.callContract(
@@ -38,7 +37,8 @@ class EthereumProvider {
       ),
       chainId: ethereumResponse.chainId,
     );
-    print('${trans.toString()} ');
+    print('trans - ${trans.toString()} ');
+    return trans.toString();
   }
 
   getBalance() {
@@ -50,12 +50,13 @@ class EthereumProvider {
     });
   }
 
-  getVotes() async {
+  Future<String> getVotes() async {
     final balance = await _client.call(
         contract: _contract,
         function: _contract.function('getVotes'),
         params: []);
     print('We have ${balance.toString()} ');
+    return balance;
   }
 }
 

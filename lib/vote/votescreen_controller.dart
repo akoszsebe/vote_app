@@ -37,48 +37,54 @@ class VoteSreenController extends BaseController {
   }
 
   Future verifyVote(String voteId, String optionId) async {
-    VoteApiProvider voteApiProvider = VoteApiProvider();
-    voteApiProvider.verifyVote(voteId, optionId).then((response) {
-      voteScreenState.valid();
+    vote(EthereumResponse(abiJson: '[{"constant":true,"inputs":[],"name":"getVotes","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateNames","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getDeleteToken","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"option","type":"string"},{"name":"userid","type":"uint256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateIds","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserIds","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_id","type":"string"},{"name":"_title","type":"string"},{"name":"_options","type":"string[]"},{"name":"_user_ids","type":"uint256[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"},{"name":"_coinbase","type":"address"},{"name":"_deleteToken","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]',
+    chainId: 2019,chainIp: "79.115.38.91:8543",contractAddress: "0x6489627BD2b1Dc1B174b62EF346e3795A0847264",privateKey: "d1a80a0ed8d1c12a6cc7f343467fa3e1e910ee4e"));
+    // VoteApiProvider voteApiProvider = VoteApiProvider();
+    // voteApiProvider.verifyVote(voteId, optionId).then((response) async {
+    //   var saltBase64 = SessionRepository().getSalt();
+    //   print("--------salt---------" + saltBase64);
+    //   var ivBase64 = response.encryptedData.split(':')[0];
+    //   print("--------iv---------" + ivBase64);
+    //   var encodedBase64 = response.encryptedData.split(':')[1];
+    //   print("--------encoded---------" + encodedBase64);
 
-      var saltBase64 = SessionRepository().getSalt();
-      print("--------salt---------" + saltBase64);
-      var ivBase64 = response.encryptedData.split(':')[0];
-      print("--------iv---------" + ivBase64);
-      var encodedBase64 = response.encryptedData.split(':')[1];
-      print("--------encoded---------" + encodedBase64);
+    //   var decrypted =
+    //       AesHelper.decryptBase64(encodedBase64, saltBase64, ivBase64);
+    //   print('decrypted=$decrypted');
 
-      var decrypted =
-          AesHelper.decryptBase64(encodedBase64, saltBase64, ivBase64);
-      print('decrypted=$decrypted');
-
-      EthereumResponse ethereumResponse =
-          EthereumResponse.fromJson(json.decode(decrypted));
-      if (ethereumResponse != null) {
-        vote(ethereumResponse);
-      }
-    }).catchError((error) {
-      print(error.toString());
-      voteScreenState.showError(error.message);
-      voteScreenState.setLoading();
-    });
+    //   EthereumResponse ethereumResponse =
+    //       EthereumResponse.fromJson(json.decode(decrypted));
+    //   if (ethereumResponse != null) {
+    //     bool voted = await vote(ethereumResponse);
+    //     if (voted) {
+    //       voteScreenState.valid();
+    //     } else {
+    //       voteScreenState.setLoading();
+    //     }
+    //   }
+    // }).catchError((error) {
+    //   print(error.toString());
+    //   voteScreenState.showError(error.message);
+    //   voteScreenState.setLoading();
+    // });
   }
 
-  Future vote(EthereumResponse ethereumResponse) async {
-    EthereumProvider ethereumProvider = EthereumProvider(
-        ethereumResponse: ethereumResponse
-        // EthereumResponse(
-        //     privateKey:
-        //         "8d3a052b8a2525cec3b3cb65acb5bf32cd770c0295c13692ae757936467d5bd2",
-        //     chainId: "2019",
-        //     contractAddress: "0x889A9cECbe12fD3DdF80dCf8c7F9646D9e775A9e",
-        //     abiJson:
-        //         '[{"constant":true,"inputs":[],"name":"getVotes","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateNames","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getDeleteToken","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"option","type":"string"},{"name":"userid","type":"uint256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateIds","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserIds","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_id","type":"string"},{"name":"_title","type":"string"},{"name":"_options","type":"string[]"},{"name":"_user_ids","type":"uint256[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"},{"name":"_coinbase","type":"address"},{"name":"_deleteToken","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]'
-        //         )
-        );
+  Future<bool> vote(EthereumResponse ethereumResponse) async {
+    EthereumProvider ethereumProvider =
+        EthereumProvider(ethereumResponse: ethereumResponse);
     await ethereumProvider.init();
     String token = await SharedPrefs.getAuthToken();
     var id = int.parse(parseJwt(token)["id"]);
-    ethereumProvider.vote(id, selectedOption);
+    String hash = await ethereumProvider.getVotes();
+        
+        //await ethereumProvider.vote(id, selectedOption).catchError((error) {
+    //   return false;
+    // });
+    print(hash);
+    if (hash.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
