@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vote_app/base/base_controller.dart';
-import 'package:vote_app/networking/providers/user_api_provider.dart';
 import 'package:vote_app/networking/response/group_response.dart';
 import 'package:vote_app/home/profile/profileframe_view.dart';
 import 'package:vote_app/repository/group_repository.dart';
@@ -13,7 +12,6 @@ import 'package:vote_app/utils/utils.dart';
 
 class ProfileScreenController extends BaseController {
   final ProfileFrameState profileFrameState;
-  UserApiProvider userApiProvider;
   UserRepository userRepository;
   File imageFile;
 
@@ -22,7 +20,6 @@ class ProfileScreenController extends BaseController {
   @override
   Future init() async {
     String email = await SharedPrefs.getEmail();
-    userApiProvider = UserApiProvider();
     userRepository = UserRepository();
     userRepository.getMe().then((response) {
       profileFrameState.setUserInfo(response.name, response.picture, email);
@@ -44,7 +41,7 @@ class ProfileScreenController extends BaseController {
 
   void updateProfilePic() {
     if (imageFile != null) {
-      userApiProvider
+      userRepository
           .updateProfilePic(imageToBase64String(imageFile))
           .then((response) {
         profileFrameState.stopLoader();

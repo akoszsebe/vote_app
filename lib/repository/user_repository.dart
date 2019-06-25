@@ -3,7 +3,7 @@ import 'package:vote_app/networking/response/userdetails_response.dart';
 
 class UserRepository {
   static final UserRepository _singleton =
-      new UserRepository._internal(userApiProvider : UserApiProvider());
+      new UserRepository._internal(userApiProvider: UserApiProvider());
 
   final UserApiProvider userApiProvider;
   UserDetailsResponse userDetailsResponse;
@@ -26,12 +26,13 @@ class UserRepository {
       return userDetailsResponse;
   }
 
-  Future<bool> updateProfilePic(String base64Picture){
-    userApiProvider.updateProfilePic(base64Picture).then((resonse){
-      userDetailsResponse.picture = base64Picture;
-      return resonse;
-    }).catchError((error){
+  Future<bool> updateProfilePic(String base64Picture) async {
+    bool resonse = await userApiProvider
+        .updateProfilePic(base64Picture)
+        .catchError((error) {
       throw error;
     });
+    userDetailsResponse.picture = base64Picture;
+    return resonse;
   }
 }
