@@ -42,6 +42,17 @@ class VoteScreenState extends State<VoteScreen> {
       _voteSreenController.getVotedetails(vote.id);
       requestSent = true;
     }
+    var width = MediaQuery.of(context).size.width;
+    var size = width - (width - vote.title.length * 16);
+    print("--Start--");
+    print(width);
+    print(size);
+    print((width) / 2);
+    if (size > (width) / 2) {
+      size = (width - 120) / 2;
+    }
+    print(size);
+    print("--Stop--");
     return Scaffold(
         body: NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -52,13 +63,9 @@ class VoteScreenState extends State<VoteScreen> {
             flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.only(bottom: 8),
                 centerTitle: true,
-                title:
-                 Container(
-                    width: MediaQuery.of(context).size.width - 184,
-                    height: 42,
-                    child: 
-                    Row(
-                      children: <Widget>[
+                title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 16),
                       ),
@@ -67,16 +74,14 @@ class VoteScreenState extends State<VoteScreen> {
                         padding: EdgeInsets.only(left: 8),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width - 250,
+                        width: size,
                         child: Text(vote.title,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18.0,
                             )),
                       )
-                    ]
-                    ),
-                    ),
+                    ]),
                 background: Container(color: Theme.of(context).primaryColor)),
           ),
         ];
