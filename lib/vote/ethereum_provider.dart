@@ -41,12 +41,13 @@ class EthereumProvider {
     return trans.toString();
   }
 
-  getBalance() {
+  Future<String> getBalance() {
     print("-------send--" + _ownAddress.toString());
     _client.getBalance(_ownAddress).then((balance) {
       print("---------");
       print(balance.getValueInUnit(EtherUnit.ether));
       print("---------");
+      return balance;
     });
   }
 

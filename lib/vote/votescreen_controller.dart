@@ -38,7 +38,7 @@ class VoteSreenController extends BaseController {
 
   Future verifyVote(String voteId, String optionId) async {
     vote(EthereumResponse(abiJson: '[{"constant":true,"inputs":[],"name":"getVotes","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateNames","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getDeleteToken","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"option","type":"string"},{"name":"userid","type":"uint256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateIds","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserIds","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_id","type":"string"},{"name":"_title","type":"string"},{"name":"_options","type":"string[]"},{"name":"_user_ids","type":"uint256[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"},{"name":"_coinbase","type":"address"},{"name":"_deleteToken","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]',
-    chainId: 2019,chainIp: "79.115.38.91:8543",contractAddress: "0x6489627BD2b1Dc1B174b62EF346e3795A0847264",privateKey: "d1a80a0ed8d1c12a6cc7f343467fa3e1e910ee4e"));
+    chainId: 2019,chainIp: "79.115.38.91:8081",contractAddress: "0x42F1C5CbB848A081132D1d16BE9DFDbAb499fC8C",privateKey: "19a4884a2b7060f71e97ea45e2acc4dc8736d61bc89205f9f4af56d1181d7083"));
     // VoteApiProvider voteApiProvider = VoteApiProvider();
     // voteApiProvider.verifyVote(voteId, optionId).then((response) async {
     //   var saltBase64 = SessionRepository().getSalt();
@@ -75,7 +75,7 @@ class VoteSreenController extends BaseController {
     await ethereumProvider.init();
     String token = await SharedPrefs.getAuthToken();
     var id = int.parse(parseJwt(token)["id"]);
-    String hash = await ethereumProvider.getVotes();
+    String hash = await ethereumProvider.getBalance();//.getVotes();
         
         //await ethereumProvider.vote(id, selectedOption).catchError((error) {
     //   return false;
