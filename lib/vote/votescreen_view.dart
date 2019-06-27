@@ -44,15 +44,9 @@ class VoteScreenState extends State<VoteScreen> {
     }
     var width = MediaQuery.of(context).size.width;
     var size = width - (width - vote.title.length * 16);
-    print("--Start--");
-    print(width);
-    print(size);
-    print((width) / 2);
     if (size > (width) / 2) {
       size = (width - 120) / 2;
     }
-    print(size);
-    print("--Stop--");
     return Scaffold(
         body: NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -253,7 +247,7 @@ class VoteScreenState extends State<VoteScreen> {
       case VoteAction.LOADING:
         return buildLoader();
       case VoteAction.VERIFY:
-        return Text("verified");
+        return Text("voted", style: TextStyle(color: Colors.white),);
     }
     return buildLoader();
   }

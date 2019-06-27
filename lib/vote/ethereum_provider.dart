@@ -41,7 +41,7 @@ class EthereumProvider {
     return trans.toString();
   }
 
-  Future<String> getBalance() {
+  getBalance() {
     print("-------send--" + _ownAddress.toString());
     _client.getBalance(_ownAddress).then((balance) {
       print("---------");
