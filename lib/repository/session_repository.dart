@@ -17,4 +17,9 @@ class SessionRepository {
   String getAuthToken() => _authToken;
 
   void setAuthToken(authToken) => this._authToken = authToken;
+
+  void clear() {
+    _salt = "";
+    _authToken = "";
+  }
 }

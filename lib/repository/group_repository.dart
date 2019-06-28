@@ -28,4 +28,8 @@ class GroupRepository {
       return _cachedGroupes;
   }
 
+  void clear(){
+    _cachedGroupes.clear();
+  }
+
 }

@@ -28,4 +28,8 @@ class VoteDetailRepository {
     } else
       return cache.get(id);
   }
+
+   void clear() {
+    cache.cache.clear();
+  }
 }

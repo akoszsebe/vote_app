@@ -89,7 +89,8 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
               VoteDetailResponse(
                   group: Group(name: voteDetails.group.name),
                   description: voteDetails.description)),
-          if (voteDetails.results.isNotEmpty) _buildVoteResult(vote)
+          if (voteDetails.results != null)
+            if (voteDetails.results.isNotEmpty) _buildVoteResult()
         ]);
       else
         return Center(
@@ -101,7 +102,7 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     }
   }
 
-  Widget _buildVoteResult(FinishedVoteResponse vote) {
+  Widget _buildVoteResult() {
     var size = MediaQuery.of(context).size.width / 1.5;
     return Container(
         alignment: Alignment.centerLeft,
@@ -216,13 +217,15 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     var dataChart = List<VotesColumnChartItem>();
     var data;
     var r = List<CircularSegmentEntry>();
-    var i = 0;
-    voteDetails.results[index].items.forEach((option) {
-      r.add(CircularSegmentEntry(
-          (option.value).toDouble(), ChartColors.getColor(i)));
+    var option = voteDetails.results[index].items;
+    option[option.length - 1].label = "Invalid";
+    for (int i = 0; i < option.length; i++) {
+      if (option[i].value != 0)
+        r.add(CircularSegmentEntry(
+            (option[i].value).toDouble(), ChartColors.getColor(i)));
       dataChart.add(VotesColumnChartItem(
-          i.toString(), option.value, ChartColors.getColor(i++)));
-    });
+          i.toString(), option[i].value, ChartColors.getColor(i)));
+    }
     var series = [
       new charts.Series<VotesColumnChartItem, String>(
         id: index.toString(),
@@ -264,11 +267,9 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
             spacing: 8.0,
             runSpacing: 4.0,
             children: <Widget>[
-              for (int i = 0; i <= voteDetails.results.length; i++)
-                _buildChips(
-                    data[0].entries[i].color,
-                    voteDetails.results[0].items[i].label,
-                    voteDetails.results[0].items[i].value.toString()),
+              for (int i = 0; i < option.length; i++)
+                _buildChips(ChartColors.getColor(i), option[i].label,
+                    option[i].value.toString()),
             ],
           ),
         Padding(
@@ -314,8 +315,7 @@ class ChartColors {
       Colors.orange[300],
       Colors.red[300],
     ];
-    Random r = Random();
     if (index < colors.length) return colors[index];
-    return colors[r.nextInt(7)];
+    return colors[0];
   }
 }

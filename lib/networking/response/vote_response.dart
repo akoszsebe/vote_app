@@ -124,7 +124,7 @@ class VoteResults {
 }
 
 class ResultItem {
-  final String label;
+  String label;
   final int value;
 
   ResultItem({this.label, this.value});

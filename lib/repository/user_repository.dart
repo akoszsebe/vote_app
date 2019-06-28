@@ -35,4 +35,9 @@ class UserRepository {
     userDetailsResponse.picture = base64Picture;
     return resonse;
   }
+
+
+   void clear() {
+    userDetailsResponse = null;
+  }
 }

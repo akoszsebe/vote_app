@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vote_app/groupinfo/groupinfoscreen_view.dart';
 import 'package:vote_app/home/profile/profileframe_controller.dart';
 import 'package:vote_app/networking/response/group_response.dart';
+import 'package:vote_app/repository/ClearRepos.dart';
 import 'package:vote_app/splash/splashscreen_view.dart';
 import 'package:vote_app/utils/shared_prefs.dart';
 import 'package:vote_app/utils/utils.dart';
@@ -202,6 +203,7 @@ class ProfileFrameState extends State<ProfileFrame> {
                     RoundRaisedButton(
                         onPressed: () {
                           SharedPrefs.setLogedIn(false);
+                          ClearRepos.clearAll();
                           Navigator.pushReplacementNamed(
                               context, SplashScreen.routeName);
                         },

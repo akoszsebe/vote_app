@@ -6,7 +6,8 @@ class VoteListRepository {
       new VoteListRepository._internal(voteApiProvider: VoteApiProvider());
 
   final List<VoteResponse> _cachedUpComingVotes = List<VoteResponse>();
-  final List<FinishedVoteResponse> _cachedFinishedVotes = List<FinishedVoteResponse>();
+  final List<FinishedVoteResponse> _cachedFinishedVotes =
+      List<FinishedVoteResponse>();
   final VoteApiProvider voteApiProvider;
 
   factory VoteListRepository() {
@@ -59,5 +60,10 @@ class VoteListRepository {
     _cachedFinishedVotes.clear();
     _cachedFinishedVotes.addAll(resopnse);
     return resopnse;
+  }
+
+  void clear() {
+    _cachedUpComingVotes.clear();
+    _cachedFinishedVotes.clear();
   }
 }
