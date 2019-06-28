@@ -218,7 +218,6 @@ class VoteStatisticsScreenState extends State<VoteStatisticsScreen> {
     var data;
     var r = List<CircularSegmentEntry>();
     var option = voteDetails.results[index].items;
-    option[option.length - 1].label = "Invalid";
     for (int i = 0; i < option.length; i++) {
       if (option[i].value != 0)
         r.add(CircularSegmentEntry(
