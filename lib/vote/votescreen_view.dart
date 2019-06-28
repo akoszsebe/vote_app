@@ -228,6 +228,11 @@ class VoteScreenState extends State<VoteScreen> {
   }
 
   _buildAction(Color color) {
+    var date = DateTime.fromMillisecondsSinceEpoch(voteDetails.beginning);
+  var days = date.difference(DateTime.now()).inDays;
+  if (days > 0){
+    return Text("Vite begins in " + days.toString() + (days > 1 ? " days" : " day"), style: TextStyle(color: Colors.white),);
+  }
     switch (action) {
       case VoteAction.ACTION:
         return RoundColoredRaisedButton(

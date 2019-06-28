@@ -45,7 +45,8 @@ void showAlertDialog(BuildContext context, String title, String content) {
   );
 }
 
-void showFilterDialog(BuildContext context, List<String> _dropdownValuesGroup,List<String> _dropdownValuesType) {
+void showFilterDialog(BuildContext context, List<String> _dropdownValuesGroup,
+    List<String> _dropdownValuesType) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -59,7 +60,9 @@ void showFilterDialog(BuildContext context, List<String> _dropdownValuesGroup,Li
           "Filter",
           style: TextStyle(color: Colors.white),
         )),
-        content: FilterDialog(dropdownValuesGroup: _dropdownValuesGroup,dropdownValuesType: _dropdownValuesType),
+        content: FilterDialog(
+            dropdownValuesGroup: _dropdownValuesGroup,
+            dropdownValuesType: _dropdownValuesType),
         actions: <Widget>[
           Container(
               width: MediaQuery.of(context).size.width - 96,
@@ -201,13 +204,22 @@ Widget buildListItem(BuildContext context, int index, List<VoteResponse> data,
                 ],
               ),
             )),
-            new Text(
-              "Vote in \n" + days.toString() + (days > 1 ? " days" : " day"),
-              style: new TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white54),
-            ),
+            if (days > 0)
+              new Text(
+                "Vote in \n" + days.toString() + (days > 1 ? " days" : " day"),
+                style: new TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white54),
+              )
+            else
+              new Text(
+                "Vote Now",
+                style: new TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white70),
+              )
           ],
         ),
       ));
