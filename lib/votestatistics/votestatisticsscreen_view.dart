@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:vote_app/utils/utils.dart';
 import 'package:vote_app/votestatistics/votestatisticsscreen_controller.dart';

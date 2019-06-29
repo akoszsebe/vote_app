@@ -45,8 +45,7 @@ void showAlertDialog(BuildContext context, String title, String content) {
   );
 }
 
-void showFilterDialog(BuildContext context, List<String> _dropdownValuesGroup,
-    List<String> _dropdownValuesType) {
+void showFilterDialog(BuildContext context, Function(String,String) filter) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -60,21 +59,19 @@ void showFilterDialog(BuildContext context, List<String> _dropdownValuesGroup,
           "Filter",
           style: TextStyle(color: Colors.white),
         )),
-        content: FilterDialog(
-            dropdownValuesGroup: _dropdownValuesGroup,
-            dropdownValuesType: _dropdownValuesType),
-        actions: <Widget>[
-          Container(
-              width: MediaQuery.of(context).size.width - 96,
-              child: Center(
-                child: new FlatButton(
-                  child: new Text("Apply"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              )),
-        ],
+        content: FilterDialog(filter),
+        // actions: <Widget>[
+        //   Container(
+        //       width: MediaQuery.of(context).size.width - 96,
+        //       child: Center(
+        //         child: new FlatButton(
+        //           child: new Text("Apply"),
+        //           onPressed: () {
+        //             Navigator.of(context).pop();
+        //           },
+        //         ),
+        //       )),
+        // ],
       );
     },
   );

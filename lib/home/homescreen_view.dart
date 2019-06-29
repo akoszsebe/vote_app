@@ -123,8 +123,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           textColor: Colors.white,
                           splashColor: Colors.grey,
                           onPressed: () {
-                            showFilterDialog(context,
-                                ["Accenture", "UBB",],["Food", "Education","Election","Life"]);
+                            showFilterDialog(context,(g,t){
+                              print(g +" "+ t);
+                            });
                           },
                           child: Icon(
                             Icons.sort,
