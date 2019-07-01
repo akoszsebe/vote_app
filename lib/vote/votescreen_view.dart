@@ -243,7 +243,6 @@ class VoteScreenState extends State<VoteScreen> {
 
               _voteSreenController.verifyVote(
                   vote.id.toString(), _radioValue.toString());
-              //_voteSreenController.vote();
             },
             textColor: color,
             child: new Text(

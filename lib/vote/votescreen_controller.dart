@@ -37,17 +37,11 @@ class VoteSreenController extends BaseController {
   }
 
   Future verifyVote(String voteId, String optionId) async {
-    // vote(EthereumResponse(abiJson: '[{"constant":true,"inputs":[],"name":"getVotes","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateNames","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getDeleteToken","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"option","type":"string"},{"name":"userid","type":"uint256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getCandidateIds","outputs":[{"name":"","type":"string[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserIds","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_id","type":"string"},{"name":"_title","type":"string"},{"name":"_options","type":"string[]"},{"name":"_user_ids","type":"uint256[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"},{"name":"_coinbase","type":"address"},{"name":"_deleteToken","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]',
-    // chainId: 2019,chainIp: "79.115.38.91:8543",contractAddress: "0x49B490ADfd770d09634aA300B8338fAf21351Eb7",privateKey: "c8b6a546c30c3dd7844f769f45be619235fe42d9c0eb93cf766311ba6328f5f4"));
     VoteApiProvider voteApiProvider = VoteApiProvider();
     voteApiProvider.verifyVote(voteId, optionId).then((response) async {
       var saltBase64 = SessionRepository().getSalt();
-      print("--------salt---------" + saltBase64);
       var ivBase64 = response.encryptedData.split(':')[0];
-      print("--------iv---------" + ivBase64);
       var encodedBase64 = response.encryptedData.split(':')[1];
-      print("--------encoded---------" + encodedBase64);
-
       var decrypted =
           AesHelper.decryptBase64(encodedBase64, saltBase64, ivBase64);
       print('decrypted=$decrypted');
